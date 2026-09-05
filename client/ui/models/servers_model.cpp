@@ -986,7 +986,10 @@ bool ServersModel::isDefaultServerDefaultContainerHasSplitTunneling()
             QJsonObject serverProtocolConfig = container.value(ContainerProps::containerTypeToProtocolString(defaultContainer)).toObject();
             QString clientProtocolConfigString = serverProtocolConfig.value(config_key::last_config).toString();
             QJsonObject clientProtocolConfig = QJsonDocument::fromJson(clientProtocolConfigString.toUtf8()).object();
-            return (clientProtocolConfigString.contains("AllowedIPs") && !clientProtocolConfigString.contains("AllowedIPs = 0.0.0.0/0, ::/0"))
+            // full tunnel = AllowedIPs covers all IPv4 (0.0.0.0/0); anything
+            // narrower is a split-tunnel config. IPv6 ("/0" or "::/0") is not
+            // required — our API configs are IPv4-only by design
+            return (clientProtocolConfigString.contains("AllowedIPs") && !clientProtocolConfigString.contains("0.0.0.0/0"))
                     || (!clientProtocolConfig.value(config_key::allowed_ips).toArray().isEmpty()
                         && !clientProtocolConfig.value(config_key::allowed_ips).toArray().contains("0.0.0.0/0"));
         } else if (defaultContainer == DockerContainer::Cloak || defaultContainer == DockerContainer::OpenVpn

@@ -382,7 +382,10 @@ namespace
                         lines << QString("PresharedKey = %1").arg(psk);
                     }
                     lines << QString("Endpoint = %1:%2").arg(hostName, port);
-                    lines << "AllowedIPs = 0.0.0.0/0, ::/0";
+                    // IPv4-only full tunnel: our nodes do not provide IPv6, and
+                    // advertising ::/0 blackholes IPv6-preferred apps (YouTube)
+                    // on Android — the OS routes 2000::/3 into a v4-only tunnel
+                    lines << "AllowedIPs = 0.0.0.0/0";
                     lines << QString("PersistentKeepalive = %1")
                                         .arg(clientProtocolConfig.value(config_key::persistent_keep_alive).toString("25"));
 
@@ -2034,7 +2037,8 @@ QString ApiConfigsController::getCurrentServerConfigIni()
     }
     lines << QString("Endpoint = %1:%2").arg(hostName, port);
 
-    lines << "AllowedIPs = 0.0.0.0/0, ::/0";
+    // IPv4-only full tunnel — see fillServerConfig (IPv6 blackhole on Android)
+    lines << "AllowedIPs = 0.0.0.0/0";
     lines << QString("PersistentKeepalive = %1").arg(lastConfig.value(config_key::persistent_keep_alive).toString("25"));
 
     return lines.join("\n");

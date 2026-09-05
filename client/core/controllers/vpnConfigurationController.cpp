@@ -156,7 +156,7 @@ QJsonObject VpnConfigurationsController::createVpnConfiguration(const QPair<QStr
                     }
                 }
                 if (allowedIps.isEmpty()) {
-                    allowedIps = QJsonArray { "0.0.0.0/0", "::/0" };
+                    allowedIps = QJsonArray { "0.0.0.0/0" };
                 }
                 vpnConfigData[config_key::allowed_ips] = allowedIps;
             }
