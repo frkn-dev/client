@@ -446,11 +446,13 @@ int ConnectionController::tierForRow(int row) const
     if (protocol == QStringLiteral("hysteria2")) {
         return 2;
     }
-    if (protocol == QStringLiteral("vless")) {
-        return isVlessCdnRow(row) ? 4 : 3; // CDN-fronted vless is the last resort before plain WG
-    }
     if (protocol == QStringLiteral("wireguard")) {
-        return 5; // plain WireGuard — dead last per the auto-selection spec
+        return 3;
+    }
+    if (protocol == QStringLiteral("vless")) {
+        // VLESS goes (almost) last: a CDN/REALITY TCP probe answers fast even on
+        // a node that proxies nothing, which used to outrank healthy AWG rows
+        return isVlessCdnRow(row) ? 4 : 5;
     }
     return 6;
 }
@@ -521,9 +523,15 @@ int ConnectionController::pickAutoCandidate(const QList<AutoCandidate> &candidat
         return -1;
     }
 
-    // strict tier order (list is already sorted): take the best tier's first
-    // probe-confirmed candidate with an acceptable rtt
+    // strict tier order (list is already sorted): a probe-confirmed candidate
+    // may win only within the BEST tier present — a fast VLESS TCP probe must
+    // not outrank unprobed (still probing) AWG rows; protocol preference beats
+    // probe speed
+    const int bestTier = candidates.first().tier;
     for (int i = 0; i < candidates.size(); ++i) {
+        if (candidates.at(i).tier != bestTier) {
+            break; // sorted by tier — nothing else in the best tier
+        }
         if (candidates.at(i).latency >= 0 && candidates.at(i).latency <= kAutoAcceptLatencyMs) {
             return i;
         }
