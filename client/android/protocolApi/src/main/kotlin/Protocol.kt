@@ -53,14 +53,18 @@ abstract class Protocol {
 
         val splitTunnelType = config.optInt("splitTunnelType")
         if (splitTunnelType == SPLIT_TUNNEL_DISABLE) return
-        val splitTunnelSites = config.getJSONArray("splitTunnelSites")
-        val addressHandlerFunc = when (splitTunnelType) {
-            SPLIT_TUNNEL_INCLUDE -> ::includeAddress
-            SPLIT_TUNNEL_EXCLUDE -> ::excludeAddress
+
+        // 2x2 split tunneling: the C++ side flattens the manual site list and
+        // the service presets into splitTunnelIncludeSites / splitTunnelExcludeSites;
+        // splitTunnelSites is the legacy manual-only list, kept as fallback
+        val (addressHandlerFunc, sitesKey) = when (splitTunnelType) {
+            SPLIT_TUNNEL_INCLUDE -> ::includeAddress to "splitTunnelIncludeSites"
+            SPLIT_TUNNEL_EXCLUDE -> ::excludeAddress to "splitTunnelExcludeSites"
 
             else -> throw BadConfigException("Unexpected value of the 'splitTunnelType' parameter: $splitTunnelType")
         }
 
+        val splitTunnelSites = config.optJSONArray(sitesKey) ?: config.getJSONArray("splitTunnelSites")
         for (i in 0 until splitTunnelSites.length()) {
             val address = InetNetwork.parse(splitTunnelSites.getString(i))
             addressHandlerFunc(address)
