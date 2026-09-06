@@ -46,6 +46,11 @@ int main(int argc, char **argv)
 {
     Utils::initializePath(Logger::systemLogDir());
 
+    // Log to file from birth: otherwise (ipcserver setLogsEnabled) nothing is
+    // captured until a client connects over IPC — daemon init, driver install
+    // and early failures stay invisible exactly when we need them most.
+    Logger::init(true);
+
     if (argc >= 2) {
         qInfo() << "Started as console application";
         return runApplication(argc, argv);
