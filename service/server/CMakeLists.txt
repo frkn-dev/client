@@ -242,6 +242,7 @@ if(WIN32)
         ws2_32
         iphlpapi
         gdi32
+        crypt32
         Advapi32
         Kernel32
         ${AMNEZIA_XRAY_LIB_PATH}

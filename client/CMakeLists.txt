@@ -151,6 +151,7 @@ if(WIN32)
         iphlpapi
         ws2_32
         gdi32
+        crypt32
     )
 
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
