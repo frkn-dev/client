@@ -196,19 +196,15 @@ std::unique_ptr<WindowsSplitTunnel> WindowsSplitTunnel::create(
     return nullptr;
   }
   if (!driver_manager->isRunning()) {
-    // the driver image may already be loaded via the legacy service record —
-    // starting our fresh service record then fails with ALREADY_RUNNING;
-    // the symlink is what matters, so only start when the driver is absent
-    if (QFileInfo(QString::fromWCharArray(DRIVER_SYMLINK)).exists()) {
-      logger.debug() << "Driver already loaded, skipping service start";
-    } else {
-      logger.debug() << "Driver is not running, starting it";
-      // Start the service
-      if (!driver_manager->startService()) {
-        logger.error() << "Failed to start Split Tunnel Service";
-        return nullptr;
-      };
-    }
+    logger.debug() << "Driver is not running, starting it";
+    // Start the service
+    if (!driver_manager->startService()) {
+      // The driver image may already be loaded (started through the legacy
+      // pre-rebrand service record, or an earlier install): StartService then
+      // fails even though the device is perfectly usable. Don't bail here —
+      // the symlink open below is the real check.
+      logger.warning() << "Split Tunnel service start failed, probing the device directly";
+    };
   }
   // 03: Open the Driver Symlink
   auto driverFile = CreateFileW(DRIVER_SYMLINK, GENERIC_READ | GENERIC_WRITE, 0,
