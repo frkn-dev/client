@@ -151,25 +151,45 @@ void HealthCheckController::startProbe(bool force)
         }
         const QString probeHost = connectAddress.isEmpty() ? host : connectAddress;
 
-        // one probe per host:port — duplicate rows share the node; every sharing
-        // row gets the result (rows can share a host on different ports, e.g.
-        // AWG and its mobile variant, so results are applied per row, not per host)
-        const QString endpoint = QStringLiteral("%1:%2").arg(probeHost).arg(port);
-        const auto seen = m_seenTcpEndpoints.constFind(endpoint);
-        if (seen != m_seenTcpEndpoints.constEnd()) {
-            m_queue[seen.value()].rows.append(i);
-            continue;
+        // multi-IP nodes: probe every entry address (same port) — the badge
+        // should say "alive" if ANY address answers. CDN-fronted rows keep
+        // probing the CDN front only
+        QStringList probeHosts;
+        if (!httpsProbe) {
+            const QJsonArray nodeIps = serverConfig.value(QStringLiteral("node_ips")).toArray();
+            for (const QJsonValue &v : nodeIps) {
+                const QString ip = v.toString();
+                if (!ip.isEmpty()) {
+                    probeHosts.append(ip);
+                }
+            }
+            probeHosts.removeDuplicates();
         }
-        m_seenTcpEndpoints.insert(endpoint, m_queue.size());
+        if (probeHosts.isEmpty()) {
+            probeHosts.append(probeHost);
+        }
 
-        Target target;
-        target.rows.append(i);
-        target.host = probeHost;
-        target.port = port;
-        target.httpsProbe = httpsProbe;
-        target.sni = sni.isEmpty() ? probeHost : sni;
-        target.path = path.isEmpty() ? QStringLiteral("/") : path;
-        m_queue.append(target);
+        for (const QString &probeAddress : probeHosts) {
+            // one probe per host:port — duplicate rows share the node; every sharing
+            // row gets the result (rows can share a host on different ports, e.g.
+            // AWG and its mobile variant, so results are applied per row, not per host)
+            const QString endpoint = QStringLiteral("%1:%2").arg(probeAddress).arg(port);
+            const auto seen = m_seenTcpEndpoints.constFind(endpoint);
+            if (seen != m_seenTcpEndpoints.constEnd()) {
+                m_queue[seen.value()].rows.append(i);
+                continue;
+            }
+            m_seenTcpEndpoints.insert(endpoint, m_queue.size());
+
+            Target target;
+            target.rows.append(i);
+            target.host = probeAddress;
+            target.port = port;
+            target.httpsProbe = httpsProbe;
+            target.sni = sni.isEmpty() ? probeAddress : sni;
+            target.path = path.isEmpty() ? QStringLiteral("/") : path;
+            m_queue.append(target);
+        }
     }
 
 #if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
@@ -207,17 +227,6 @@ void HealthCheckController::startProbe(bool force)
             continue;
         }
 
-        // one probe per host:port — duplicate entries (same node in several
-        // server rows) racing handshakes with the same key get dropped by the
-        // server and show up as random timeouts; sharing rows get the result
-        // applied per row (rows can share a host on different ports)
-        const QString endpoint = QStringLiteral("%1:%2").arg(host).arg(port);
-        const auto seen = m_seenWgEndpoints.constFind(endpoint);
-        if (seen != m_seenWgEndpoints.constEnd()) {
-            m_wgQueue[seen.value()].rows.append(i);
-            continue;
-        }
-
         // AWG junk params (plain WG has none -> "{}"): last_config keys are
         // the short wg-quick names already (Jc, Jmin, ..., H1..H4, I1..I5)
         QJsonObject junk;
@@ -250,26 +259,57 @@ void HealthCheckController::startProbe(bool force)
             }
         }
 
-        WgTarget target;
-        target.rows.append(i);
-        target.host = host;
-        target.port = port;
-        target.clientPrivKey = lastConfig.value(QStringLiteral("client_priv_key")).toString();
-        target.serverPubKey = lastConfig.value(QStringLiteral("server_pub_key")).toString();
-        target.psk = lastConfig.value(QStringLiteral("psk_key")).toString();
-        target.junkParamsJson = QString::fromUtf8(QJsonDocument(junk).toJson(QJsonDocument::Compact));
-        if (target.clientPrivKey.isEmpty() || target.serverPubKey.isEmpty()) {
-            qWarning() << "[HEALTH] skip wg probe (no keys):" << host << "priv empty:" << target.clientPrivKey.isEmpty()
-                       << "pub empty:" << target.serverPubKey.isEmpty();
+        const QString clientPrivKey = lastConfig.value(QStringLiteral("client_priv_key")).toString();
+        const QString serverPubKey = lastConfig.value(QStringLiteral("server_pub_key")).toString();
+        if (clientPrivKey.isEmpty() || serverPubKey.isEmpty()) {
+            qWarning() << "[HEALTH] skip wg probe (no keys):" << host << "priv empty:" << clientPrivKey.isEmpty()
+                       << "pub empty:" << serverPubKey.isEmpty();
             continue;
         }
 
-        m_seenWgEndpoints.insert(endpoint, m_wgQueue.size());
-
-        if (!junk.isEmpty()) {
-            qDebug() << "[HEALTH] wg probe queued:" << host << port << "junk:" << target.junkParamsJson;
+        // multi-IP nodes: probe every entry address — same port, keys and junk
+        // per the node_ips contract; the row badge is the best result
+        QStringList probeHosts;
+        const QJsonArray nodeIps = serverConfig.value(QStringLiteral("node_ips")).toArray();
+        for (const QJsonValue &v : nodeIps) {
+            const QString ip = v.toString();
+            if (!ip.isEmpty()) {
+                probeHosts.append(ip);
+            }
         }
-        m_wgQueue.append(target);
+        probeHosts.removeDuplicates();
+        if (probeHosts.isEmpty()) {
+            probeHosts.append(host);
+        }
+
+        for (const QString &probeHost : probeHosts) {
+            // one probe per host:port — duplicate entries (same node in several
+            // server rows) racing handshakes with the same key get dropped by the
+            // server and show up as random timeouts; sharing rows get the result
+            // applied per row (rows can share a host on different ports)
+            const QString endpoint = QStringLiteral("%1:%2").arg(probeHost).arg(port);
+            const auto seen = m_seenWgEndpoints.constFind(endpoint);
+            if (seen != m_seenWgEndpoints.constEnd()) {
+                m_wgQueue[seen.value()].rows.append(i);
+                continue;
+            }
+
+            WgTarget target;
+            target.rows.append(i);
+            target.host = probeHost;
+            target.port = port;
+            target.clientPrivKey = clientPrivKey;
+            target.serverPubKey = serverPubKey;
+            target.psk = lastConfig.value(QStringLiteral("psk_key")).toString();
+            target.junkParamsJson = QString::fromUtf8(QJsonDocument(junk).toJson(QJsonDocument::Compact));
+
+            m_seenWgEndpoints.insert(endpoint, m_wgQueue.size());
+
+            if (!junk.isEmpty()) {
+                qDebug() << "[HEALTH] wg probe queued:" << probeHost << port << "junk:" << target.junkParamsJson;
+            }
+            m_wgQueue.append(target);
+        }
     }
 
     // collect hysteria2 targets: a bare QUIC version-negotiation probe is unreliable
@@ -309,21 +349,48 @@ void HealthCheckController::startProbe(bool force)
             continue;
         }
 
-        // one probe per host:port, result applied to every sharing row
-        const QString endpoint = QStringLiteral("%1:%2").arg(host).arg(port);
-        const auto seen = m_seenH2Endpoints.constFind(endpoint);
-        if (seen != m_seenH2Endpoints.constEnd()) {
-            m_h2Queue[seen.value()].rows.append(i);
-            continue;
+        // multi-IP nodes: probe every entry address — same port and auth per
+        // the node_ips contract; the row badge is the best result
+        QStringList probeHosts;
+        const QJsonArray nodeIps = serverConfig.value(QStringLiteral("node_ips")).toArray();
+        for (const QJsonValue &v : nodeIps) {
+            const QString ip = v.toString();
+            if (!ip.isEmpty()) {
+                probeHosts.append(ip);
+            }
         }
-        m_seenH2Endpoints.insert(endpoint, m_h2Queue.size());
+        probeHosts.removeDuplicates();
+        if (probeHosts.isEmpty()) {
+            probeHosts.append(host);
+        }
 
-        H2Target target;
-        target.rows.append(i);
-        target.host = host;
-        target.port = port;
-        target.outbound = outbound;
-        m_h2Queue.append(target);
+        for (const QString &probeHost : probeHosts) {
+            // one probe per host:port, result applied to every sharing row
+            const QString endpoint = QStringLiteral("%1:%2").arg(probeHost).arg(port);
+            const auto seen = m_seenH2Endpoints.constFind(endpoint);
+            if (seen != m_seenH2Endpoints.constEnd()) {
+                m_h2Queue[seen.value()].rows.append(i);
+                continue;
+            }
+            m_seenH2Endpoints.insert(endpoint, m_h2Queue.size());
+
+            H2Target target;
+            target.rows.append(i);
+            target.host = probeHost;
+            target.port = port;
+            target.outbound = outbound;
+            if (probeHost != host) {
+                // point the probe at this entry address, keeping port/auth/SNI
+                QJsonObject settings = target.outbound.value(QStringLiteral("settings")).toObject();
+                QJsonArray serversArr = settings.value(QStringLiteral("servers")).toArray();
+                QJsonObject serverEntry = serversArr.at(0).toObject();
+                serverEntry[QStringLiteral("address")] = probeHost;
+                serversArr[0] = serverEntry;
+                settings[QStringLiteral("servers")] = serversArr;
+                target.outbound[QStringLiteral("settings")] = settings;
+            }
+            m_h2Queue.append(target);
+        }
     }
 #endif
 

@@ -574,7 +574,7 @@ void ConnectionController::startAutoSelection()
 {
     cancelAutoSelection();
     m_autoPhase = AutoPhase::Probing;
-    m_connectionStateText = tr("Searching for the best server...");
+    m_connectionStateText = tr("Searching\nfor the best server...");
     emit connectionStateChanged();
 
     installMissingConfigs();

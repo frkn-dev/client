@@ -1180,6 +1180,15 @@ QStringList ServersModel::availableProtocolsForEnv(const QString &env) const
 
 void ServersModel::setHealthResult(int serverIndex, int latencyMs)
 {
+    // multi-IP rows get one result per probed address — keep the best:
+    // a live address means the server is reachable, and the lowest RTT wins
+    const auto it = m_healthResults.constFind(serverIndex);
+    if (it != m_healthResults.constEnd()) {
+        const int prev = it.value();
+        if ((prev >= 0 && (latencyMs < 0 || latencyMs >= prev)) || (prev < 0 && latencyMs < 0)) {
+            return;
+        }
+    }
     m_healthResults.insert(serverIndex, latencyMs);
     const QModelIndex modelIndex = index(serverIndex);
     emit dataChanged(modelIndex, modelIndex, { HealthLatencyRole });

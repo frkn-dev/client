@@ -233,8 +233,10 @@
     </message>
     <message>
         <location filename="../ui/controllers/connectionController.cpp" line="577"/>
-        <source>Searching for the best server...</source>
-        <translation>Поиск лучшего сервера...</translation>
+        <source>Searching
+for the best server...</source>
+        <translation>Поиск
+лучшего сервера...</translation>
     </message>
 </context>
 <context>

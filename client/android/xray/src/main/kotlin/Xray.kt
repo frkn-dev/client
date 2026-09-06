@@ -106,7 +106,8 @@ class Xray : Protocol() {
             }
 
             addRoute(InetNetwork("0.0.0.0", 0))
-            addRoute(InetNetwork("2000::0", 3))
+            // no 2000::/3: our nodes are IPv4-only — a v6 default route into
+            // the tunnel blackholes IPv6-preferred apps (YouTube on Android)
             config.getString("hostName").let {
                 excludeRoute(InetNetwork(it, 32))
             }
