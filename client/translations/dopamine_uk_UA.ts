@@ -290,83 +290,79 @@ for the best server...</source>
 <context>
     <name>HomeSplitTunnelingDrawer</name>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="34"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Split tunneling</source>
         <translation>Роздільне тунелювання</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="35"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="67"/>
         <source>Allows you to connect to some sites or applications through a VPN connection and bypass others</source>
         <translation>Дозволяє підключатись до одних сайтів та застосунків через захищене з&apos;єднання, а іншим в обхід нього</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="45"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="77"/>
         <source>Split tunneling on the server</source>
         <translation>Роздільне тунелювання на сервері</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="46"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="78"/>
         <source>Enabled 
 Can&apos;t be disabled for current server</source>
         <translation>Увімкнено.
 Не може бути вимкнено для даного сервера.</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Site-based split tunneling</source>
-        <translation>Роздільне тунелювання по сайтам</translation>
+        <translation type="vanished">Роздільне тунелювання по сайтам</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="112"/>
         <source>Service-based split tunneling</source>
-        <translation>Роздільне тунелювання за сервісами</translation>
+        <translation type="vanished">Роздільне тунелювання за сервісами</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="193"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="214"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="216"/>
         <source>via VPN</source>
         <translation>через VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="192"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="194"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="215"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="217"/>
         <source>bypass VPN</source>
         <translation>повз VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
         <source>Enabled</source>
         <translation>Увімкнено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
         <source>Disabled</source>
         <translation>Вимкнено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="134"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="157"/>
         <source>App-based split tunneling</source>
         <translation>Роздільне тунелювання застосунків</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="93"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="125"/>
         <source>Manage the site list</source>
         <translation>Налаштувати список сайтів</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="167"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
         <source>Manage the app list</source>
         <translation>Налаштувати список застосунків</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="97"/>
         <source>Site and service split tunneling</source>
         <translation>Роздільне тунелювання сайтів і сервісів</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="137"/>
         <source>Manage the service list</source>
         <translation>Налаштувати список сервісів</translation>
     </message>
@@ -5415,7 +5411,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="538"/>
+        <location filename="../vpnconnection.cpp" line="542"/>
         <source>Mbps</source>
         <translation>Mbps</translation>
     </message>

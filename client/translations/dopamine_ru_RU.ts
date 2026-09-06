@@ -294,17 +294,17 @@ for the best server...</source>
 <context>
     <name>HomeSplitTunnelingDrawer</name>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="34"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Split tunneling</source>
         <translation>Раздельное VPN-туннелирование</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="35"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="67"/>
         <source>Allows you to connect to some sites or applications through a VPN connection and bypass others</source>
         <translation>Позволяет подключаться к одним сайтам или приложениям через VPN-соединение, а к другим — в обход него</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="45"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="77"/>
         <source>Split tunneling on the server</source>
         <translation>Раздельное туннелирование на сервере</translation>
     </message>
@@ -315,68 +315,64 @@ Can&apos;t be disabled for current server</source>
 Невозможно отключить для текущего сервера</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="46"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="78"/>
         <source>Enabled 
 Can&apos;t be disabled for current server</source>
         <translation>Включено 
 Невозможно отключить для текущего сервера</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Site-based split tunneling</source>
-        <translation>Раздельное туннелирование сайтов</translation>
+        <translation type="vanished">Раздельное туннелирование сайтов</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="112"/>
         <source>Service-based split tunneling</source>
-        <translation>Раздельное туннелирование по сервисам</translation>
+        <translation type="vanished">Раздельное туннелирование по сервисам</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="193"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="214"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="216"/>
         <source>via VPN</source>
         <translation>через VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="192"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="194"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="215"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="217"/>
         <source>bypass VPN</source>
         <translation>мимо VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="134"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="157"/>
         <source>App-based split tunneling</source>
         <translation>Раздельное туннелирование приложений</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="93"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="125"/>
         <source>Manage the site list</source>
         <translation>Настроить список сайтов</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="167"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
         <source>Manage the app list</source>
         <translation>Настроить список приложений</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="97"/>
         <source>Site and service split tunneling</source>
         <translation>Раздельное туннелирование сайтов и сервисов</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="137"/>
         <source>Manage the service list</source>
         <translation>Настроить список сервисов</translation>
     </message>
@@ -5558,7 +5554,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="538"/>
+        <location filename="../vpnconnection.cpp" line="542"/>
         <source>Mbps</source>
         <translation>Мбит/с</translation>
     </message>
