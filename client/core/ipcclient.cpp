@@ -17,7 +17,16 @@ IpcClient& IpcClient::Instance()
 
 QSharedPointer<IpcInterfaceReplica> IpcClient::Interface()
 {
-    QSharedPointer<IpcInterfaceReplica> rep = Instance().m_interface;
+    IpcClient &self = Instance();
+    QSharedPointer<IpcInterfaceReplica> rep = self.m_interface;
+    // a dead replica never recovers on its own (daemon restarted: update,
+    // crash) — reconnect the node and re-acquire, otherwise every later
+    // IPC call silently no-ops
+    if (rep.isNull() || !rep->isReplicaValid()) {
+        self.m_node.connectToNode(QUrl("local:" + amnezia::getIpcServiceUrl()));
+        rep.reset(self.m_node.acquire<IpcInterfaceReplica>());
+        self.m_interface = rep;
+    }
     if (rep.isNull()) {
         qCritical() << "IpcClient::Interface(): Failed to acquire replica";
         return nullptr;
