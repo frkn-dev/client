@@ -63,6 +63,13 @@ bool Logger::init(bool isServiceLogger)
 {
     QString path = isServiceLogger ? systemLogDir() : userLogsDir();
     QString logFileName = isServiceLogger ? m_serviceLogFileName : m_logFileName;
+
+    // already logging to this very file (service now inits at startup AND
+    // again on the client's setLogsEnabled(true)) — don't reopen
+    if (m_file.isOpen() && m_file.fileName() == QDir(path).filePath(logFileName)) {
+        return true;
+    }
+
     QDir appDir(path);
     if (!appDir.mkpath(path)) {
         return false;
