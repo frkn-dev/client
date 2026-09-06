@@ -165,6 +165,7 @@ Vpn::ConnectionState iosStatusToState(NEVPNStatus status) {
 
 namespace {
 constexpr int kHandshakeTimeoutMs = 12000;
+constexpr int kStatusRequestTimeoutMs = 5000;
 constexpr uint64_t kHandshakeRxThreshold = 4096;
 bool isWireGuardBasedProto(amnezia::Proto proto) {
     return proto == amnezia::Proto::WireGuard || proto == amnezia::Proto::Awg;
@@ -472,8 +473,19 @@ void IosController::checkStatus()
     }
 
     if (m_statusRequestInFlight.exchange(true)) {
-        return;
+        // a reply to a request issued before the app was suspended may never
+        // arrive — one wedged flag used to kill the speed meter (and the WG
+        // handshake watchdog) until a reconnect. Expire stale in-flight marks.
+        if (m_statusRequestTimer.isValid() && m_statusRequestTimer.elapsed() > kStatusRequestTimeoutMs) {
+            m_statusRequestInFlight.store(false);
+            if (m_statusRequestInFlight.exchange(true)) {
+                return; // lost the race with a real reply
+            }
+        } else {
+            return;
+        }
     }
+    m_statusRequestTimer.start();
 
     NSString *actionKey = [NSString stringWithUTF8String:MessageKey::action];
     NSString *actionValue = [NSString stringWithUTF8String:Action::getStatus];

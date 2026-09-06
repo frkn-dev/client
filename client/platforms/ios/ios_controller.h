@@ -133,6 +133,7 @@ private:
     int m_handshakeRetries = 0;
     Vpn::ConnectionState m_lastEmittedState = Vpn::ConnectionState::Unknown;
     std::atomic_bool m_statusRequestInFlight { false };
+    QElapsedTimer m_statusRequestTimer;
 };
 
 #endif // IOS_CONTROLLER_H
