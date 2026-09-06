@@ -119,7 +119,9 @@ using ProcessInfo = struct {
 
 constexpr static const auto DRIVER_SYMLINK = L"\\\\.\\MULLVADSPLITTUNNEL";
 constexpr static const auto DRIVER_FILENAME = "mullvad-split-tunnel.sys";
-constexpr static const auto DRIVER_SERVICE_NAME = L"AmneziaVPNSplitTunnel";
+constexpr static const auto DRIVER_SERVICE_NAME = L"DopamineSplitTunnel";
+// pre-rebrand registration — clean it up on sight
+constexpr static const auto LEGACY_DRIVER_SERVICE_NAME = L"AmneziaVPNSplitTunnel";
 constexpr static const auto MV_SERVICE_NAME = L"MullvadVPN";
 
 #pragma endregion
@@ -160,6 +162,9 @@ std::unique_ptr<WindowsSplitTunnel> WindowsSplitTunnel::create(
                    << "The Driver cannot work with the sublayer not created";
     return nullptr;
   }
+  // rebrand: drop the stale AmneziaVPNSplitTunnel registration before the
+  // conflict check below mistakes our own driver for a foreign one
+  removeLegacyDriverService();
   // 00: Check if we conflict with mullvad, if so.
   if (detectConflict()) {
     logger.error() << "Conflict detected, abort Split-Tunnel init.";
@@ -191,12 +196,19 @@ std::unique_ptr<WindowsSplitTunnel> WindowsSplitTunnel::create(
     return nullptr;
   }
   if (!driver_manager->isRunning()) {
-    logger.debug() << "Driver is not running, starting it";
-    // Start the service
-    if (!driver_manager->startService()) {
-      logger.error() << "Failed to start Split Tunnel Service";
-      return nullptr;
-    };
+    // the driver image may already be loaded via the legacy service record —
+    // starting our fresh service record then fails with ALREADY_RUNNING;
+    // the symlink is what matters, so only start when the driver is absent
+    if (QFileInfo(QString::fromWCharArray(DRIVER_SYMLINK)).exists()) {
+      logger.debug() << "Driver already loaded, skipping service start";
+    } else {
+      logger.debug() << "Driver is not running, starting it";
+      // Start the service
+      if (!driver_manager->startService()) {
+        logger.error() << "Failed to start Split Tunnel Service";
+        return nullptr;
+      };
+    }
   }
   // 03: Open the Driver Symlink
   auto driverFile = CreateFileW(DRIVER_SYMLINK, GENERIC_READ | GENERIC_WRITE, 0,
@@ -584,7 +596,7 @@ std::vector<uint8_t> WindowsSplitTunnel::generateProcessBlob() {
 
 // static
 SC_HANDLE WindowsSplitTunnel::installDriver() {
-  LPCWSTR displayName = L"Amnezia Split Tunnel Service";
+  LPCWSTR displayName = L"Dopamine Split Tunnel Service";
   QFileInfo driver(qApp->applicationDirPath() + "/" + DRIVER_FILENAME);
   if (!driver.exists()) {
     logger.error() << "Split Tunnel Driver File not found "
@@ -606,6 +618,7 @@ SC_HANDLE WindowsSplitTunnel::installDriver() {
 }
 // static
 bool WindowsSplitTunnel::uninstallDriver() {
+  removeLegacyDriverService();
   auto scm_rights = SC_MANAGER_ALL_ACCESS;
   auto serviceManager = OpenSCManager(NULL,  // local computer
                                       NULL,  // servicesActive database
@@ -637,6 +650,23 @@ bool WindowsSplitTunnel::isInstalled() {
   CloseServiceHandle(serviceManager);
   CloseServiceHandle(servicehandle);
   return err != ERROR_SERVICE_DOES_NOT_EXIST;
+}
+
+// static
+void WindowsSplitTunnel::removeLegacyDriverService() {
+  auto serviceManager = OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
+  if (serviceManager == nullptr) {
+    return;
+  }
+  auto service = OpenService(serviceManager, LEGACY_DRIVER_SERVICE_NAME, DELETE);
+  if (service != nullptr) {
+    // marked for deletion; the loaded driver keeps running until reboot
+    if (DeleteService(service)) {
+      logger.info() << "Legacy AmneziaVPNSplitTunnel service removed";
+    }
+    CloseServiceHandle(service);
+  }
+  CloseServiceHandle(serviceManager);
 }
 
 QString WindowsSplitTunnel::convertPath(const QString& path) {
@@ -689,13 +719,17 @@ bool WindowsSplitTunnel::detectConflict() {
     logger.info() << "No Split-Tunnel Conflict detected, continue.";
     return false;
   }
-  // The driver exists, so let's check if it has been created by us.
-  // If our service is not present, it's has been created by
-  // someone else so we should not use that :)
-  servicehandle =
-      OpenService(serviceManager, DRIVER_SERVICE_NAME, GENERIC_READ);
+  // The driver exists, so let's check if it has been created by us (current
+  // or pre-rebrand registration). If our service is not present, it has been
+  // created by someone else so we should not use that :)
+  servicehandle = OpenService(serviceManager, DRIVER_SERVICE_NAME, GENERIC_READ);
   err = GetLastError();
   CloseServiceHandle(servicehandle);
+  if (err == ERROR_SERVICE_DOES_NOT_EXIST) {
+    servicehandle = OpenService(serviceManager, LEGACY_DRIVER_SERVICE_NAME, GENERIC_READ);
+    err = GetLastError();
+    CloseServiceHandle(servicehandle);
+  }
   return err == ERROR_SERVICE_DOES_NOT_EXIST;
 }
 

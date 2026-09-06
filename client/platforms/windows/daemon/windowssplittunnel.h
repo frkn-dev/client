@@ -73,6 +73,8 @@ class WindowsSplitTunnel final {
   // Installes the Kernel Driver as Driver Service
   static SC_HANDLE installDriver();
   static bool uninstallDriver();
+  // drops the pre-rebrand "AmneziaVPNSplitTunnel" service registration
+  static void removeLegacyDriverService();
   static bool isInstalled();
   static bool initDriver(HANDLE driverIO);
   static DRIVER_STATE getState(HANDLE driverIO);
