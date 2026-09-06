@@ -35,43 +35,6 @@ DrawerType2 {
             descriptionText:  qsTr("Allows you to connect to some sites or applications through a VPN connection and bypass others")
         }
 
-        SwitcherType {
-            Layout.fillWidth: true
-            Layout.leftMargin: 16
-            Layout.rightMargin: 16
-
-            text: qsTr("Split tunneling")
-            checked: SitesModel.isTunnelingEnabled
-
-            onToggled: function() {
-                SitesModel.toggleSplitTunneling(checked)
-            }
-        }
-
-        FilterDropDown {
-            Layout.fillWidth: true
-            Layout.topMargin: 4
-            Layout.leftMargin: 16
-            Layout.rightMargin: 16
-            Layout.bottomMargin: 8
-
-            filterModel: routeModeModel
-            currentValue: SitesModel.routeMode === 2 ? "bypass" : "via"
-
-            onSelected: function(value) {
-                SitesModel.routeMode = value === "bypass" ? 2 : 1
-            }
-        }
-
-        ListModel {
-            id: routeModeModel
-        }
-
-        Component.onCompleted: {
-            routeModeModel.append({ "name": qsTr("via VPN"), "value": "via" })
-            routeModeModel.append({ "name": qsTr("bypass VPN"), "value": "bypass" })
-        }
-
         LabelWithButtonType {
             id: splitTunnelingSwitch
             Layout.fillWidth: true
@@ -93,13 +56,42 @@ DrawerType2 {
             visible: ServersModel.isDefaultServerDefaultContainerHasSplitTunneling
         }
 
-        LabelWithButtonType {
-            id: siteBasedSplitTunnelingSwitch
+        // --- sites: own switch + own direction ---
+
+        SwitcherType {
             Layout.fillWidth: true
-            Layout.topMargin: 16
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
 
             text: qsTr("Site-based split tunneling")
-            descriptionText: enabled && SitesModel.isTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
+            checked: SitesModel.isTunnelingEnabled
+
+            onToggled: function() {
+                SitesModel.toggleSplitTunneling(checked)
+            }
+        }
+
+        FilterDropDown {
+            Layout.fillWidth: true
+            Layout.topMargin: 4
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
+
+            visible: SitesModel.isTunnelingEnabled
+
+            filterModel: sitesRouteModeModel
+            currentValue: SitesModel.routeMode === 2 ? "bypass" : "via"
+
+            onSelected: function(value) {
+                SitesModel.routeMode = value === "bypass" ? 2 : 1
+            }
+        }
+
+        LabelWithButtonType {
+            Layout.fillWidth: true
+
+            text: qsTr("Manage the site list")
+            descriptionText: SitesModel.isTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
             clickedFunction: function() {
@@ -110,6 +102,8 @@ DrawerType2 {
 
         DividerType {
         }
+
+        // --- service presets (direction is defined by the sites mode) ---
 
         LabelWithButtonType {
             id: serviceBasedSplitTunnelingSwitch
@@ -128,13 +122,49 @@ DrawerType2 {
         DividerType {
         }
 
+        // --- apps: own switch + own direction ---
+
+        SwitcherType {
+            Layout.fillWidth: true
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
+
+            visible: isAppSplitTinnelingEnabled
+
+            text: qsTr("App-based split tunneling")
+            checked: AppSplitTunnelingModel.isTunnelingEnabled
+
+            onToggled: function() {
+                AppSplitTunnelingModel.toggleSplitTunneling(checked)
+            }
+        }
+
+        FilterDropDown {
+            Layout.fillWidth: true
+            Layout.topMargin: 4
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
+
+            // Windows supports app exclusions only (WFP driver); both
+            // directions work on Android
+            visible: isAppSplitTinnelingEnabled && AppSplitTunnelingModel.isTunnelingEnabled
+                     && Qt.platform.os === "android"
+
+            filterModel: appsRouteModeModel
+            currentValue: AppSplitTunnelingModel.routeMode === 2 ? "bypass" : "via"
+
+            onSelected: function(value) {
+                AppSplitTunnelingModel.routeMode = value === "bypass" ? 2 : 1
+            }
+        }
+
         LabelWithButtonType {
             id: appSplitTunnelingSwitch
             visible: isAppSplitTinnelingEnabled
 
             Layout.fillWidth: true
 
-            text: qsTr("App-based split tunneling")
+            text: qsTr("Manage the app list")
             descriptionText: AppSplitTunnelingModel.isTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
@@ -147,5 +177,20 @@ DrawerType2 {
         DividerType {
             visible: isAppSplitTinnelingEnabled
         }
+    }
+
+    ListModel {
+        id: sitesRouteModeModel
+    }
+
+    ListModel {
+        id: appsRouteModeModel
+    }
+
+    Component.onCompleted: {
+        sitesRouteModeModel.append({ "name": qsTr("via VPN"), "value": "via" })
+        sitesRouteModeModel.append({ "name": qsTr("bypass VPN"), "value": "bypass" })
+        appsRouteModeModel.append({ "name": qsTr("via VPN"), "value": "via" })
+        appsRouteModeModel.append({ "name": qsTr("bypass VPN"), "value": "bypass" })
     }
 }

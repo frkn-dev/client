@@ -361,6 +361,14 @@ Can&apos;t be disabled for current server</source>
         <source>App-based split tunneling</source>
         <translation>Раздельное туннелирование приложений</translation>
     </message>
+    <message>
+        <source>Manage the site list</source>
+        <translation>Настроить список сайтов</translation>
+    </message>
+    <message>
+        <source>Manage the app list</source>
+        <translation>Настроить список приложений</translation>
+    </message>
 </context>
 <context>
     <name>ImportController</name>
@@ -5535,7 +5543,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="520"/>
+        <location filename="../vpnconnection.cpp" line="538"/>
         <source>Mbps</source>
         <translation>Мбит/с</translation>
     </message>

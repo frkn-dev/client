@@ -334,6 +334,14 @@ Can&apos;t be disabled for current server</translation>
         <source>App-based split tunneling</source>
         <translation>App-based split tunneling</translation>
     </message>
+    <message>
+        <source>Manage the site list</source>
+        <translation>Manage the site list</translation>
+    </message>
+    <message>
+        <source>Manage the app list</source>
+        <translation>Manage the app list</translation>
+    </message>
 </context>
 <context>
     <name>ImportController</name>
@@ -5262,7 +5270,7 @@ For more detailed information, you can
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="520"/>
+        <location filename="../vpnconnection.cpp" line="538"/>
         <source>Mbps</source>
         <translation>Mbps</translation>
     </message>
