@@ -237,7 +237,17 @@ void LocalSocketController::activate(const QJsonObject &rawConfig) {
 
   json.insert("excludedAddresses", jsExcludedAddresses);
 
-  json.insert("vpnDisabledApps", splitTunnelApps);
+  // Desktop daemons (Windows WFP split-tunnel driver) support app EXCLUSIONS
+  // only: "apps from the list bypass the VPN" (Settings::VpnAllExceptApps).
+  // The include mode ("only listed apps via VPN") is Android-only; if it ever
+  // leaks through here (restored backup, stale settings) the list semantics
+  // would silently invert — drop it instead.
+  if (appSplitTunnelType == 2 /* Settings::VpnAllExceptApps */) {
+    json.insert("vpnDisabledApps", splitTunnelApps);
+  } else if (!splitTunnelApps.isEmpty()) {
+    logger.warning() << "App split tunneling route mode" << appSplitTunnelType
+                     << "is not supported on desktop, ignoring the app list";
+  }
 
   json.insert("allowedDnsServers", allowedDns);
 
