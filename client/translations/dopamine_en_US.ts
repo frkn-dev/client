@@ -274,7 +274,6 @@ for the best server...</translation>
     <name>HomeSplitTunnelingDrawer</name>
     <message>
         <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="34"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="43"/>
         <source>Split tunneling</source>
         <translation>Split tunneling</translation>
     </message>
@@ -284,61 +283,65 @@ for the best server...</translation>
         <translation>Allows you to connect to some sites or applications through a VPN connection and bypass others</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="82"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="45"/>
         <source>Split tunneling on the server</source>
         <translation>Split tunneling on the server</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="83"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="46"/>
         <source>Enabled 
 Can&apos;t be disabled for current server</source>
         <translation>Enabled 
 Can&apos;t be disabled for current server</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="101"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Site-based split tunneling</source>
         <translation>Site-based split tunneling</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="118"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="112"/>
         <source>Service-based split tunneling</source>
         <translation>Service-based split tunneling</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="71"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="193"/>
         <source>via VPN</source>
         <translation>via VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="72"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="192"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="194"/>
         <source>bypass VPN</source>
         <translation>bypass VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Enabled</source>
         <translation>Enabled</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Disabled</source>
         <translation>Disabled</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="137"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="134"/>
         <source>App-based split tunneling</source>
         <translation>App-based split tunneling</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="93"/>
         <source>Manage the site list</source>
         <translation>Manage the site list</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="167"/>
         <source>Manage the app list</source>
         <translation>Manage the app list</translation>
     </message>
@@ -2060,14 +2063,18 @@ Already installed containers were found on the server. All installed containers 
         <translation>application name</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
         <source>Open executable file</source>
-        <translation>Open executable file</translation>
+        <translation type="vanished">Open executable file</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
+        <source>Select the application&apos;s .exe file</source>
+        <translation>Select the application&apos;s .exe file</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="257"/>
-        <source>Executable files (*.*)</source>
-        <translation>Executable files (*.*)</translation>
+        <source>Programs (*.exe)</source>
+        <translation>Programs (*.exe)</translation>
     </message>
 </context>
 <context>

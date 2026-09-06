@@ -291,7 +291,6 @@ for the best server...</source>
     <name>HomeSplitTunnelingDrawer</name>
     <message>
         <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="34"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="43"/>
         <source>Split tunneling</source>
         <translation>Роздільне тунелювання</translation>
     </message>
@@ -301,61 +300,65 @@ for the best server...</source>
         <translation>Дозволяє підключатись до одних сайтів та застосунків через захищене з&apos;єднання, а іншим в обхід нього</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="82"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="45"/>
         <source>Split tunneling on the server</source>
         <translation>Роздільне тунелювання на сервері</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="83"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="46"/>
         <source>Enabled 
 Can&apos;t be disabled for current server</source>
         <translation>Увімкнено.
 Не може бути вимкнено для даного сервера.</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="101"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Site-based split tunneling</source>
         <translation>Роздільне тунелювання по сайтам</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="118"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="112"/>
         <source>Service-based split tunneling</source>
         <translation>Роздільне тунелювання за сервісами</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="71"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="193"/>
         <source>via VPN</source>
         <translation>через VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="72"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="192"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="194"/>
         <source>bypass VPN</source>
         <translation>повз VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Enabled</source>
         <translation>Увімкнено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Disabled</source>
         <translation>Вимкнено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="137"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="134"/>
         <source>App-based split tunneling</source>
         <translation>Роздільне тунелювання застосунків</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="93"/>
         <source>Manage the site list</source>
         <translation>Налаштувати список сайтів</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="167"/>
         <source>Manage the app list</source>
         <translation>Налаштувати список застосунків</translation>
     </message>
@@ -2123,14 +2126,18 @@ Already installed containers were found on the server. All installed containers 
         <translation>назва застосунку</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
         <source>Open executable file</source>
-        <translation>Відкрити виконуваний файл</translation>
+        <translation type="vanished">Відкрити виконуваний файл</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
+        <source>Select the application&apos;s .exe file</source>
+        <translation>Виберіть .exe-файл застосунку</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="257"/>
-        <source>Executable files (*.*)</source>
-        <translation>Виконувані файли (*.*)</translation>
+        <source>Programs (*.exe)</source>
+        <translation>Програми (*.exe)</translation>
     </message>
 </context>
 <context>

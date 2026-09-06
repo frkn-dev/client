@@ -295,7 +295,6 @@ for the best server...</source>
     <name>HomeSplitTunnelingDrawer</name>
     <message>
         <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="34"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="43"/>
         <source>Split tunneling</source>
         <translation>Раздельное VPN-туннелирование</translation>
     </message>
@@ -305,7 +304,7 @@ for the best server...</source>
         <translation>Позволяет подключаться к одним сайтам или приложениям через VPN-соединение, а к другим — в обход него</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="82"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="45"/>
         <source>Split tunneling on the server</source>
         <translation>Раздельное туннелирование на сервере</translation>
     </message>
@@ -316,56 +315,60 @@ Can&apos;t be disabled for current server</source>
 Невозможно отключить для текущего сервера</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="83"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="46"/>
         <source>Enabled 
 Can&apos;t be disabled for current server</source>
         <translation>Включено 
 Невозможно отключить для текущего сервера</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="101"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="66"/>
         <source>Site-based split tunneling</source>
         <translation>Раздельное туннелирование сайтов</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="118"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="112"/>
         <source>Service-based split tunneling</source>
         <translation>Раздельное туннелирование по сервисам</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="71"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="191"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="193"/>
         <source>via VPN</source>
         <translation>через VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="72"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="192"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="194"/>
         <source>bypass VPN</source>
         <translation>мимо VPN</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="102"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="119"/>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="138"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="94"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="113"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="168"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="137"/>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="134"/>
         <source>App-based split tunneling</source>
         <translation>Раздельное туннелирование приложений</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="93"/>
         <source>Manage the site list</source>
         <translation>Настроить список сайтов</translation>
     </message>
     <message>
+        <location filename="../ui/qml/Components/HomeSplitTunnelingDrawer.qml" line="167"/>
         <source>Manage the app list</source>
         <translation>Настроить список приложений</translation>
     </message>
@@ -2190,14 +2193,18 @@ Already installed containers were found on the server. All installed containers 
         <translation>название приложения</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
         <source>Open executable file</source>
-        <translation>Открыть исполняемый файл</translation>
+        <translation type="vanished">Открыть исполняемый файл</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="256"/>
+        <source>Select the application&apos;s .exe file</source>
+        <translation>Выберите .exe-файл приложения</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAppSplitTunneling.qml" line="257"/>
-        <source>Executable files (*.*)</source>
-        <translation>Исполняемые файлы (*.*)</translation>
+        <source>Programs (*.exe)</source>
+        <translation>Программы (*.exe)</translation>
     </message>
 </context>
 <context>

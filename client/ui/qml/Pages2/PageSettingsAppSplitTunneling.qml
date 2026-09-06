@@ -253,8 +253,8 @@ PageType {
                     PageController.showBusyIndicator(true)
 
                     if (Qt.platform.os === "windows") {
-                        var fileName = SystemController.getFileName(qsTr("Open executable file"),
-                                                                    qsTr("Executable files (*.*)"))
+                        var fileName = SystemController.getFileName(qsTr("Select the application's .exe file"),
+                                                                    qsTr("Programs (*.exe)"))
                         if (fileName !== "") {
                             AppSplitTunnelingController.addApp(fileName)
                         }
