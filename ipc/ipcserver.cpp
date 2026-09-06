@@ -111,11 +111,9 @@ bool IpcServer::checkAndInstallDriver()
     qDebug() << "IpcServer::checkAndInstallDriver";
 #endif
 
-#ifdef Q_OS_WIN
-    return TapController::checkAndSetup();
-#else
+    // TAP was only needed by OpenVPN (removed); no client callers remain —
+    // the IPC slots stay for interface compatibility
     return true;
-#endif
 }
 
 QStringList IpcServer::getTapList()
@@ -124,11 +122,7 @@ QStringList IpcServer::getTapList()
     qDebug() << "IpcServer::getTapList";
 #endif
 
-#ifdef Q_OS_WIN
-    return TapController::getTapList();
-#else
     return QStringList();
-#endif
 }
 
 void IpcServer::cleanUp()
