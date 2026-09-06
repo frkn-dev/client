@@ -18,10 +18,6 @@
 #include "killswitch.h"
 #include "xray.h"
 
-#ifdef Q_OS_WIN
-    #include "tapcontroller_win.h"
-#endif
-
 
 IpcServer::IpcServer(QObject *parent) : IpcInterfaceSource(parent)
 {
