@@ -345,6 +345,14 @@ Can&apos;t be disabled for current server</translation>
         <source>Manage the app list</source>
         <translation>Manage the app list</translation>
     </message>
+    <message>
+        <source>Site and service split tunneling</source>
+        <translation>Site and service split tunneling</translation>
+    </message>
+    <message>
+        <source>Manage the service list</source>
+        <translation>Manage the service list</translation>
+    </message>
 </context>
 <context>
     <name>ImportController</name>

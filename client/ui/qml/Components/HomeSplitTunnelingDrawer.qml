@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import PageEnum 1.0
+import Style 1.0
 
 import "../Controls2"
 import "../Controls2/TextTypes"
@@ -15,6 +16,37 @@ DrawerType2 {
 
     anchors.fill: parent
     expandedHeight: parent.height * 0.9
+
+    // toggle rows get a soft brand tint when enabled
+    component ToggleCard: Rectangle {
+        property alias checked: toggle.checked
+        property alias text: toggle.text
+        signal toggled(bool checked)
+
+        Layout.fillWidth: true
+        Layout.leftMargin: 8
+        Layout.rightMargin: 8
+
+        radius: 8
+        color: toggle.checked ? DopamineStyle.color.translucentRichBrown : DopamineStyle.color.transparent
+        implicitHeight: toggle.implicitHeight + 8
+
+        Behavior on color { ColorAnimation { duration: 150 } }
+
+        SwitcherType {
+            id: toggle
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 8
+            anchors.rightMargin: 8
+
+            onToggled: function() {
+                parent.toggled(checked)
+            }
+        }
+    }
 
     expandedStateContent: ColumnLayout {
         id: content
@@ -56,17 +88,16 @@ DrawerType2 {
             visible: ServersModel.isDefaultServerDefaultContainerHasSplitTunneling
         }
 
-        // --- sites: own switch + own direction ---
+        // --- sites & services: one switch, one direction (presets are
+        // exceptions to the sites mode), separate lists ---
 
-        SwitcherType {
-            Layout.fillWidth: true
-            Layout.leftMargin: 16
-            Layout.rightMargin: 16
+        ToggleCard {
+            id: sitesToggle
 
-            text: qsTr("Site-based split tunneling")
+            text: qsTr("Site and service split tunneling")
             checked: SitesModel.isTunnelingEnabled
 
-            onToggled: function() {
+            onToggled: function(checked) {
                 SitesModel.toggleSplitTunneling(checked)
             }
         }
@@ -89,9 +120,9 @@ DrawerType2 {
 
         LabelWithButtonType {
             Layout.fillWidth: true
+            Layout.topMargin: 4
 
             text: qsTr("Manage the site list")
-            descriptionText: SitesModel.isTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
             clickedFunction: function() {
@@ -100,16 +131,10 @@ DrawerType2 {
             }
         }
 
-        DividerType {
-        }
-
-        // --- service presets (direction is defined by the sites mode) ---
-
         LabelWithButtonType {
-            id: serviceBasedSplitTunnelingSwitch
             Layout.fillWidth: true
 
-            text: qsTr("Service-based split tunneling")
+            text: qsTr("Manage the service list")
             descriptionText: SplitPresetsModel.enabledCount > 0 ? qsTr("Enabled") : qsTr("Disabled")
             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
@@ -124,17 +149,15 @@ DrawerType2 {
 
         // --- apps: own switch + own direction ---
 
-        SwitcherType {
-            Layout.fillWidth: true
-            Layout.leftMargin: 16
-            Layout.rightMargin: 16
+        ToggleCard {
+            id: appsToggle
 
             visible: isAppSplitTinnelingEnabled
 
             text: qsTr("App-based split tunneling")
             checked: AppSplitTunnelingModel.isTunnelingEnabled
 
-            onToggled: function() {
+            onToggled: function(checked) {
                 AppSplitTunnelingModel.toggleSplitTunneling(checked)
             }
         }
@@ -163,9 +186,9 @@ DrawerType2 {
             visible: isAppSplitTinnelingEnabled
 
             Layout.fillWidth: true
+            Layout.topMargin: 4
 
             text: qsTr("Manage the app list")
-            descriptionText: AppSplitTunnelingModel.isTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
             clickedFunction: function() {

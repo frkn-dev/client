@@ -362,6 +362,14 @@ Can&apos;t be disabled for current server</source>
         <source>Manage the app list</source>
         <translation>Налаштувати список застосунків</translation>
     </message>
+    <message>
+        <source>Site and service split tunneling</source>
+        <translation>Роздільне тунелювання сайтів і сервісів</translation>
+    </message>
+    <message>
+        <source>Manage the service list</source>
+        <translation>Налаштувати список сервісів</translation>
+    </message>
 </context>
 <context>
     <name>ImportController</name>

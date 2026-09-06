@@ -372,6 +372,14 @@ Can&apos;t be disabled for current server</source>
         <source>Manage the app list</source>
         <translation>Настроить список приложений</translation>
     </message>
+    <message>
+        <source>Site and service split tunneling</source>
+        <translation>Раздельное туннелирование сайтов и сервисов</translation>
+    </message>
+    <message>
+        <source>Manage the service list</source>
+        <translation>Настроить список сервисов</translation>
+    </message>
 </context>
 <context>
     <name>ImportController</name>
