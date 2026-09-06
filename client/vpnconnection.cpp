@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QEventLoop>
 #include <QFile>
+#include <QGuiApplication>
 #include <QHostInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -42,6 +43,23 @@ VpnConnection::VpnConnection(std::shared_ptr<Settings> settings, QObject *parent
     m_checkTimer.setInterval(1000);
     connect(IosController::Instance(), &IosController::connectionStateChanged, this, &VpnConnection::setConnectionState);
     connect(IosController::Instance(), &IosController::bytesChanged, this, &VpnConnection::onBytesChanged);
+
+    // iOS freezes timers while the app is suspended; if a transient state change
+    // stopped the 1s NE status poll while backgrounded, it never restarts on its
+    // own and the speed meter dies (arrows, no numbers) until a reconnect.
+    // Self-heal on return to foreground.
+    connect(qApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
+        if (state == Qt::ApplicationActive
+            && (m_connectionState == Vpn::ConnectionState::Connected
+                || m_connectionState == Vpn::ConnectionState::Reconnecting)) {
+            if (!m_checkTimer.isActive()) {
+                m_checkTimer.start();
+            }
+            // checkStatus lives on the IosController's (main) thread
+            QMetaObject::invokeMethod(IosController::Instance(), []() { IosController::Instance()->checkStatus(); },
+                                      Qt::QueuedConnection);
+        }
+    });
 #endif
 }
 
