@@ -155,6 +155,17 @@ QJsonObject VpnConfigurationsController::createVpnConfiguration(const QPair<QStr
                         break;
                     }
                 }
+                // IPv4-only tunnel: without an IPv6 interface address the v6
+                // allowed IPs (::/0 in the API INI) only make Android route
+                // 2000::/3 into the tunnel and blackhole IPv6-preferred apps
+                // (YouTube) — drop them
+                if (!vpnConfigData[config_key::client_ip].toString().contains(':')) {
+                    for (int i = allowedIps.size() - 1; i >= 0; --i) {
+                        if (allowedIps.at(i).toString().contains(':')) {
+                            allowedIps.removeAt(i);
+                        }
+                    }
+                }
                 if (allowedIps.isEmpty()) {
                     allowedIps = QJsonArray { "0.0.0.0/0" };
                 }

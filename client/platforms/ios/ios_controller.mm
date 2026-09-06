@@ -832,7 +832,9 @@ bool IosController::setupWireGuard()
     if (config.contains(config_key::allowed_ips) && config[config_key::allowed_ips].isArray()) {
         wgConfig.insert(config_key::allowed_ips, config[config_key::allowed_ips]);
     } else {
-        QJsonArray allowed_ips { "0.0.0.0/0", "::/0" };
+        // IPv4-only full tunnel — our nodes provide no IPv6 (see
+        // VpnConfigurationsController::createVpnConfiguration)
+        QJsonArray allowed_ips { "0.0.0.0/0" };
         wgConfig.insert(config_key::allowed_ips, allowed_ips);
     }
 
@@ -1091,20 +1093,34 @@ bool IosController::setupAwg()
     }
     wgConfig.insert(config_key::splitTunnelExcludeSites, splitTunnelExcludeSites);
 
+    // IPv4-only tunnel: without an IPv6 interface address, v6 allowed IPs
+    // (::/0 in the API INI) only blackhole IPv6-preferred apps — drop them
+    // (same rule as VpnConfigurationsController::createVpnConfiguration)
+    const bool wgHasIpv6Address = config[config_key::client_ip].toString().contains(':');
+    auto filterIpv6AllowedIps = [wgHasIpv6Address](QJsonArray ips) {
+        if (!wgHasIpv6Address) {
+            for (int i = ips.size() - 1; i >= 0; --i) {
+                if (ips.at(i).toString().contains(':')) {
+                    ips.removeAt(i);
+                }
+            }
+        }
+        if (ips.isEmpty()) {
+            ips = QJsonArray { "0.0.0.0/0" };
+        }
+        return ips;
+    };
+
     if (config.contains(config_key::allowed_ips) && config[config_key::allowed_ips].isArray()) {
-        wgConfig.insert(config_key::allowed_ips, config[config_key::allowed_ips]);
+        wgConfig.insert(config_key::allowed_ips, filterIpv6AllowedIps(config[config_key::allowed_ips].toArray()));
     } else if (iniValues.contains("AllowedIPs")) {
         QJsonArray allowed_ips;
         for (const QString &ip : iniValues.value("AllowedIPs").split(',', Qt::SkipEmptyParts)) {
             allowed_ips.append(ip.trimmed());
         }
-        if (allowed_ips.isEmpty()) {
-            allowed_ips = QJsonArray { "0.0.0.0/0", "::/0" };
-        }
-        wgConfig.insert(config_key::allowed_ips, allowed_ips);
+        wgConfig.insert(config_key::allowed_ips, filterIpv6AllowedIps(allowed_ips));
     } else {
-        QJsonArray allowed_ips { "0.0.0.0/0", "::/0" };
-        wgConfig.insert(config_key::allowed_ips, allowed_ips);
+        wgConfig.insert(config_key::allowed_ips, QJsonArray { "0.0.0.0/0" });
     }
 
     if (config.contains(config_key::persistent_keep_alive)) {

@@ -343,7 +343,9 @@ void VpnConnection::appendSplitTunnelingConfig()
         }
 
         QJsonArray allowedIpsJsonArray = configData.value(config_key::allowed_ips).toArray();
-        if (allowedIpsJsonArray.contains("0.0.0.0/0") && allowedIpsJsonArray.contains("::/0")) {
+        // full tunnel = covers all IPv4; IPv6 (::/0) is not required — our API
+        // configs are IPv4-only by design (see VpnConfigurationsController)
+        if (allowedIpsJsonArray.contains("0.0.0.0/0")) {
             allowSiteBasedSplitTunneling = true;
         }
     }

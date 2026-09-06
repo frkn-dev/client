@@ -76,31 +76,31 @@
 <context>
     <name>ApiConfigsController</name>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1015"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1252"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1277"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1484"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1581"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1018"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1255"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1280"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1487"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1584"/>
         <source>%1 installed successfully.</source>
         <translation>%1 установлено успешно.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1141"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1144"/>
         <source>Subscription restored successfully.</source>
         <translation>Подписка успешно восстановлена.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1457"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1460"/>
         <source>API config reloaded</source>
         <translation>Конфигурация API перезагружена</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1461"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1464"/>
         <source>Successfully changed the country of connection to %1</source>
         <translation>Страна подключения изменена на %1</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1559"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1562"/>
         <source>Shared connection</source>
         <translation>Общее подключение</translation>
     </message>
@@ -1355,17 +1355,17 @@ Already installed containers were found on the server. All installed containers 
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="110"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="121"/>
         <source>Connections</source>
         <translation>Подключения</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="121"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="132"/>
         <source>Connection</source>
         <translation>Соединение</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="132"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="143"/>
         <source>Application</source>
         <translation>Приложение</translation>
     </message>
@@ -1378,12 +1378,12 @@ Already installed containers were found on the server. All installed containers 
         <translation type="vanished">Резервное копирование</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="143"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="154"/>
         <source>About FRKN Dopamine</source>
         <translation>О FRKN Dopamine</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="154"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="165"/>
         <source>Dev console</source>
         <translation>Консоль разработчика</translation>
     </message>
@@ -5533,7 +5533,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="518"/>
+        <location filename="../vpnconnection.cpp" line="520"/>
         <source>Mbps</source>
         <translation>Мбит/с</translation>
     </message>

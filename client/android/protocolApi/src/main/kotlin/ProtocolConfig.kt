@@ -127,9 +127,15 @@ open class ProtocolConfig protected constructor(
                     addRoutes(includedAddresses)
                 }
             } else if (excludedAddresses.isNotEmpty()) {
+                // prepend the v6 default route only when the config tunnels IPv6
+                // at all — on a v4-only tunnel 2000::/3 blackholes
+                // IPv6-preferred apps (YouTube)
+                val hasIpv6Routes = routes.any { it.include && !it.inetNetwork.isIpv4 }
                 prependRoutes {
                     addRoute(InetNetwork("0.0.0.0", 0))
-                    addRoute(InetNetwork("2000::", 3))
+                    if (hasIpv6Routes) {
+                        addRoute(InetNetwork("2000::", 3))
+                    }
                     excludeRoutes(excludedAddresses)
                 }
             }

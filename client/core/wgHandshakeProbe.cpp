@@ -343,6 +343,20 @@ QByteArray buildJunkPacketFromSpec(const QString &spec)
                 hex.remove(0, 2);
             }
             packet += QByteArray::fromHex(hex.toLatin1());
+        } else if (tag == QLatin1String("rc") || tag == QLatin1String("rd")) {
+            // AWG 3.1: <rc N> = N random ASCII letters, <rd N> = N random digits
+            const int n = val.toInt();
+            if (n > 0 && n <= 1400) {
+                const bool letters = (tag == QLatin1String("rc"));
+                const char *alphabet = letters ? "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" : "0123456789";
+                const int alphabetLen = letters ? 52 : 10;
+                const int oldSize = packet.size();
+                packet.resize(oldSize + n);
+                randomBytes(reinterpret_cast<uint8_t *>(packet.data() + oldSize), n);
+                for (int i = 0; i < n; ++i) {
+                    packet[oldSize + i] = alphabet[static_cast<uint8_t>(packet[oldSize + i]) % alphabetLen];
+                }
+            }
         } else if (tag == QLatin1String("t")) {
             uint8_t ts[4];
             putBe32(ts, static_cast<quint32>(QDateTime::currentSecsSinceEpoch()));

@@ -25,9 +25,11 @@ extension PacketTunnelProvider {
 
             let tunnelConfiguration = try TunnelConfiguration(fromWgQuickConfig: wgConfigStr)
 
+            // full tunnel = covers all IPv4; IPv6 (::/0) is not required — our
+            // API configs are IPv4-only by design
             if tunnelConfiguration.peers.first!.allowedIPs
                 .map({ $0.stringRepresentation })
-                .joined(separator: ", ") == "0.0.0.0/0, ::/0" {
+                .contains("0.0.0.0/0") {
                 if let includeSites = wgConfig.splitTunnelIncludeSites,
                    let excludeSites = wgConfig.splitTunnelExcludeSites {
                     // 2x2 mode: include (via VPN) + exclude (bypass) sets at once.
