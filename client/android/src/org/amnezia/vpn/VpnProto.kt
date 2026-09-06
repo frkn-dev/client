@@ -2,8 +2,6 @@ package org.amnezia.vpn
 
 import org.amnezia.vpn.protocol.Protocol
 import org.amnezia.vpn.protocol.awg.Awg
-import org.amnezia.vpn.protocol.cloak.Cloak
-import org.amnezia.vpn.protocol.openvpn.OpenVpn
 import org.amnezia.vpn.protocol.wireguard.Wireguard
 import org.amnezia.vpn.protocol.xray.Xray
 
@@ -26,22 +24,6 @@ enum class VpnProto(
         AwgService::class.java
     ) {
         override fun createProtocol(): Protocol = Awg()
-    },
-
-    OPENVPN(
-        "OpenVPN",
-        "org.amnezia.vpn:amneziaOpenVpnService",
-        OpenVpnService::class.java
-    ) {
-        override fun createProtocol(): Protocol = OpenVpn()
-    },
-
-    CLOAK(
-        "Cloak",
-        "org.amnezia.vpn:amneziaOpenVpnService",
-        OpenVpnService::class.java
-    ) {
-        override fun createProtocol(): Protocol = Cloak()
     },
 
     XRAY(

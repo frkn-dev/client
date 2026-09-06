@@ -3,10 +3,9 @@ import NetworkExtension
 import Network
 import os
 import Darwin
-import OpenVPNAdapter
 
 enum TunnelProtoType: String {
-  case wireguard, openvpn, xray
+  case wireguard, xray
 
 }
 
@@ -14,7 +13,6 @@ struct Constants {
   static let kDefaultPathKey = "defaultPath"
   static let processQueueName = "org.frkn.process-packets"
   static let kActivationAttemptId = "activationAttemptId"
-  static let ovpnConfigKey = "ovpn"
   static let xrayConfigKey = "xray"
   static let wireGuardConfigKey = "wireguard"
   static let loggerTag = "NET"
@@ -38,8 +36,6 @@ struct Constants {
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
     var wgAdapter: WireGuardAdapter?
-    var ovpnAdapter: OpenVPNAdapter?
-    private lazy var openVPNPacketFlowAdapter = PacketTunnelFlowAdapter(flow: packetFlow)
     private let pathMonitorQueue = DispatchQueue(label: Constants.processQueueName + ".path-monitor")
     private let pathMonitor = NWPathMonitor()
     private var didReceiveInitialPathUpdate = false
@@ -49,17 +45,11 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     var splitTunnelType: Int?
     var splitTunnelSites: [String]?
 
-    let vpnReachability = OpenVPNReachability()
-
     var startHandler: ((Error?) -> Void)?
     var stopHandler: (() -> Void)?
     var protoType: TunnelProtoType?
     
     var activeIfaceIdx: UInt32 = 0
-
-    func openVPNPacketFlow() -> OpenVPNAdapterPacketFlow {
-        openVPNPacketFlowAdapter
-    }
 
     override init() {
         super.init()
@@ -182,9 +172,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
         if let protocolConfiguration = protocolConfiguration as? NETunnelProviderProtocol {
             let providerConfiguration = protocolConfiguration.providerConfiguration
-            if (providerConfiguration?[Constants.ovpnConfigKey] as? Data) != nil {
-                protoType = .openvpn
-            } else if (providerConfiguration?[Constants.wireGuardConfigKey] as? Data) != nil {
+            if (providerConfiguration?[Constants.wireGuardConfigKey] as? Data) != nil {
                 protoType = .wireguard
             } else if (providerConfiguration?[Constants.xrayConfigKey] as? Data) != nil {
                 protoType = .xray
@@ -205,8 +193,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             startWireguard(activationAttemptId: activationAttemptId,
                            errorNotifier: errorNotifier,
                            completionHandler: completionHandler)
-        case .openvpn:
-            startOpenVPN(completionHandler: completionHandler)
         case .xray:
             startXray(completionHandler: completionHandler)
 
@@ -224,9 +210,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         case .wireguard:
             stopWireguard(with: reason,
                           completionHandler: completionHandler)
-        case .openvpn:
-            stopOpenVPN(with: reason,
-                        completionHandler: completionHandler)
         case .xray:
             stopXray(completionHandler: completionHandler)
         }
@@ -241,8 +224,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         switch protoType {
         case .wireguard:
             handleWireguardStatusMessage(messageData, completionHandler: completionHandler)
-        case .openvpn:
-            handleOpenVPNStatusMessage(messageData, completionHandler: completionHandler)
         case .xray:
             handleXrayStatusMessage(completionHandler: completionHandler)
         }
@@ -318,25 +299,6 @@ extension WireGuardLogLevel {
     case .error:
       return .error
     }
-  }
-}
-
-final class PacketTunnelFlowAdapter: NSObject, OpenVPNAdapterPacketFlow {
-  private let flow: NEPacketTunnelFlow
-
-  init(flow: NEPacketTunnelFlow) {
-    self.flow = flow
-    super.init()
-  }
-
-  @objc(readPacketsWithCompletionHandler:)
-  func readPackets(completionHandler: @escaping ([Data], [NSNumber]) -> Void) {
-    flow.readPackets(completionHandler: completionHandler)
-  }
-
-  @objc(writePackets:withProtocols:)
-  func writePackets(_ packets: [Data], withProtocols protocols: [NSNumber]) -> Bool {
-    flow.writePackets(packets, withProtocols: protocols)
   }
 }
 

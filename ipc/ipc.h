@@ -12,7 +12,6 @@ namespace amnezia {
 
 enum PermittedProcess {
     Invalid,
-    OpenVPN,
     Wireguard,
     Tun2Socks,
     CertUtil
@@ -21,8 +20,6 @@ enum PermittedProcess {
 inline QString permittedProcessPath(PermittedProcess pid)
 {
     switch (pid) {
-        case PermittedProcess::OpenVPN:
-            return Utils::openVpnExecPath();
         case PermittedProcess::Wireguard:
             return Utils::wireguardExecPath();
         case PermittedProcess::CertUtil:

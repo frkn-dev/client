@@ -152,29 +152,6 @@
                                 <string>public.data</string>
                         </array>
                         <key>UTTypeDescription</key>
-                        <string>OpenVPN config</string>
-                        <key>UTTypeIconFiles</key>
-                        <array/>
-                        <key>UTTypeIdentifier</key>
-                        <string>org.frkn.dopamine.openvpn-config</string>
-                        <key>UTTypeTagSpecification</key>
-                        <dict>
-                                <key>public.filename-extension</key>
-                                <array>
-                                        <string>ovpn</string>
-                                </array>
-                                <key>public.mime-type</key>
-                                <array>
-                                        <string>text/plain</string>
-                                </array>
-                        </dict>
-                </dict>
-                <dict>
-                        <key>UTTypeConformsTo</key>
-                        <array>
-                                <string>public.data</string>
-                        </array>
-                        <key>UTTypeDescription</key>
                         <string>Dopamine backup file</string>
                         <key>UTTypeIconFiles</key>
                         <array/>
@@ -204,7 +181,6 @@
                         <array>
                                 <string>org.frkn.dopamine.awg-config</string>
                                 <string>org.frkn.dopamine.wireguard-config</string>
-                                <string>org.frkn.dopamine.openvpn-config</string>
                                 <string>org.frkn.dopamine.backup-config</string>
                         </array>
                 </dict>

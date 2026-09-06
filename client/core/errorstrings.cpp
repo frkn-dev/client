@@ -42,20 +42,11 @@ QString errorString(ErrorCode code) {
     // Ssh scp errors
     case(ErrorCode::SshScpFailureError): errorMessage = QObject::tr("SCP error: Generic failure"); break;
 
-    // Local errors
-    case (ErrorCode::OpenVpnConfigMissing): errorMessage = QObject::tr("OpenVPN config missing"); break;
-    case (ErrorCode::OpenVpnManagementServerError): errorMessage = QObject::tr("OpenVPN management server error"); break;
-
     // Distro errors
-    case (ErrorCode::OpenVpnExecutableMissing): errorMessage = QObject::tr("OpenVPN executable missing"); break;
-    case (ErrorCode::ShadowSocksExecutableMissing): errorMessage = QObject::tr("Shadowsocks (ss-local) executable missing"); break;
-    case (ErrorCode::CloakExecutableMissing): errorMessage = QObject::tr("Cloak (ck-client) executable missing"); break;
     case (ErrorCode::DopamineServiceConnectionFailed): errorMessage = QObject::tr("Dopamine helper service error"); break;
     case (ErrorCode::OpenSslFailed): errorMessage = QObject::tr("OpenSSL failed"); break;
 
     // VPN errors
-    case (ErrorCode::OpenVpnAdaptersInUseError): errorMessage = QObject::tr("Can't connect: another VPN connection is active"); break;
-    case (ErrorCode::OpenVpnTapAdapterError): errorMessage = QObject::tr("Can't setup OpenVPN TAP network adapter"); break;
     case (ErrorCode::AddressPoolError): errorMessage = QObject::tr("VPN pool error: no available addresses"); break;
 
     case (ErrorCode::ImportInvalidConfigError): errorMessage = QObject::tr("The config does not contain any containers and credentials for connecting to the server"); break;

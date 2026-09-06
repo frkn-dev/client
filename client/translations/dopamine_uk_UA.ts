@@ -76,31 +76,31 @@
 <context>
     <name>ApiConfigsController</name>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1018"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1255"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1280"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1487"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1584"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1008"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1245"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1270"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1477"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1574"/>
         <source>%1 installed successfully.</source>
         <translation>%1 успішно встановлено.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1144"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1134"/>
         <source>Subscription restored successfully.</source>
         <translation>Підписку успішно відновлено.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1460"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1450"/>
         <source>API config reloaded</source>
         <translation>Конфігурацію API перезавантажено</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1464"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1454"/>
         <source>Successfully changed the country of connection to %1</source>
         <translation>Країну підключення змінено на %1</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1562"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1552"/>
         <source>Shared connection</source>
         <translation>Спільне підключення</translation>
     </message>
@@ -370,33 +370,31 @@ Can&apos;t be disabled for current server</source>
 <context>
     <name>ImportController</name>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="834"/>
+        <location filename="../ui/controllers/importController.cpp" line="776"/>
         <source>Scanned %1 of %2.</source>
         <translation>Відскановано %1 з %2.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="869"/>
         <source>This configuration contains an OpenVPN setup. OpenVPN configurations can include malicious scripts, so only add it if you fully trust the provider of this config. </source>
-        <translation>Ця конфігурація містить налаштування OpenVPN. Конфігурації OpenVPN можуть містити шкідливі скрипти, тому додавайте її, лише якщо повністю довіряєте постачальнику цієї конфігурації. </translation>
+        <translation type="vanished">Ця конфігурація містить налаштування OpenVPN. Конфігурації OpenVPN можуть містити шкідливі скрипти, тому додавайте її, лише якщо повністю довіряєте постачальнику цієї конфігурації. </translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="873"/>
         <source>&lt;br&gt;In the imported configuration, potentially dangerous lines were found:</source>
-        <translation>&lt;br&gt;В імпортованій конфігурації виявлено потенційно небезпечні рядки:</translation>
+        <translation type="vanished">&lt;br&gt;В імпортованій конфігурації виявлено потенційно небезпечні рядки:</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="988"/>
+        <location filename="../ui/controllers/importController.cpp" line="886"/>
         <source>No valid configurations found at the provided URL</source>
         <translation>За вказаним URL не знайдено дійсних конфігурацій</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="1039"/>
-        <location filename="../ui/controllers/importController.cpp" line="1062"/>
+        <location filename="../ui/controllers/importController.cpp" line="937"/>
+        <location filename="../ui/controllers/importController.cpp" line="960"/>
         <source>Failed to fetch configurations: %1</source>
         <translation>Не вдалося отримати конфігурації: %1</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="1068"/>
+        <location filename="../ui/controllers/importController.cpp" line="966"/>
         <source>Empty response from server</source>
         <translation>Порожня відповідь від сервера</translation>
     </message>
@@ -4301,7 +4299,7 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/errorstrings.cpp" line="85"/>
+        <location filename="../core/errorstrings.cpp" line="76"/>
         <source>The server did not respond in time. It may be unreachable from your network — try another server or protocol.</source>
         <translation>Сервер не відповів вчасно. Можливо, він недоступний з вашої мережі — спробуйте інший сервер або протокол.</translation>
     </message>
@@ -4391,30 +4389,29 @@ Already installed containers were found on the server. All installed containers 
         <translation>Помилка SCP: Загальна помилка</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="61"/>
+        <location filename="../core/errorstrings.cpp" line="52"/>
         <source>The config does not contain any containers and credentials for connecting to the server</source>
         <translation>Конфігурація не містить контейнерів і облікових даних для підключення до серверу</translation>
     </message>
     <message>
+        <location filename="../core/errorstrings.cpp" line="60"/>
         <location filename="../core/errorstrings.cpp" line="69"/>
-        <location filename="../core/errorstrings.cpp" line="78"/>
         <source>Error when retrieving configuration from API</source>
         <translation>Помилка під час отримання конфігурації з API</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="70"/>
+        <location filename="../core/errorstrings.cpp" line="61"/>
         <source>This config has already been added to the application</source>
         <translation>Ця конфігурація вже була додана в застосунок</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="100"/>
+        <location filename="../core/errorstrings.cpp" line="91"/>
         <source>ErrorCode: %1. </source>
         <translation>Код помилки: %1. </translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="46"/>
         <source>OpenVPN config missing</source>
-        <translation>OpenVPN config missing</translation>
+        <translation type="vanished">OpenVPN config missing</translation>
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="15"/>
@@ -4472,114 +4469,108 @@ Already installed containers were found on the server. All installed containers 
         <translation>Помилка сервера: ядро Linux занадто старе</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="47"/>
         <source>OpenVPN management server error</source>
-        <translation>OpenVPN management server error</translation>
+        <translation type="vanished">OpenVPN management server error</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="50"/>
         <source>OpenVPN executable missing</source>
-        <translation>OpenVPN executable missing</translation>
+        <translation type="vanished">OpenVPN executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="51"/>
         <source>Shadowsocks (ss-local) executable missing</source>
-        <translation>Shadowsocks (ss-local) executable missing</translation>
+        <translation type="vanished">Shadowsocks (ss-local) executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="52"/>
         <source>Cloak (ck-client) executable missing</source>
-        <translation>Cloak (ck-client) executable missing</translation>
+        <translation type="vanished">Cloak (ck-client) executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="53"/>
+        <location filename="../core/errorstrings.cpp" line="46"/>
         <source>Dopamine helper service error</source>
         <translation>Помилка служби допомоги FRKN</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="54"/>
+        <location filename="../core/errorstrings.cpp" line="47"/>
         <source>OpenSSL failed</source>
         <translation>OpenSSL failed</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="57"/>
         <source>Can&apos;t connect: another VPN connection is active</source>
-        <translation>Can&apos;t connect: another VPN connection is active</translation>
+        <translation type="vanished">Can&apos;t connect: another VPN connection is active</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="58"/>
         <source>Can&apos;t setup OpenVPN TAP network adapter</source>
-        <translation>Can&apos;t setup OpenVPN TAP network adapter</translation>
+        <translation type="vanished">Can&apos;t setup OpenVPN TAP network adapter</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="59"/>
+        <location filename="../core/errorstrings.cpp" line="50"/>
         <source>VPN pool error: no available addresses</source>
         <translation>VPN pool error: no available addresses</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="62"/>
+        <location filename="../core/errorstrings.cpp" line="53"/>
         <source>Unable to open config file</source>
         <translation>Неможливо відкрити файл конфігурації</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="63"/>
+        <location filename="../core/errorstrings.cpp" line="54"/>
         <source>VPN Protocols is not installed.
  Please install VPN container at first</source>
         <translation>VPN протоколи не встановлено.
  Будь-ласка, встановіть VPN контейнер</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="66"/>
+        <location filename="../core/errorstrings.cpp" line="57"/>
         <source>VPN connection error</source>
         <translation>Помилка VPN-підключення</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="71"/>
+        <location filename="../core/errorstrings.cpp" line="62"/>
         <source>In the response from the server, an empty config was received</source>
         <translation>У відповіді сервера отримано порожню конфігурацію</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="72"/>
+        <location filename="../core/errorstrings.cpp" line="63"/>
         <source>SSL error occurred</source>
         <translation>Сталася помилка SSL</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="73"/>
+        <location filename="../core/errorstrings.cpp" line="64"/>
         <source>Server response timeout on api request</source>
         <translation>Час очікування відповіді сервера на API-запит минув</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="74"/>
+        <location filename="../core/errorstrings.cpp" line="65"/>
         <source>Missing AGW public key</source>
         <translation>Відсутній публічний ключ AGW</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="75"/>
+        <location filename="../core/errorstrings.cpp" line="66"/>
         <source>Failed to decrypt response payload</source>
         <translation>Не вдалося розшифрувати вміст відповіді</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="76"/>
+        <location filename="../core/errorstrings.cpp" line="67"/>
         <source>Missing list of available services</source>
         <translation>Відсутній список доступних сервісів</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="77"/>
+        <location filename="../core/errorstrings.cpp" line="68"/>
         <source>The limit of allowed configurations per subscription has been exceeded</source>
         <translation>Перевищено ліміт дозволених конфігурацій на підписку</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="79"/>
+        <location filename="../core/errorstrings.cpp" line="70"/>
         <source>A migration error has occurred. Please contact our technical support</source>
         <translation>Сталася помилка міграції. Будь ласка, зверніться до нашої технічної підтримки</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="80"/>
+        <location filename="../core/errorstrings.cpp" line="71"/>
         <source>Please update the application to use this feature</source>
         <translation>Будь ласка, оновіть застосунок, щоб використовувати цю функцію</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="81"/>
+        <location filename="../core/errorstrings.cpp" line="72"/>
         <source>Your FRKN Premium subscription has expired.
  Please check your email for renewal instructions.
  If you haven&apos;t received an email, please contact our support.</source>
@@ -4588,49 +4579,48 @@ Already installed containers were found on the server. All installed containers 
  Якщо ви не отримали листа, зверніться до нашої підтримки.</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="82"/>
+        <location filename="../core/errorstrings.cpp" line="73"/>
         <source>Unable to process purchase</source>
         <translation>Неможливо обробити покупку</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="88"/>
+        <location filename="../core/errorstrings.cpp" line="79"/>
         <source>QFile error: The file could not be opened</source>
         <translation>Помилка QFile: Не вдалося відкрити файл</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="89"/>
+        <location filename="../core/errorstrings.cpp" line="80"/>
         <source>QFile error: An error occurred when reading from the file</source>
         <translation>Помилка QFile: Сталася помилка під час читання файлу</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="90"/>
+        <location filename="../core/errorstrings.cpp" line="81"/>
         <source>QFile error: The file could not be accessed</source>
         <translation>Помилка QFile: Не вдалося отримати доступ до файлу</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="91"/>
+        <location filename="../core/errorstrings.cpp" line="82"/>
         <source>QFile error: An unspecified error occurred</source>
         <translation>Помилка QFile: Сталася невідома помилка</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="92"/>
+        <location filename="../core/errorstrings.cpp" line="83"/>
         <source>QFile error: A fatal error occurred</source>
         <translation>Помилка QFile: Сталася критична помилка</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="93"/>
+        <location filename="../core/errorstrings.cpp" line="84"/>
         <source>QFile error: The operation was aborted</source>
         <translation>Помилка QFile: Операцію перервано</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="97"/>
+        <location filename="../core/errorstrings.cpp" line="88"/>
         <source>Internal error</source>
         <translation>Internal error</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="107"/>
         <source>IPsec</source>
-        <translation>IPsec</translation>
+        <translation type="vanished">IPsec</translation>
     </message>
     <message>
         <source>Shadowsocks - masks VPN traffic, making it similar to normal web traffic, but it may be recognized by analysis systems in some highly censored regions.</source>
@@ -4641,12 +4631,11 @@ Already installed containers were found on the server. All installed containers 
         <translation type="obsolete">OpenVPN over Cloak - OpenVPN з маскуванням VPN під HTTPS трафік і захистом від active-probing. Підходить для регіонів з самим високим рівнем цензури.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="139"/>
         <source>IKEv2/IPsec -  Modern stable protocol, a bit faster than others, restores connection after signal loss. It has native support on the latest versions of Android and iOS.</source>
-        <translation>IKEv2/IPsec - сучасний стабільний протокол, трохи швидший за інші, відновлює з&apos;єднання після втрати сигналу. Має нативну підтримку в останніх версіях Android та iOS.</translation>
+        <translation type="vanished">IKEv2/IPsec - сучасний стабільний протокол, трохи швидший за інші, відновлює з&apos;єднання після втрати сигналу. Має нативну підтримку в останніх версіях Android та iOS.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="146"/>
+        <location filename="../containers/containers_defs.cpp" line="124"/>
         <source>Create a file vault on your server to securely store and transfer files.</source>
         <translation>Створіть на сервері файлове сховище для безпечного зберігання та передачі файлів.</translation>
     </message>
@@ -4671,64 +4660,72 @@ While it offers a blend of security, stability, and speed, it&apos;s essential t
 * Працює по мережевому протоколу UDP, порти 500 і 4500.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="234"/>
+        <location filename="../containers/containers_defs.cpp" line="169"/>
         <source>DNS Service</source>
         <translation>DNS Сервіс</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="112"/>
+        <location filename="../containers/containers_defs.cpp" line="101"/>
         <source>SFTP file sharing service</source>
         <translation>Сервіс обміну файлами SFTP</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="110"/>
-        <location filename="../containers/containers_defs.cpp" line="233"/>
+        <location filename="../containers/containers_defs.cpp" line="99"/>
+        <location filename="../containers/containers_defs.cpp" line="168"/>
         <source>Website in Tor network</source>
         <translation>Веб-сайт в мережі Tor</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="111"/>
+        <location filename="../containers/containers_defs.cpp" line="100"/>
         <source>DopamineDNS</source>
         <translation>DopamineDNS</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="119"/>
         <source>OpenVPN is the most popular VPN protocol, with flexible configuration options. It uses its own security protocol with SSL/TLS for key exchange.</source>
-        <translation>OpenVPN - популярний VPN-протокол, гнучний в налаштуваннях. Має власний протокол оснований на обміні ключами SSL/TLS.</translation>
+        <translation type="vanished">OpenVPN - популярний VPN-протокол, гнучний в налаштуваннях. Має власний протокол оснований на обміні ключами SSL/TLS.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="122"/>
         <source>Shadowsocks masks VPN traffic, making it resemble normal web traffic, but it may still be detected by certain analysis systems.</source>
-        <translation>Shadowsocks маскує VPN-трафік, роблячи його схожим на звичайний веб-трафік, але він все ще може бути виявлений деякими системами аналізу.</translation>
+        <translation type="vanished">Shadowsocks маскує VPN-трафік, роблячи його схожим на звичайний веб-трафік, але він все ще може бути виявлений деякими системами аналізу.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="124"/>
         <source>OpenVPN over Cloak - OpenVPN with VPN masquerading as web traffic and protection against active-probing detection. It is very resistant to detection, but offers low speed.</source>
-        <translation>OpenVPN over Cloak - OpenVPN з маскуванням VPN під веб-трафік і захистом від виявлення методами активного зондування. Дуже стійкий до виявлення, але має низьку швидкість.</translation>
+        <translation type="vanished">OpenVPN over Cloak - OpenVPN з маскуванням VPN під веб-трафік і захистом від виявлення методами активного зондування. Дуже стійкий до виявлення, але має низьку швидкість.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="127"/>
+        <location filename="../containers/containers_defs.cpp" line="108"/>
         <source>WireGuard - popular VPN protocol with high performance, high speed and low power consumption.</source>
         <translation>WireGuard - популярний VPN-протокол з високою продуктивністю, високою швидкістю та низьким енергоспоживанням.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="130"/>
-        <location filename="../containers/containers_defs.cpp" line="133"/>
+        <location filename="../containers/containers_defs.cpp" line="111"/>
+        <location filename="../containers/containers_defs.cpp" line="114"/>
         <source>AmneziaWG is a special protocol based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation>AmneziaWG — спеціальний протокол на основі WireGuard. Забезпечує високу швидкість з&apos;єднання та стабільну роботу навіть у найскладніших мережевих умовах.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="136"/>
+        <location filename="../containers/containers_defs.cpp" line="117"/>
         <source>XRay with REALITY masks VPN traffic as web traffic and protects against active probing. It is highly resistant to detection and offers high speed.</source>
         <translation>XRay з REALITY маскує VPN-трафік під веб-трафік і захищає від активного зондування. Дуже стійкий до виявлення та забезпечує високу швидкість.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="148"/>
+        <location filename="../containers/containers_defs.cpp" line="126"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="155"/>
+        <location filename="../containers/containers_defs.cpp" line="133"/>
+        <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to older VPN protocols. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
+
+Features:
+* Available on all Dopamine platforms
+* Low power consumption on mobile devices
+* Minimal configuration required
+* Easily detected by DPI systems (susceptible to blocking)
+* Operates over UDP protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
 
 Features:
@@ -4736,7 +4733,7 @@ Features:
 * Normal battery consumption on mobile devices
 * Flexible customization for various devices and OS
 * Operates over both TCP and UDP protocols</source>
-        <translation>OpenVPN — один із найпопулярніших і найнадійніших VPN-протоколів. Він використовує шифрування SSL/TLS, підтримує широкий спектр пристроїв і операційних систем та постійно вдосконалюється спільнотою завдяки відкритому вихідному коду. Забезпечує хороший баланс між швидкістю та безпекою, але легко розпізнається системами DPI, що робить його вразливим до блокувань.
+        <translation type="vanished">OpenVPN — один із найпопулярніших і найнадійніших VPN-протоколів. Він використовує шифрування SSL/TLS, підтримує широкий спектр пристроїв і операційних систем та постійно вдосконалюється спільнотою завдяки відкритому вихідному коду. Забезпечує хороший баланс між швидкістю та безпекою, але легко розпізнається системами DPI, що робить його вразливим до блокувань.
 
 Особливості:
 * Доступний на всіх платформах Dopamine
@@ -4745,7 +4742,6 @@ Features:
 * Працює за протоколами TCP і UDP</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="166"/>
         <source>Shadowsocks is based on the SOCKS5 protocol and encrypts connections using AEAD cipher. Although designed to be discreet, it doesn&apos;t mimic a standard HTTPS connection and can be detected by some DPI systems. Due to limited support in Dopamine, we recommend using the AmneziaWG protocol.
 
 Features:
@@ -4754,7 +4750,7 @@ Features:
 * Detectable by some DPI systems
 * Operates over TCP protocol
 </source>
-        <translation>Shadowsocks базується на протоколі SOCKS5 і шифрує з&apos;єднання за допомогою шифру AEAD. Хоча він розроблений, щоб бути непомітним, він не імітує стандартне HTTPS-з&apos;єднання і може бути виявлений деякими системами DPI. Через обмежену підтримку в Dopamine ми рекомендуємо використовувати протокол AmneziaWG.
+        <translation type="vanished">Shadowsocks базується на протоколі SOCKS5 і шифрує з&apos;єднання за допомогою шифру AEAD. Хоча він розроблений, щоб бути непомітним, він не імітує стандартне HTTPS-з&apos;єднання і може бути виявлений деякими системами DPI. Через обмежену підтримку в Dopamine ми рекомендуємо використовувати протокол AmneziaWG.
 
 Особливості:
 * Доступний у Dopamine лише на десктопних платформах
@@ -4764,7 +4760,6 @@ Features:
 </translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="175"/>
         <source>This combination includes the OpenVPN protocol and the Cloak plugin, specifically designed to protect against blocking.
 
 OpenVPN securely encrypts all internet traffic between your device and the server.
@@ -4779,7 +4774,7 @@ Features:
 * Flexible configuration options
 * Undetectable by DPI systems
 * Operates over TCP protocol on port 443</source>
-        <translation>Ця комбінація включає протокол OpenVPN і плагін Cloak, спеціально розроблені для захисту від блокувань.
+        <translation type="vanished">Ця комбінація включає протокол OpenVPN і плагін Cloak, спеціально розроблені для захисту від блокувань.
 
 OpenVPN надійно шифрує весь інтернет-трафік між вашим пристроєм і сервером.
 
@@ -4795,7 +4790,6 @@ OpenVPN надійно шифрує весь інтернет-трафік мі�
 * Працює за протоколом TCP на порту 443</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="188"/>
         <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
 
 Features:
@@ -4804,7 +4798,7 @@ Features:
 * Minimal configuration required
 * Easily detected by DPI systems (susceptible to blocking)
 * Operates over UDP protocol</source>
-        <translation>WireGuard — сучасний лаконічний VPN-протокол, що забезпечує стабільне з&apos;єднання та чудову продуктивність на всіх пристроях. Він використовує фіксовані налаштування шифрування, що дає меншу затримку та вищу швидкість передачі даних порівняно з OpenVPN. Однак WireGuard легко ідентифікується системами DPI через характерні сигнатури пакетів, що робить його вразливим до блокувань.
+        <translation type="vanished">WireGuard — сучасний лаконічний VPN-протокол, що забезпечує стабільне з&apos;єднання та чудову продуктивність на всіх пристроях. Він використовує фіксовані налаштування шифрування, що дає меншу затримку та вищу швидкість передачі даних порівняно з OpenVPN. Однак WireGuard легко ідентифікується системами DPI через характерні сигнатури пакетів, що робить його вразливим до блокувань.
 
 Особливості:
 * Доступний на всіх платформах Dopamine
@@ -4814,7 +4808,7 @@ Features:
 * Працює за протоколом UDP</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="198"/>
+        <location filename="../containers/containers_defs.cpp" line="143"/>
         <source>AmneziaWG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
 
 AmneziaWG is an excellent choice for those seeking a fast, stealthy VPN connection.
@@ -4837,7 +4831,7 @@ AmneziaWG — чудовий вибір для тих, кому потрібне
 * Працює за протоколом UDP</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="210"/>
+        <location filename="../containers/containers_defs.cpp" line="155"/>
         <source>REALITY is an innovative protocol developed by the creators of XRay, designed specifically to combat high levels of internet censorship. REALITY identifies censorship systems during the TLS handshake, redirecting suspicious traffic seamlessly to legitimate websites like google.com while providing genuine TLS certificates. This allows VPN traffic to blend indistinguishably with regular web traffic without special configuration.
 Unlike older protocols such as VMess, VLESS, and XTLS-Vision, REALITY incorporates an advanced built-in &quot;friend-or-foe&quot; detection mechanism, effectively protecting against DPI and other traffic analysis methods.
 
@@ -4858,7 +4852,6 @@ Features:
 * Працює за протоколом TCP</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="223"/>
         <source>IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
 
 Features:
@@ -4867,7 +4860,7 @@ Features:
 * Minimal configuration required
 * Detectable by DPI analysis systems(easily blocked)
 * Operates over UDP protocol(ports 500 and 4500)</source>
-        <translation>IKEv2 в поєднанні з шифруванням IPSec — сучасний і надійний VPN-протокол. Він швидко перепідключається при зміні мережі або пристрою, що робить його ідеальним для динамічних мережевих середовищ. Забезпечуючи хорошу безпеку та швидкість, він легко розпізнається системами DPI і вразливий до блокувань.
+        <translation type="vanished">IKEv2 в поєднанні з шифруванням IPSec — сучасний і надійний VPN-протокол. Він швидко перепідключається при зміні мережі або пристрою, що робить його ідеальним для динамічних мережевих середовищ. Забезпечуючи хорошу безпеку та швидкість, він легко розпізнається системами DPI і вразливий до блокувань.
 
 Особливості:
 * Доступний у Dopamine лише на Windows
@@ -4885,12 +4878,12 @@ Features:
         <translation type="vanished">AmneziaWG - фірмовий протокол Dopamine, оснований на протоколі WireGuard. Такий же швидкий, як і WireGuard, але стійкий до блокувань. Рекомендується для регіонів з високим рівнем цензури.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="142"/>
+        <location filename="../containers/containers_defs.cpp" line="120"/>
         <source>Deploy a WordPress site on the Tor network in two clicks.</source>
         <translation>Розгорніть сайт WordPress в мережі Tor в два кліка.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="144"/>
+        <location filename="../containers/containers_defs.cpp" line="122"/>
         <source>Replace the current DNS server with your own. This will increase your privacy level.</source>
         <translation>Замініть DNS-сервер на DopamineDNS. Це підвищить вашу рівень захищеності в інтернеті.</translation>
     </message>
@@ -4927,7 +4920,7 @@ It employs its unique security protocol, leveraging the strength of SSL/TLS for 
 * Працює по мережевому протоколу TCP.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="236"/>
+        <location filename="../containers/containers_defs.cpp" line="171"/>
         <source>After installation, Dopamine will create a
 
  file storage on your server. You will be able to access it using
@@ -4966,24 +4959,24 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 * Працює через мережевий протокол UDP.</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="81"/>
+        <location filename="../protocols/protocols_defs.cpp" line="78"/>
         <source>SFTP service</source>
         <translation>Сервіс SFTP</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="82"/>
-        <location filename="../containers/containers_defs.cpp" line="113"/>
-        <location filename="../containers/containers_defs.cpp" line="240"/>
+        <location filename="../protocols/protocols_defs.cpp" line="79"/>
+        <location filename="../containers/containers_defs.cpp" line="102"/>
+        <location filename="../containers/containers_defs.cpp" line="175"/>
         <source>SOCKS5 proxy server</source>
         <translation>SOCKS5 проксі-сервер</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="231"/>
+        <location filename="../protocols/protocols_defs.cpp" line="212"/>
         <source> (version 2)</source>
         <translation> (версія 2)</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="232"/>
+        <location filename="../protocols/protocols_defs.cpp" line="213"/>
         <source> (version 1.5)</source>
         <translation> (версія 1.5)</translation>
     </message>
@@ -5411,7 +5404,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="542"/>
+        <location filename="../vpnconnection.cpp" line="540"/>
         <source>Mbps</source>
         <translation>Mbps</translation>
     </message>
@@ -5419,42 +5412,42 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnProtocol</name>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="139"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="126"/>
         <source>Unknown</source>
         <translation>Невідомий</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="140"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="127"/>
         <source>Disconnected</source>
         <translation>Відключено</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="141"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="128"/>
         <source>Preparing</source>
         <translation>Підготовка</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="142"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="129"/>
         <source>Connecting...</source>
         <translation>Підключення...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="143"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="130"/>
         <source>Connected</source>
         <translation>Підключено</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="144"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="131"/>
         <source>Disconnecting...</source>
         <translation>Відключення...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="145"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="132"/>
         <source>Reconnecting...</source>
         <translation>Перепідключення...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="146"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="133"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
@@ -5478,12 +5471,12 @@ This means that AmneziaWG keeps the fast performance of the original while addin
         <translation type="vanished">Я хочу обійти блокування. Цей варіант рекомендується в більшості випадків.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="365"/>
+        <location filename="../containers/containers_defs.cpp" line="280"/>
         <source>Automatic</source>
         <translation>Автоматично</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="373"/>
+        <location filename="../containers/containers_defs.cpp" line="288"/>
         <source>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation>Буде встановлено протокол AmneziaWG. Він забезпечує високу швидкість з&apos;єднання та стабільну роботу навіть у найскладніших мережевих умовах.</translation>
     </message>

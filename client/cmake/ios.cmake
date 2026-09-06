@@ -139,13 +139,6 @@ set_property(TARGET ${PROJECT} APPEND PROPERTY RESOURCE
 add_subdirectory(ios/networkextension)
 add_dependencies(${PROJECT} networkextension)
 
-set_property(TARGET ${PROJECT} PROPERTY XCODE_EMBED_FRAMEWORKS
-    "${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-ios/OpenVPNAdapter.framework"
-)
-
-set(CMAKE_XCODE_ATTRIBUTE_FRAMEWORK_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-ios/)
-target_link_libraries("networkextension" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-ios/OpenVPNAdapter.framework")
-
 # WG/AWG handshake probe (server health check) runs in the app process
 target_link_libraries(${PROJECT} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/wireguard/ios/arm64/libwg-go.a)
 

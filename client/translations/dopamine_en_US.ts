@@ -76,31 +76,31 @@
 <context>
     <name>ApiConfigsController</name>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1018"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1255"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1280"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1487"/>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1584"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1008"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1245"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1270"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1477"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1574"/>
         <source>%1 installed successfully.</source>
         <translation>%1 installed successfully.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1144"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1134"/>
         <source>Subscription restored successfully.</source>
         <translation>Subscription restored successfully.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1460"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1450"/>
         <source>API config reloaded</source>
         <translation>API config reloaded</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1464"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1454"/>
         <source>Successfully changed the country of connection to %1</source>
         <translation>Successfully changed the country of connection to %1</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1562"/>
+        <location filename="../ui/controllers/api/apiConfigsController.cpp" line="1552"/>
         <source>Shared connection</source>
         <translation>Shared connection</translation>
     </message>
@@ -353,33 +353,31 @@ Can&apos;t be disabled for current server</translation>
 <context>
     <name>ImportController</name>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="834"/>
+        <location filename="../ui/controllers/importController.cpp" line="776"/>
         <source>Scanned %1 of %2.</source>
         <translation>Scanned %1 of %2.</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="869"/>
         <source>This configuration contains an OpenVPN setup. OpenVPN configurations can include malicious scripts, so only add it if you fully trust the provider of this config. </source>
-        <translation>This configuration contains an OpenVPN setup. OpenVPN configurations can include malicious scripts, so only add it if you fully trust the provider of this config. </translation>
+        <translation type="vanished">This configuration contains an OpenVPN setup. OpenVPN configurations can include malicious scripts, so only add it if you fully trust the provider of this config. </translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="873"/>
         <source>&lt;br&gt;In the imported configuration, potentially dangerous lines were found:</source>
-        <translation>&lt;br&gt;In the imported configuration, potentially dangerous lines were found:</translation>
+        <translation type="vanished">&lt;br&gt;In the imported configuration, potentially dangerous lines were found:</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="988"/>
+        <location filename="../ui/controllers/importController.cpp" line="886"/>
         <source>No valid configurations found at the provided URL</source>
         <translation>No valid configurations found at the provided URL</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="1039"/>
-        <location filename="../ui/controllers/importController.cpp" line="1062"/>
+        <location filename="../ui/controllers/importController.cpp" line="937"/>
+        <location filename="../ui/controllers/importController.cpp" line="960"/>
         <source>Failed to fetch configurations: %1</source>
         <translation>Failed to fetch configurations: %1</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/importController.cpp" line="1068"/>
+        <location filename="../ui/controllers/importController.cpp" line="966"/>
         <source>Empty response from server</source>
         <translation>Empty response from server</translation>
     </message>
@@ -4157,29 +4155,29 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/errorstrings.cpp" line="85"/>
+        <location filename="../core/errorstrings.cpp" line="76"/>
         <source>The server did not respond in time. It may be unreachable from your network — try another server or protocol.</source>
         <translation>The server did not respond in time. It may be unreachable from your network — try another server or protocol.</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="81"/>
+        <location filename="../protocols/protocols_defs.cpp" line="78"/>
         <source>SFTP service</source>
         <translation>SFTP service</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="82"/>
-        <location filename="../containers/containers_defs.cpp" line="113"/>
-        <location filename="../containers/containers_defs.cpp" line="240"/>
+        <location filename="../protocols/protocols_defs.cpp" line="79"/>
+        <location filename="../containers/containers_defs.cpp" line="102"/>
+        <location filename="../containers/containers_defs.cpp" line="175"/>
         <source>SOCKS5 proxy server</source>
         <translation>SOCKS5 proxy server</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="231"/>
+        <location filename="../protocols/protocols_defs.cpp" line="212"/>
         <source> (version 2)</source>
         <translation> (version 2)</translation>
     </message>
     <message>
-        <location filename="../protocols/protocols_defs.cpp" line="232"/>
+        <location filename="../protocols/protocols_defs.cpp" line="213"/>
         <source> (version 1.5)</source>
         <translation> (version 1.5)</translation>
     </message>
@@ -4451,135 +4449,128 @@ Already installed containers were found on the server. All installed containers 
         <translation>SCP error: Generic failure</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="46"/>
         <source>OpenVPN config missing</source>
-        <translation>OpenVPN config missing</translation>
+        <translation type="vanished">OpenVPN config missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="47"/>
         <source>OpenVPN management server error</source>
-        <translation>OpenVPN management server error</translation>
+        <translation type="vanished">OpenVPN management server error</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="50"/>
         <source>OpenVPN executable missing</source>
-        <translation>OpenVPN executable missing</translation>
+        <translation type="vanished">OpenVPN executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="51"/>
         <source>Shadowsocks (ss-local) executable missing</source>
-        <translation>Shadowsocks (ss-local) executable missing</translation>
+        <translation type="vanished">Shadowsocks (ss-local) executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="52"/>
         <source>Cloak (ck-client) executable missing</source>
-        <translation>Cloak (ck-client) executable missing</translation>
+        <translation type="vanished">Cloak (ck-client) executable missing</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="53"/>
+        <location filename="../core/errorstrings.cpp" line="46"/>
         <source>Dopamine helper service error</source>
         <translation>FRKN helper service error</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="54"/>
+        <location filename="../core/errorstrings.cpp" line="47"/>
         <source>OpenSSL failed</source>
         <translation>OpenSSL failed</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="57"/>
         <source>Can&apos;t connect: another VPN connection is active</source>
-        <translation>Can&apos;t connect: another VPN connection is active</translation>
+        <translation type="vanished">Can&apos;t connect: another VPN connection is active</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="58"/>
         <source>Can&apos;t setup OpenVPN TAP network adapter</source>
-        <translation>Can&apos;t setup OpenVPN TAP network adapter</translation>
+        <translation type="vanished">Can&apos;t setup OpenVPN TAP network adapter</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="59"/>
+        <location filename="../core/errorstrings.cpp" line="50"/>
         <source>VPN pool error: no available addresses</source>
         <translation>VPN pool error: no available addresses</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="61"/>
+        <location filename="../core/errorstrings.cpp" line="52"/>
         <source>The config does not contain any containers and credentials for connecting to the server</source>
         <translation>The config does not contain any containers and credentials for connecting to the server</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="62"/>
+        <location filename="../core/errorstrings.cpp" line="53"/>
         <source>Unable to open config file</source>
         <translation>Unable to open config file</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="63"/>
+        <location filename="../core/errorstrings.cpp" line="54"/>
         <source>VPN Protocols is not installed.
  Please install VPN container at first</source>
         <translation>VPN Protocols is not installed.
  Please install VPN container at first</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="66"/>
+        <location filename="../core/errorstrings.cpp" line="57"/>
         <source>VPN connection error</source>
         <translation>VPN connection error</translation>
     </message>
     <message>
+        <location filename="../core/errorstrings.cpp" line="60"/>
         <location filename="../core/errorstrings.cpp" line="69"/>
-        <location filename="../core/errorstrings.cpp" line="78"/>
         <source>Error when retrieving configuration from API</source>
         <translation>Error when retrieving configuration from API</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="70"/>
+        <location filename="../core/errorstrings.cpp" line="61"/>
         <source>This config has already been added to the application</source>
         <translation>This config has already been added to the application</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="71"/>
+        <location filename="../core/errorstrings.cpp" line="62"/>
         <source>In the response from the server, an empty config was received</source>
         <translation>In the response from the server, an empty config was received</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="72"/>
+        <location filename="../core/errorstrings.cpp" line="63"/>
         <source>SSL error occurred</source>
         <translation>SSL error occurred</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="73"/>
+        <location filename="../core/errorstrings.cpp" line="64"/>
         <source>Server response timeout on api request</source>
         <translation>Server response timeout on api request</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="74"/>
+        <location filename="../core/errorstrings.cpp" line="65"/>
         <source>Missing AGW public key</source>
         <translation>Missing AGW public key</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="75"/>
+        <location filename="../core/errorstrings.cpp" line="66"/>
         <source>Failed to decrypt response payload</source>
         <translation>Failed to decrypt response payload</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="76"/>
+        <location filename="../core/errorstrings.cpp" line="67"/>
         <source>Missing list of available services</source>
         <translation>Missing list of available services</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="77"/>
+        <location filename="../core/errorstrings.cpp" line="68"/>
         <source>The limit of allowed configurations per subscription has been exceeded</source>
         <translation>The limit of allowed configurations per subscription has been exceeded</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="79"/>
+        <location filename="../core/errorstrings.cpp" line="70"/>
         <source>A migration error has occurred. Please contact our technical support</source>
         <translation>A migration error has occurred. Please contact our technical support</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="80"/>
+        <location filename="../core/errorstrings.cpp" line="71"/>
         <source>Please update the application to use this feature</source>
         <translation>Please update the application to use this feature</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="81"/>
+        <location filename="../core/errorstrings.cpp" line="72"/>
         <source>Your FRKN Premium subscription has expired.
  Please check your email for renewal instructions.
  If you haven&apos;t received an email, please contact our support.</source>
@@ -4588,109 +4579,116 @@ Already installed containers were found on the server. All installed containers 
  If you haven&apos;t received an email, please contact our support.</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="82"/>
+        <location filename="../core/errorstrings.cpp" line="73"/>
         <source>Unable to process purchase</source>
         <translation>Unable to process purchase</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="88"/>
+        <location filename="../core/errorstrings.cpp" line="79"/>
         <source>QFile error: The file could not be opened</source>
         <translation>QFile error: The file could not be opened</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="89"/>
+        <location filename="../core/errorstrings.cpp" line="80"/>
         <source>QFile error: An error occurred when reading from the file</source>
         <translation>QFile error: An error occurred when reading from the file</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="90"/>
+        <location filename="../core/errorstrings.cpp" line="81"/>
         <source>QFile error: The file could not be accessed</source>
         <translation>QFile error: The file could not be accessed</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="91"/>
+        <location filename="../core/errorstrings.cpp" line="82"/>
         <source>QFile error: An unspecified error occurred</source>
         <translation>QFile error: An unspecified error occurred</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="92"/>
+        <location filename="../core/errorstrings.cpp" line="83"/>
         <source>QFile error: A fatal error occurred</source>
         <translation>QFile error: A fatal error occurred</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="93"/>
+        <location filename="../core/errorstrings.cpp" line="84"/>
         <source>QFile error: The operation was aborted</source>
         <translation>QFile error: The operation was aborted</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="97"/>
+        <location filename="../core/errorstrings.cpp" line="88"/>
         <source>Internal error</source>
         <translation>Internal error</translation>
     </message>
     <message>
-        <location filename="../core/errorstrings.cpp" line="100"/>
+        <location filename="../core/errorstrings.cpp" line="91"/>
         <source>ErrorCode: %1. </source>
         <translation>ErrorCode: %1. </translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="107"/>
         <source>IPsec</source>
-        <translation>IPsec</translation>
+        <translation type="vanished">IPsec</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="110"/>
-        <location filename="../containers/containers_defs.cpp" line="233"/>
+        <location filename="../containers/containers_defs.cpp" line="99"/>
+        <location filename="../containers/containers_defs.cpp" line="168"/>
         <source>Website in Tor network</source>
         <translation>Website in Tor network</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="111"/>
+        <location filename="../containers/containers_defs.cpp" line="100"/>
         <source>DopamineDNS</source>
         <translation>DNS</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="112"/>
+        <location filename="../containers/containers_defs.cpp" line="101"/>
         <source>SFTP file sharing service</source>
         <translation>SFTP file sharing service</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="119"/>
+        <location filename="../containers/containers_defs.cpp" line="133"/>
+        <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to older VPN protocols. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
+
+Features:
+* Available on all Dopamine platforms
+* Low power consumption on mobile devices
+* Minimal configuration required
+* Easily detected by DPI systems (susceptible to blocking)
+* Operates over UDP protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>OpenVPN is the most popular VPN protocol, with flexible configuration options. It uses its own security protocol with SSL/TLS for key exchange.</source>
-        <translation>OpenVPN is the most popular VPN protocol, with flexible configuration options. It uses its own security protocol with SSL/TLS for key exchange.</translation>
+        <translation type="vanished">OpenVPN is the most popular VPN protocol, with flexible configuration options. It uses its own security protocol with SSL/TLS for key exchange.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="122"/>
         <source>Shadowsocks masks VPN traffic, making it resemble normal web traffic, but it may still be detected by certain analysis systems.</source>
-        <translation>Shadowsocks masks VPN traffic, making it resemble normal web traffic, but it may still be detected by certain analysis systems.</translation>
+        <translation type="vanished">Shadowsocks masks VPN traffic, making it resemble normal web traffic, but it may still be detected by certain analysis systems.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="124"/>
         <source>OpenVPN over Cloak - OpenVPN with VPN masquerading as web traffic and protection against active-probing detection. It is very resistant to detection, but offers low speed.</source>
-        <translation>OpenVPN over Cloak - OpenVPN with VPN masquerading as web traffic and protection against active-probing detection. It is very resistant to detection, but offers low speed.</translation>
+        <translation type="vanished">OpenVPN over Cloak - OpenVPN with VPN masquerading as web traffic and protection against active-probing detection. It is very resistant to detection, but offers low speed.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="127"/>
+        <location filename="../containers/containers_defs.cpp" line="108"/>
         <source>WireGuard - popular VPN protocol with high performance, high speed and low power consumption.</source>
         <translation>WireGuard - popular VPN protocol with high performance, high speed and low power consumption.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="130"/>
-        <location filename="../containers/containers_defs.cpp" line="133"/>
+        <location filename="../containers/containers_defs.cpp" line="111"/>
+        <location filename="../containers/containers_defs.cpp" line="114"/>
         <source>AmneziaWG is a special protocol based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation>AmneziaWG is a special protocol based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="136"/>
+        <location filename="../containers/containers_defs.cpp" line="117"/>
         <source>XRay with REALITY masks VPN traffic as web traffic and protects against active probing. It is highly resistant to detection and offers high speed.</source>
         <translation>XRay with REALITY masks VPN traffic as web traffic and protects against active probing. It is highly resistant to detection and offers high speed.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="148"/>
+        <location filename="../containers/containers_defs.cpp" line="126"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="155"/>
         <source>OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
 
 Features:
@@ -4698,7 +4696,7 @@ Features:
 * Normal battery consumption on mobile devices
 * Flexible customization for various devices and OS
 * Operates over both TCP and UDP protocols</source>
-        <translation>OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
+        <translation type="vanished">OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
 
 Features:
 * Available on all Dopamine platforms
@@ -4707,7 +4705,6 @@ Features:
 * Operates over both TCP and UDP protocols</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="166"/>
         <source>Shadowsocks is based on the SOCKS5 protocol and encrypts connections using AEAD cipher. Although designed to be discreet, it doesn&apos;t mimic a standard HTTPS connection and can be detected by some DPI systems. Due to limited support in Dopamine, we recommend using the AmneziaWG protocol.
 
 Features:
@@ -4716,7 +4713,7 @@ Features:
 * Detectable by some DPI systems
 * Operates over TCP protocol
 </source>
-        <translation>Shadowsocks is based on the SOCKS5 protocol and encrypts connections using AEAD cipher. Although designed to be discreet, it doesn&apos;t mimic a standard HTTPS connection and can be detected by some DPI systems. Due to limited support in Dopamine, we recommend using the AmneziaWG protocol.
+        <translation type="vanished">Shadowsocks is based on the SOCKS5 protocol and encrypts connections using AEAD cipher. Although designed to be discreet, it doesn&apos;t mimic a standard HTTPS connection and can be detected by some DPI systems. Due to limited support in Dopamine, we recommend using the AmneziaWG protocol.
 
 Features:
 * Available in Dopamine only on desktop platforms
@@ -4726,7 +4723,6 @@ Features:
 </translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="175"/>
         <source>This combination includes the OpenVPN protocol and the Cloak plugin, specifically designed to protect against blocking.
 
 OpenVPN securely encrypts all internet traffic between your device and the server.
@@ -4741,7 +4737,7 @@ Features:
 * Flexible configuration options
 * Undetectable by DPI systems
 * Operates over TCP protocol on port 443</source>
-        <translation>This combination includes the OpenVPN protocol and the Cloak plugin, specifically designed to protect against blocking.
+        <translation type="vanished">This combination includes the OpenVPN protocol and the Cloak plugin, specifically designed to protect against blocking.
 
 OpenVPN securely encrypts all internet traffic between your device and the server.
 
@@ -4757,7 +4753,6 @@ Features:
 * Operates over TCP protocol on port 443</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="188"/>
         <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
 
 Features:
@@ -4766,7 +4761,7 @@ Features:
 * Minimal configuration required
 * Easily detected by DPI systems (susceptible to blocking)
 * Operates over UDP protocol</source>
-        <translation>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
+        <translation type="vanished">WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
 
 Features:
 * Available on all Dopamine platforms
@@ -4776,7 +4771,7 @@ Features:
 * Operates over UDP protocol</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="198"/>
+        <location filename="../containers/containers_defs.cpp" line="143"/>
         <source>AmneziaWG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
 
 AmneziaWG is an excellent choice for those seeking a fast, stealthy VPN connection.
@@ -4799,7 +4794,7 @@ Features:
 * Operates over UDP protocol</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="210"/>
+        <location filename="../containers/containers_defs.cpp" line="155"/>
         <source>REALITY is an innovative protocol developed by the creators of XRay, designed specifically to combat high levels of internet censorship. REALITY identifies censorship systems during the TLS handshake, redirecting suspicious traffic seamlessly to legitimate websites like google.com while providing genuine TLS certificates. This allows VPN traffic to blend indistinguishably with regular web traffic without special configuration.
 Unlike older protocols such as VMess, VLESS, and XTLS-Vision, REALITY incorporates an advanced built-in &quot;friend-or-foe&quot; detection mechanism, effectively protecting against DPI and other traffic analysis methods.
 
@@ -4820,7 +4815,6 @@ Features:
 * Operates over TCP protocol</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="223"/>
         <source>IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
 
 Features:
@@ -4829,7 +4823,7 @@ Features:
 * Minimal configuration required
 * Detectable by DPI analysis systems(easily blocked)
 * Operates over UDP protocol(ports 500 and 4500)</source>
-        <translation>IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
+        <translation type="vanished">IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
 
 Features:
 * Available in Dopamine only on Windows
@@ -4839,22 +4833,21 @@ Features:
 * Operates over UDP protocol(ports 500 and 4500)</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="139"/>
         <source>IKEv2/IPsec -  Modern stable protocol, a bit faster than others, restores connection after signal loss. It has native support on the latest versions of Android and iOS.</source>
-        <translation>IKEv2/IPsec -  Modern stable protocol, a bit faster than others, restores connection after signal loss. It has native support on the latest versions of Android and iOS.</translation>
+        <translation type="vanished">IKEv2/IPsec -  Modern stable protocol, a bit faster than others, restores connection after signal loss. It has native support on the latest versions of Android and iOS.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="142"/>
+        <location filename="../containers/containers_defs.cpp" line="120"/>
         <source>Deploy a WordPress site on the Tor network in two clicks.</source>
         <translation>Deploy a WordPress site on the Tor network in two clicks.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="144"/>
+        <location filename="../containers/containers_defs.cpp" line="122"/>
         <source>Replace the current DNS server with your own. This will increase your privacy level.</source>
         <translation>Replace the current DNS server with your own. This will increase your privacy level.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="146"/>
+        <location filename="../containers/containers_defs.cpp" line="124"/>
         <source>Create a file vault on your server to securely store and transfer files.</source>
         <translation>Create a file vault on your server to securely store and transfer files.</translation>
     </message>
@@ -4989,12 +4982,12 @@ While it offers a blend of security, stability, and speed, it&apos;s essential t
 * Works over UDP network protocol, ports 500 and 4500.</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="234"/>
+        <location filename="../containers/containers_defs.cpp" line="169"/>
         <source>DNS Service</source>
         <translation>DNS Service</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="236"/>
+        <location filename="../containers/containers_defs.cpp" line="171"/>
         <source>After installation, Dopamine will create a
 
  file storage on your server. You will be able to access it using
@@ -5281,7 +5274,7 @@ For more detailed information, you can
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="542"/>
+        <location filename="../vpnconnection.cpp" line="540"/>
         <source>Mbps</source>
         <translation>Mbps</translation>
     </message>
@@ -5289,42 +5282,42 @@ For more detailed information, you can
 <context>
     <name>VpnProtocol</name>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="139"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="126"/>
         <source>Unknown</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="140"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="127"/>
         <source>Disconnected</source>
         <translation>Disconnected</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="141"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="128"/>
         <source>Preparing</source>
         <translation>Preparing</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="142"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="129"/>
         <source>Connecting...</source>
         <translation>Connecting...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="143"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="130"/>
         <source>Connected</source>
         <translation>Connected</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="144"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="131"/>
         <source>Disconnecting...</source>
         <translation>Disconnecting...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="145"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="132"/>
         <source>Reconnecting...</source>
         <translation>Reconnecting...</translation>
     </message>
     <message>
-        <location filename="../protocols/vpnprotocol.cpp" line="146"/>
+        <location filename="../protocols/vpnprotocol.cpp" line="133"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -5332,12 +5325,12 @@ For more detailed information, you can
 <context>
     <name>amnezia::ContainerProps</name>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="365"/>
+        <location filename="../containers/containers_defs.cpp" line="280"/>
         <source>Automatic</source>
         <translation>Automatic</translation>
     </message>
     <message>
-        <location filename="../containers/containers_defs.cpp" line="373"/>
+        <location filename="../containers/containers_defs.cpp" line="288"/>
         <source>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</translation>
     </message>

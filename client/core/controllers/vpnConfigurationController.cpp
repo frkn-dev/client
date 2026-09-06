@@ -5,8 +5,6 @@
 #include "core/api/apiUtils.h"
 
 #include "configurators/awg_configurator.h"
-#include "configurators/cloak_configurator.h"
-#include "configurators/openvpn_configurator.h"
 #include "configurators/shadowsocks_configurator.h"
 #include "configurators/wireguard_configurator.h"
 #include "configurators/xray_configurator.h"
@@ -19,9 +17,7 @@ VpnConfigurationsController::VpnConfigurationsController(const std::shared_ptr<S
 QScopedPointer<ConfiguratorBase> VpnConfigurationsController::createConfigurator(const Proto protocol)
 {
     switch (protocol) {
-    case Proto::OpenVpn: return QScopedPointer<ConfiguratorBase>(new OpenVpnConfigurator(m_settings));
     case Proto::ShadowSocks: return QScopedPointer<ConfiguratorBase>(new ShadowSocksConfigurator(m_settings));
-    case Proto::Cloak: return QScopedPointer<ConfiguratorBase>(new CloakConfigurator(m_settings));
     case Proto::WireGuard: return QScopedPointer<ConfiguratorBase>(new WireguardConfigurator(m_settings));
     case Proto::Awg: return QScopedPointer<ConfiguratorBase>(new AwgConfigurator(m_settings));
     case Proto::Xray: return QScopedPointer<ConfiguratorBase>(new XrayConfigurator(m_settings));
@@ -42,10 +38,6 @@ QJsonObject VpnConfigurationsController::createVpnConfiguration(const QPair<QStr
     bool isApiConfig = serverConfig.value(config_key::configVersion).toInt();
 
     for (ProtocolEnumNS::Proto proto : ContainerProps::protocolsForContainer(container)) {
-        if (isApiConfig && container == DockerContainer::Cloak && proto == ProtocolEnumNS::Proto::ShadowSocks) {
-            continue;
-        }
-
         QJsonObject protoConfig = containerConfig.value(ProtocolProps::protoToString(proto)).toObject();
         if (protoConfig.isEmpty()) {
             // Backend may key the protocol object by container name ("amnezia-awg")

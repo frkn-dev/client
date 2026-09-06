@@ -65,8 +65,8 @@ rsync -av \
   --exclude=post_uninstall.sh \
   "$PROJECT_DIR/deploy/data/macos/" "$BUNDLE_DIR/Contents/macOS/"
 
-# Prebuilt helpers the daemon shells out to (wireguard-go, tun2socks, openvpn,
-# ck-client, geoip/geosite) — the daemon starts Contents/MacOS/wireguard-go and
+# Prebuilt helpers the daemon shells out to (wireguard-go, tun2socks,
+# geoip/geosite) — the daemon starts Contents/MacOS/wireguard-go and
 # fails with QProcess::FailedToStart when it is missing. Same source as the
 # legacy build_macos.sh flow.
 echo "Copying prebuilt helpers..."

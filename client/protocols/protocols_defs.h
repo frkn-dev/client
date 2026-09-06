@@ -119,10 +119,8 @@ namespace amnezia
 
         constexpr char protocolVersion[] = "protocol_version";
 
-        constexpr char openvpn[] = "openvpn";
         constexpr char wireguard[] = "wireguard";
         constexpr char shadowsocks[] = "shadowsocks";
-        constexpr char cloak[] = "cloak";
         constexpr char sftp[] = "sftp";
         constexpr char awg[] = "awg";
         constexpr char xray[] = "xray";
@@ -163,32 +161,6 @@ namespace amnezia
             constexpr char amneziaDnsIp[] = "172.29.172.254";
         }
 
-        namespace openvpn
-        {
-            constexpr char defaultSubnetAddress[] = "10.8.0.0";
-            constexpr char defaultSubnetMask[] = "255.255.255.0";
-            constexpr char defaultSubnetCidr[] = "24";
-            constexpr char defaultMtu[] = "1500";
-
-            constexpr char serverConfigPath[] = "/opt/amnezia/openvpn/server.conf";
-            constexpr char caCertPath[] = "/opt/amnezia/openvpn/pki/ca.crt";
-            constexpr char clientCertPath[] = "/opt/amnezia/openvpn/pki/issued";
-            constexpr char taKeyPath[] = "/opt/amnezia/openvpn/ta.key";
-            constexpr char clientsDirPath[] = "/opt/amnezia/openvpn/clients";
-            constexpr char defaultPort[] = "1194";
-            constexpr char defaultTransportProto[] = "udp";
-            constexpr char defaultCipher[] = "AES-256-GCM";
-            constexpr char defaultHash[] = "SHA512";
-            constexpr bool defaultBlockOutsideDns = true;
-            constexpr bool defaultNcpDisable = false;
-            constexpr bool defaultTlsAuth = true;
-            constexpr char ncpDisableString[] = "ncp-disable";
-            constexpr char tlsAuthString[] = "tls-auth /opt/amnezia/openvpn/ta.key 0";
-
-            constexpr char defaultAdditionalClientConfig[] = "";
-            constexpr char defaultAdditionalServerConfig[] = "";
-        }
-
         namespace shadowsocks
         {
             constexpr char ssKeyPath[] = "/opt/amnezia/shadowsocks/shadowsocks.key";
@@ -209,16 +181,6 @@ namespace amnezia
             constexpr char defaultPort[] = "443";
             constexpr char defaultLocalProxyPort[] = "10808";
             constexpr char defaultLocalAddr[] = "10.33.0.2";
-        }
-
-        namespace cloak
-        {
-            constexpr char ckPublicKeyPath[] = "/opt/amnezia/cloak/cloak_public.key";
-            constexpr char ckBypassUidKeyPath[] = "/opt/amnezia/cloak/cloak_bypass_uid.key";
-            constexpr char ckAdminKeyPath[] = "/opt/amnezia/cloak/cloak_admin_uid.key";
-            constexpr char defaultPort[] = "443";
-            constexpr char defaultRedirSite[] = "tile.openstreetmap.org";
-            constexpr char defaultCipher[] = "chacha20-poly1305";
         }
 
         namespace wireguard
@@ -305,12 +267,9 @@ namespace amnezia
 
         enum Proto {
             Any = 0,
-            OpenVpn,
             ShadowSocks,
-            Cloak,
             WireGuard,
             Awg,
-            Ikev2,
             L2tp,
             Xray,
             SSXray,
@@ -340,7 +299,7 @@ namespace amnezia
     public:
         Q_INVOKABLE static QList<Proto> allProtocols();
 
-        // spelling may differ for various protocols - TCP for OpenVPN, tcp for others
+        // spelling may differ for various protocols - TCP for some, tcp for others
         Q_INVOKABLE static TransportProto transportProtoFromString(QString p);
         Q_INVOKABLE static QString transportProtoToString(TransportProto proto, Proto p = Proto::Any);
 

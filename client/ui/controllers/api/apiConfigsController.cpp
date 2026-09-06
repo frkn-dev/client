@@ -67,14 +67,12 @@ namespace
 
     namespace configKey
     {
-        constexpr char cloak[] = "cloak";
         constexpr char awg[] = "awg";
         constexpr char vless[] = "vless";
         constexpr char wireguard[] = "wireguard";
 
         constexpr char apiEndpoint[] = "api_endpoint";
         constexpr char accessToken[] = "api_key";
-        constexpr char certificate[] = "certificate";
         constexpr char publicKey[] = "public_key";
         constexpr char protocol[] = "protocol";
 
@@ -178,9 +176,7 @@ namespace
         // callers may pass raw backend tags (e.g. AmneziaWgMobile) — normalize for logic
         const QString p = canonicalServiceProtocol(protocol);
         ProtocolData protocolData;
-        if (p == configKey::cloak) {
-            protocolData.certRequest = OpenVpnConfigurator::createCertRequest();
-        } else if (p == configKey::awg || p == configKey::wireguard) {
+        if (p == configKey::awg || p == configKey::wireguard) {
             auto connData = WireguardConfigurator::genClientKeys();
             protocolData.wireGuardClientPubKey = connData.clientPubKey;
             protocolData.wireGuardClientPrivKey = connData.clientPrivKey;
@@ -194,9 +190,7 @@ namespace
     void appendProtocolDataToApiPayload(const QString &protocol, const ProtocolData &protocolData, QJsonObject &apiPayload)
     {
         const QString p = canonicalServiceProtocol(protocol);
-        if (p == configKey::cloak) {
-            apiPayload[configKey::certificate] = protocolData.certRequest.request;
-        } else if (p == configKey::awg || p == configKey::wireguard) {
+        if (p == configKey::awg || p == configKey::wireguard) {
             apiPayload[configKey::publicKey] = protocolData.wireGuardClientPubKey;
         } else if (p == configKey::vless) {
             apiPayload[configKey::publicKey] = protocolData.xrayUuid;
@@ -233,10 +227,7 @@ namespace
         }
 
         QString configStr = ba;
-        if (canonicalProtocol == configKey::cloak) {
-            configStr.replace("<key>", "<key>\n");
-            configStr.replace("$OPENVPN_PRIV_KEY", apiPayloadData.certRequest.privKey);
-        } else if (canonicalProtocol == configKey::awg) {
+        if (canonicalProtocol == configKey::awg) {
             // The server may either return a placeholder (client generates the key) or a real
             // client private key in last_config. Prefer the server-provided key when present,
             // otherwise fall back to the locally generated key we already sent in the request.
@@ -506,7 +497,6 @@ namespace
         case DockerContainer::WireGuard: return QString(configKey::wireguard);
         case DockerContainer::Xray:
         case DockerContainer::SSXray: return QString(configKey::vless);
-        case DockerContainer::Cloak: return QString(configKey::cloak);
         default: return QString();
         }
     }

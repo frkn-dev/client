@@ -11,7 +11,6 @@ namespace
 {
     enum class ConfigTypes {
         Amnezia,
-        OpenVpn,
         WireGuard,
         Awg,
         Xray,
@@ -76,11 +75,8 @@ signals:
     void subscriptionAllDuplicates();
 
 private:
-    QJsonObject extractOpenVpnConfig(const QString &data);
     QJsonObject extractWireGuardConfig(const QString &data);
     QJsonObject extractXrayConfig(const QString &data, const QString &description = "");
-
-    void checkForMaliciousStrings(const QJsonObject &protocolConfig);
 
     void processAmneziaConfig(QJsonObject &config);
 

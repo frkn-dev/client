@@ -5,15 +5,8 @@
 #include "vpnprotocol.h"
 
 #if defined(Q_OS_WINDOWS) || defined(Q_OS_MACX) and !defined MACOS_NE || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
-    #include "openvpnovercloakprotocol.h"
-    #include "openvpnprotocol.h"
-    #include "shadowsocksvpnprotocol.h"
     #include "wireguardprotocol.h"
     #include "xrayprotocol.h"
-#endif
-
-#ifdef Q_OS_WINDOWS
-    #include "ikev2_vpn_protocol_windows.h"
 #endif
 
 VpnProtocol::VpnProtocol(const QJsonObject &configuration, QObject *parent)
@@ -111,13 +104,7 @@ QString VpnProtocol::vpnLocalAddress() const
 VpnProtocol *VpnProtocol::factory(DockerContainer container, const QJsonObject &configuration)
 {
     switch (container) {
-#if defined(Q_OS_WINDOWS)
-    case DockerContainer::Ipsec: return new Ikev2Protocol(configuration);
-#endif
 #if defined(Q_OS_WINDOWS) || defined(Q_OS_MACX) and !defined MACOS_NE || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
-    case DockerContainer::OpenVpn: return new OpenVpnProtocol(configuration);
-    case DockerContainer::Cloak: return new OpenVpnOverCloakProtocol(configuration);
-    case DockerContainer::ShadowSocks: return new ShadowSocksVpnProtocol(configuration);
     case DockerContainer::WireGuard: return new WireguardProtocol(configuration);
     case DockerContainer::Awg2: return new WireguardProtocol(configuration);
     case DockerContainer::Awg: return new WireguardProtocol(configuration);

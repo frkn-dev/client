@@ -30,7 +30,6 @@ public:
     static bool processIsRunning(const QString &fileName, const bool fullFlag = false);
     static bool killProcessByName(const QString &name);
 
-    static QString openVpnExecPath();
     static QString wireguardExecPath();
     static QString certUtilPath();
     static QString tun2socksPath();

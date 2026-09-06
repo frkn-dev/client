@@ -370,8 +370,8 @@ PageType {
         property string imageSource: "qrc:/images/controls/folder-search-2.svg"
         property bool isVisible: true
         property var handler: function() {
-            var nameFilter = !ServersModel.getServersCount() ? "Config or backup files (*.vpn *.ovpn *.conf *.json *.backup)" :
-                                                               "Config files (*.vpn *.ovpn *.conf *.json)"
+            var nameFilter = !ServersModel.getServersCount() ? "Config or backup files (*.vpn *.conf *.json *.backup)" :
+                                                               "Config files (*.vpn *.conf *.json)"
             var fileName = SystemController.getFileName(qsTr("Open config file"), nameFilter)
             if (fileName !== "") {
                 if (ImportController.extractConfigFromFile(fileName)) {

@@ -98,7 +98,6 @@ target_sources(networkextension PRIVATE
     ${CLIENT_ROOT_DIR}/platforms/ios/LogRecord.swift
     ${CLIENT_ROOT_DIR}/platforms/ios/PacketTunnelProvider.swift
     ${CLIENT_ROOT_DIR}/platforms/ios/PacketTunnelProvider+WireGuard.swift
-    ${CLIENT_ROOT_DIR}/platforms/ios/PacketTunnelProvider+OpenVPN.swift
     ${CLIENT_ROOT_DIR}/platforms/ios/PacketTunnelProvider+Xray.swift
     ${CLIENT_ROOT_DIR}/platforms/ios/WGConfig.swift
     ${CLIENT_ROOT_DIR}/platforms/ios/XrayConfig.swift

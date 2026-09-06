@@ -81,7 +81,7 @@ if [ "$SIGN_APP" = 1 ]; then
     echo "Bundle already Developer-ID signed — re-signing inside-out"
     find "$BUNDLE_DIR/Contents" -type f -name "*.dylib" \
       -exec codesign --force --options runtime --timestamp --sign "$DEVID_APP" {} \;
-    for helper in wireguard-go tun2socks openvpn ss-local ss-tunnel ck-client dopamine-service; do
+    for helper in wireguard-go tun2socks dopamine-service; do
       if [ -f "$BUNDLE_DIR/Contents/MacOS/$helper" ]; then
         codesign --force --options runtime --timestamp --sign "$DEVID_APP" "$BUNDLE_DIR/Contents/MacOS/$helper"
       fi

@@ -4,14 +4,11 @@
 #include <QObject>
 #include <QJsonArray>
 
-#include "configurators/openvpn_configurator.h"
 #include "ui/models/api/apiServicesModel.h"
 #include "ui/models/servers_model.h"
 
 struct ProtocolData
 {
-    OpenVpnConfigurator::ConnectionData certRequest;
-
     QString wireGuardClientPrivKey;
     QString wireGuardClientPubKey;
 

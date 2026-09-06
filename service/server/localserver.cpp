@@ -13,10 +13,6 @@
 #include "killswitch.h"
 #include "logger.h"
 
-#ifdef Q_OS_WIN
-    #include "tapcontroller_win.h"
-#endif
-
 namespace {
 Logger logger("WgDaemonServer");
 }

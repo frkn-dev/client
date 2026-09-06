@@ -19,6 +19,11 @@ amnezia::DockerContainer ContainerProps::containerFromString(const QString &cont
         if (container == containerToString(c))
             return c;
     }
+    // Unknown (e.g. removed protocol containers from old installs) — skip
+    // silently apart from a log note, never crash.
+    if (!container.isEmpty() && container != containerToString(DockerContainer::None)) {
+        qWarning() << "ContainerProps::containerFromString: unknown container" << container << ", ignoring";
+    }
     return DockerContainer::None;
 }
 
@@ -26,8 +31,6 @@ QString ContainerProps::containerToString(amnezia::DockerContainer c)
 {
     if (c == DockerContainer::None)
         return "none";
-    if (c == DockerContainer::Cloak)
-        return "amnezia-openvpn-cloak";
     if (c == DockerContainer::Awg)
         return "amnezia-awg";
     if (c == DockerContainer::Awg2)
@@ -42,8 +45,6 @@ QString ContainerProps::containerTypeToString(amnezia::DockerContainer c)
 {
     if (c == DockerContainer::None)
         return "none";
-    if (c == DockerContainer::Ipsec)
-        return "ikev2";
     if (c == DockerContainer::Awg)
         return "awg";
     if (c == DockerContainer::Awg2)
@@ -58,14 +59,6 @@ QVector<amnezia::Proto> ContainerProps::protocolsForContainer(amnezia::DockerCon
 {
     switch (container) {
     case DockerContainer::None: return {};
-
-    case DockerContainer::OpenVpn: return { Proto::OpenVpn };
-
-    case DockerContainer::ShadowSocks: return { Proto::OpenVpn, Proto::ShadowSocks };
-
-    case DockerContainer::Cloak: return { Proto::OpenVpn, Proto::ShadowSocks, Proto::Cloak };
-
-    case DockerContainer::Ipsec: return { Proto::Ikev2 /*, Protocol::L2tp */ };
 
     case DockerContainer::Xray: return { Proto::Xray };
 
@@ -97,14 +90,10 @@ QList<DockerContainer> ContainerProps::allContainers()
 QMap<DockerContainer, QString> ContainerProps::containerHumanNames()
 {
     return { { DockerContainer::None, "Not installed" },
-             { DockerContainer::OpenVpn, "OpenVPN" },
-             { DockerContainer::ShadowSocks, "OpenVPN over SS" },
-             { DockerContainer::Cloak, "OpenVPN over Cloak" },
              { DockerContainer::WireGuard, "WireGuard" },
              { DockerContainer::Awg, "AmneziaWG" },
              { DockerContainer::Awg2, "AmneziaWG" },
              { DockerContainer::Xray, "XRay" },
-             { DockerContainer::Ipsec, QObject::tr("IPsec") },
              { DockerContainer::SSXray, "Shadowsocks"},
 
              { DockerContainer::TorWebSite, QObject::tr("Website in Tor network") },
@@ -115,15 +104,7 @@ QMap<DockerContainer, QString> ContainerProps::containerHumanNames()
 
 QMap<DockerContainer, QString> ContainerProps::containerDescriptions()
 {
-    return { { DockerContainer::OpenVpn,
-               QObject::tr("OpenVPN is the most popular VPN protocol, with flexible configuration options. It uses its "
-                           "own security protocol with SSL/TLS for key exchange.") },
-             { DockerContainer::ShadowSocks,
-               QObject::tr("Shadowsocks masks VPN traffic, making it resemble normal web traffic, but it may still be detected by certain analysis systems.") },
-             { DockerContainer::Cloak,
-               QObject::tr("OpenVPN over Cloak - OpenVPN with VPN masquerading as web traffic and protection against "
-                           "active-probing detection. It is very resistant to detection, but offers low speed.") },
-             { DockerContainer::WireGuard,
+    return { { DockerContainer::WireGuard,
                QObject::tr("WireGuard - popular VPN protocol with high performance, high speed and low power "
                            "consumption.") },
              { DockerContainer::Awg,
@@ -135,9 +116,6 @@ QMap<DockerContainer, QString> ContainerProps::containerDescriptions()
              { DockerContainer::Xray,
                QObject::tr("XRay with REALITY masks VPN traffic as web traffic and protects against active probing. "
                            "It is highly resistant to detection and offers high speed.") },
-             { DockerContainer::Ipsec,
-               QObject::tr("IKEv2/IPsec -  Modern stable protocol, a bit faster than others, restores connection after "
-                           "signal loss. It has native support on the latest versions of Android and iOS.") },
 
              { DockerContainer::TorWebSite, QObject::tr("Deploy a WordPress site on the Tor network in two clicks.") },
              { DockerContainer::Dns,
@@ -151,42 +129,9 @@ QMap<DockerContainer, QString> ContainerProps::containerDescriptions()
 QMap<DockerContainer, QString> ContainerProps::containerDetailedDescriptions()
 {
     return {
-        { DockerContainer::OpenVpn,
-          QObject::tr("OpenVPN is one of the most popular and reliable VPN protocols. "
-                      "It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, "
-                      "and is continuously improved by the community due to its open-source nature. "
-                      "It provides a good balance between speed and security but is easily recognized by DPI systems, "
-                      "making it susceptible to blocking.\n"
-                      "\nFeatures:\n"
-                      "* Available on all Dopamine platforms\n"
-                      "* Normal battery consumption on mobile devices\n"
-                      "* Flexible customization for various devices and OS\n"
-                      "* Operates over both TCP and UDP protocols") },
-        { DockerContainer::ShadowSocks,
-          QObject::tr("Shadowsocks is based on the SOCKS5 protocol and encrypts connections using AEAD cipher. "
-                      "Although designed to be discreet, it doesn't mimic a standard HTTPS connection and can be detected by some DPI systems. "
-                      "Due to limited support in Dopamine, we recommend using the AmneziaWG protocol.\n"
-                      "\nFeatures:\n"
-                      "* Available in Dopamine only on desktop platforms\n"
-                      "* Customizable encryption protocol\n"
-                      "* Detectable by some DPI systems\n"
-                      "* Operates over TCP protocol\n") },
-        { DockerContainer::Cloak,
-          QObject::tr("This combination includes the OpenVPN protocol and the Cloak plugin, specifically designed to protect against blocking.\n"
-                      "\nOpenVPN securely encrypts all internet traffic between your device and the server.\n"
-                      "\nThe Cloak plugin further protects the connection from DPI detection. "
-                      "It modifies traffic metadata to disguise VPN traffic as regular web traffic and prevents detection through active probing. "
-                      "If an incoming connection fails authentication, Cloak serves a fake website, making your VPN invisible to traffic analysis systems.\n"
-                      "\nIn regions with heavy internet censorship, we strongly recommend using OpenVPN with Cloak from your first connection.\n"
-                      "\nFeatures:\n"
-                      "* Available on all Dopamine platforms\n"
-                      "* High power consumption on mobile devices\n"
-                      "* Flexible configuration options\n"
-                      "* Undetectable by DPI systems\n"
-                      "* Operates over TCP protocol on port 443") },
         { DockerContainer::WireGuard,
           QObject::tr("WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. "
-                      "It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. "
+                      "It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to older VPN protocols. "
                       "However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.\n"
                       "\nFeatures:\n"
                       "* Available on all Dopamine platforms\n"
@@ -219,16 +164,6 @@ QMap<DockerContainer, QString> ContainerProps::containerDetailedDescriptions()
                       "* Highly effective in heavily censored regions\n"
                       "* Minimal battery consumption on devices\n"
                       "* Operates over TCP protocol") },
-        { DockerContainer::Ipsec,
-          QObject::tr("IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. "
-                      "It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. "
-                      "While it provides good security and speed, it's easily recognized by DPI systems and susceptible to blocking.\n"
-                      "\nFeatures:\n"
-                      "* Available in Dopamine only on Windows\n"
-                      "* Low battery consumption on mobile devices\n"
-                      "* Minimal configuration required\n"
-                      "* Detectable by DPI analysis systems(easily blocked)\n"
-                      "* Operates over UDP protocol(ports 500 and 4500)") },
 
         { DockerContainer::TorWebSite, QObject::tr("Website in Tor network") },
         { DockerContainer::Dns, QObject::tr("DNS Service") },
@@ -250,14 +185,10 @@ Proto ContainerProps::defaultProtocol(DockerContainer c)
 {
     switch (c) {
     case DockerContainer::None: return Proto::Any;
-    case DockerContainer::OpenVpn: return Proto::OpenVpn;
-    case DockerContainer::Cloak: return Proto::Cloak;
-    case DockerContainer::ShadowSocks: return Proto::ShadowSocks;
     case DockerContainer::WireGuard: return Proto::WireGuard;
     case DockerContainer::Awg2: return Proto::Awg;
     case DockerContainer::Awg: return Proto::Awg;
     case DockerContainer::Xray: return Proto::Xray;
-    case DockerContainer::Ipsec: return Proto::Ikev2;
     case DockerContainer::SSXray: return Proto::SSXray;
 
     case DockerContainer::TorWebSite: return Proto::TorWebSite;
@@ -286,57 +217,43 @@ bool ContainerProps::isSupportedByCurrentPlatform(DockerContainer c)
     // Standard iOS build (without Network Extension limitations)
     switch (c) {
     case DockerContainer::WireGuard: return true;
-    case DockerContainer::OpenVpn: return true;
     case DockerContainer::Awg2: return true;
     case DockerContainer::Awg: return true;
     case DockerContainer::Xray: return true;
-    case DockerContainer::Cloak: return true;
     case DockerContainer::SSXray: return true;
-        //    case DockerContainer::ShadowSocks: return true;
     default:
         return false;
     }
 
 #elif defined(MACOS_NE)
-    // macOS build using Network Extension – hide OpenVPN-based containers
+    // macOS build using Network Extension
     switch (c) {
     case DockerContainer::WireGuard: return true;
     case DockerContainer::Awg2: return true;
     case DockerContainer::Awg: return true;
     case DockerContainer::Xray: return true;
     case DockerContainer::SSXray: return true;
-    case DockerContainer::OpenVpn:
-    case DockerContainer::Cloak:
-    case DockerContainer::ShadowSocks:
-        return false;
     default:
         return false;
     }
 #elif defined(Q_OS_MAC)
     switch (c) {
     case DockerContainer::WireGuard: return true;
-    case DockerContainer::Ipsec: return false;
     default: return true;
     }
 
 #elif defined(Q_OS_ANDROID)
     switch (c) {
     case DockerContainer::WireGuard: return true;
-    case DockerContainer::OpenVpn: return true;
-    case DockerContainer::ShadowSocks: return false;
     case DockerContainer::Awg2: return true;
     case DockerContainer::Awg: return true;
-    case DockerContainer::Cloak: return true;
     case DockerContainer::Xray: return true;
     case DockerContainer::SSXray: return true;
     default: return false;
     }
 
 #elif defined(Q_OS_LINUX)
-    switch (c) {
-    case DockerContainer::Ipsec: return false;
-    default: return true;
-    }
+    return true;
 
 #else
     return false;
@@ -345,10 +262,8 @@ bool ContainerProps::isSupportedByCurrentPlatform(DockerContainer c)
 
 QStringList ContainerProps::fixedPortsForContainer(DockerContainer c)
 {
-    switch (c) {
-    case DockerContainer::Ipsec: return QStringList { "500", "4500" };
-    default: return {};
-    }
+    Q_UNUSED(c);
+    return {};
 }
 
 bool ContainerProps::isEasySetupContainer(DockerContainer container)
@@ -414,13 +329,9 @@ QJsonObject ContainerProps::getProtocolConfigFromContainer(const Proto protocol,
 int ContainerProps::installPageOrder(DockerContainer container)
 {
     switch (container) {
-    case DockerContainer::OpenVpn: return 4;
-    case DockerContainer::Cloak: return 5;
-    case DockerContainer::ShadowSocks: return 6;
     case DockerContainer::WireGuard: return 2;
     case DockerContainer::Awg2: return 1;
     case DockerContainer::Xray: return 3;
-    case DockerContainer::Ipsec: return 7;
     case DockerContainer::SSXray: return 8;
     default: return 0;
     }

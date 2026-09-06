@@ -158,14 +158,6 @@ set(SOURCES ${SOURCES}
 )
 
 if(WIN32)
-    set(HEADERS ${HEADERS}
-        ${CLIENT_ROOT_DIR}/protocols/ikev2_vpn_protocol_windows.h
-    )
-
-    set(SOURCES ${SOURCES}
-        ${CLIENT_ROOT_DIR}/protocols/ikev2_vpn_protocol_windows.cpp
-    )
-
     set(RESOURCES ${RESOURCES}
         ${CMAKE_CURRENT_BINARY_DIR}/dopamine.rc
     )
@@ -178,9 +170,6 @@ if(WIN32 OR (APPLE AND NOT IOS AND NOT MACOS_NE) OR (LINUX AND NOT ANDROID))
     set(HEADERS ${HEADERS}
         ${CLIENT_ROOT_DIR}/core/ipcclient.h
         ${CLIENT_ROOT_DIR}/ui/systemtray_notificationhandler.h
-        ${CLIENT_ROOT_DIR}/protocols/openvpnprotocol.h
-        ${CLIENT_ROOT_DIR}/protocols/openvpnovercloakprotocol.h
-        ${CLIENT_ROOT_DIR}/protocols/shadowsocksvpnprotocol.h
         ${CLIENT_ROOT_DIR}/protocols/wireguardprotocol.h
         ${CLIENT_ROOT_DIR}/protocols/xrayprotocol.h
         ${CLIENT_ROOT_DIR}/protocols/awgprotocol.h
@@ -191,9 +180,6 @@ if(WIN32 OR (APPLE AND NOT IOS AND NOT MACOS_NE) OR (LINUX AND NOT ANDROID))
         ${CLIENT_ROOT_DIR}/core/ipcclient.cpp
         ${CLIENT_ROOT_DIR}/mozilla/localsocketcontroller.cpp
         ${CLIENT_ROOT_DIR}/ui/systemtray_notificationhandler.cpp
-        ${CLIENT_ROOT_DIR}/protocols/openvpnprotocol.cpp
-        ${CLIENT_ROOT_DIR}/protocols/openvpnovercloakprotocol.cpp
-        ${CLIENT_ROOT_DIR}/protocols/shadowsocksvpnprotocol.cpp
         ${CLIENT_ROOT_DIR}/protocols/wireguardprotocol.cpp
         ${CLIENT_ROOT_DIR}/protocols/xrayprotocol.cpp
         ${CLIENT_ROOT_DIR}/protocols/awgprotocol.cpp

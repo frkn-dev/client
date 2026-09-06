@@ -75,29 +75,17 @@ namespace amnezia
         // Ssh scp errors
         SshScpFailureError = 400,
 
-        // Local errors
-        OpenVpnConfigMissing = 500,
-        OpenVpnManagementServerError = 501,
-
         // Distro errors
-        OpenVpnExecutableMissing = 600,
-        ShadowSocksExecutableMissing = 601,
-        CloakExecutableMissing = 602,
         DopamineServiceConnectionFailed = 603,
         ExecutableMissing = 604,
         XrayExecutableMissing = 605,
         Tun2SockExecutableMissing = 606,
 
         // VPN errors
-        OpenVpnAdaptersInUseError = 700,
-        OpenVpnUnknownError = 701,
-        OpenVpnTapAdapterError = 702,
         AddressPoolError = 703,
 
         // 3rd party utils errors
         OpenSslFailed = 800,
-        ShadowSocksExecutableCrashed = 801,
-        CloakExecutableCrashed = 802,
         XrayExecutableCrashed = 803,
         Tun2SockExecutableCrashed = 804,
 

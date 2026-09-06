@@ -193,7 +193,6 @@ if(WIN32)
     )
 
     set(HEADERS ${HEADERS}
-        ${CMAKE_CURRENT_LIST_DIR}/tapcontroller_win.h
         ${CMAKE_CURRENT_LIST_DIR}/router_win.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../client/platforms/windows/daemon/windowsdaemon.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../client/platforms/windows/daemon/windowsdaemontunnel.h
@@ -213,7 +212,6 @@ if(WIN32)
     )
 
     set(SOURCES ${SOURCES}
-        ${CMAKE_CURRENT_LIST_DIR}/tapcontroller_win.cpp
         ${CMAKE_CURRENT_LIST_DIR}/router_win.cpp
 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../client/platforms/windows/daemon/windowsdaemon.cpp

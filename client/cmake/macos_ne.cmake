@@ -155,22 +155,11 @@ message(${QtCore_location})
 
 get_filename_component(QT_BIN_DIR_DETECTED "${QtCore_location}/../../../../../bin" ABSOLUTE)
 
-set_property(TARGET ${PROJECT} PROPERTY XCODE_EMBED_FRAMEWORKS
-    "${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-macos/OpenVPNAdapter.framework"
-)
-
-set(CMAKE_XCODE_ATTRIBUTE_FRAMEWORK_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-macos)
-target_link_libraries("DopamineNetworkExtension" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/openvpn/apple/OpenVPNAdapter-macos/OpenVPNAdapter.framework")
-
 # WG/AWG handshake probe (server health check) runs in the app process
 target_link_libraries(${PROJECT} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/3rd-prebuilt/3rd-prebuilt/wireguard/macos/universal2/libwg-go.a)
 
 add_custom_command(TARGET ${PROJECT} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
             $<TARGET_BUNDLE_DIR:${PROJECT}>/Contents/Frameworks
-    COMMAND /usr/bin/find "$<TARGET_BUNDLE_DIR:${PROJECT}>/Contents/Frameworks/OpenVPNAdapter.framework" -name "*.sha256" -delete
-    COMMAND /usr/bin/codesign --force --sign "-"
-            "$<TARGET_BUNDLE_DIR:${PROJECT}>/Contents/Frameworks/OpenVPNAdapter.framework/Versions/Current/OpenVPNAdapter"
     COMMAND ${QT_BIN_DIR_DETECTED}/macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT}> -appstore-compliant -qmldir=${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Signing OpenVPNAdapter framework"
 )

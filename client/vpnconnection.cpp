@@ -13,8 +13,6 @@
 #include <QStringList>
 #include <QTimer>
 
-#include <configurators/cloak_configurator.h>
-#include <configurators/openvpn_configurator.h>
 #include <configurators/shadowsocks_configurator.h>
 #include <configurators/wireguard_configurator.h>
 
