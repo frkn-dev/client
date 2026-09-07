@@ -115,7 +115,18 @@ xcrun devicectl install app build-ios-upload/client/Debug-iphoneos/Dopamine.app
 
 ```bash
 ssh -i ~/.ssh/dopamine_win Happy@192.168.0.127 \
-  "cd C:\Users\Happy\Desktop\CODE\dopamine && git checkout -- client\translations 2>nul & git pull origin dev && call deploy\build_windows_local.bat > build.log 2>&1"
+  "cd C:\Users\Happy\Desktop\CODE\dopamine && git checkout -- client\translations 2>nul & git pull origin dev && call deploy\build_windows_local.bat > build_481454.log 2>&1"
+```
+
+Имя лога меняй под версию. Если сразу прилетает «Процесс не может получить
+доступ к файлу, так как этот файл занят другим процессом» — лог держит сирота
+cmd.exe от оборванной ssh-сессии (та, что висит на «Завершить выполнение
+пакетного файла Y/N?»). Лечение:
+
+```bash
+ssh -i ~/.ssh/dopamine_win Happy@192.168.0.127 "tasklist | findstr /I \"cmd.exe\""
+# прибить лишние (сессия Services, не твоя текущая):
+# taskkill /PID <pid> /F
 ```
 
 Результат: `C:\Users\Happy\Desktop\CODE\dopamine\deploy\build_64\Dopamine-*-win64.msi`.
