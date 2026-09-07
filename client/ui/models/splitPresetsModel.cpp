@@ -73,7 +73,11 @@ void SplitPresetsModel::fetchPresets()
                                                                        nullptr, m_settings->getGatewayEndpointFallback());
     QJsonObject payload;
     payload.insert("locale", m_settings->getAppLanguage().name().split("_").first());
-    if (!m_version.isEmpty()) {
+    // send the cached version only when we actually hold the preset list:
+    // the server treats a matching version as "client cache is fresh" and
+    // returns an empty catalog — with an empty local list that would leave
+    // the user with no presets forever
+    if (!m_version.isEmpty() && !m_presets.isEmpty()) {
         payload.insert("presets_version", m_version);
     }
 
@@ -151,6 +155,8 @@ void SplitPresetsModel::loadFromCache()
     m_version = m_settings->splitPresetsVersion();
     const QByteArray cache = m_settings->splitPresetsCache().toUtf8();
     if (cache.isEmpty()) {
+        // a stored version without the preset list is useless — refetch fresh
+        m_version.clear();
         return;
     }
 
