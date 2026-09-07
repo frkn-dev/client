@@ -9,30 +9,30 @@
 В корневом `CMakeLists.txt`:
 
 ```cmake
-set(DOPAMINE_VERSION 5.1.0.1)         # 4-компонентная: major.minor.patch.tweak
-set(APP_ANDROID_VERSION_CODE 2130)    # строго растёт, не зависит от версии
+set(DOPAMINE_VERSION 4.8.14.54)       # 4-компонентная: major.minor.patch.tweak
+set(APP_ANDROID_VERSION_CODE 2131)    # строго растёт, не зависит от версии
 ```
 
 **Как бампать правильно.** Версия 4-компонентная, и платформы берут из неё
 разное (всё считается автоматически в `CMakeLists.txt`):
 
 - **App Store / TestFlight / macOS**: маркетинговая версия = первые 3 цифры
-  (`5.1.0`), build number (`CFBundleVersion`) = 4-я (`1`). Поэтому багфиксы
-  крутим 4-й цифрой: `5.1.0.1 → 5.1.0.2 → ...` — в App Store Connect это одна
-  версия 5.1.0 с новыми билдами, а не отдельный релиз на каждый чих.
-  Меняешь 3-ю цифру (`5.2.0.1`) — это уже новая версия в сторе, и 4-ю снова
+  (`4.8.14`), build number (`CFBundleVersion`) = 4-я (`54`). Поэтому багфиксы
+  крутим 4-й цифрой: `4.8.14.54 → 4.8.14.55 → ...` — в App Store Connect это
+  одна версия 4.8.14 с новыми билдами, а не отдельный релиз на каждый чих.
+  Меняешь 3-ю цифру (`4.8.15.1`) — это уже новая версия в сторе, и 4-ю снова
   начинай с 1 (счётчик build number обнуляется вместе с маркетинг-версией).
 - **Android**: `versionName` = вся 4-компонентная версия; `versionCode`
   увеличивай на 1 при КАЖДОМ релизе независимо от маркетинг-версии.
 - **Windows**: MSI умеет только 3 компонента и игнорирует 4-ю при сравнении
-  версий, поэтому в MSI уходит `major.minor.tweak` (`5.1.0.1 → 5.1.1`) —
+  версий, поэтому в MSI уходит `major.minor.tweak` (`4.8.14.54 → 4.8.54`) —
   апгрейды продолжают работать. В свойствах файла и в UI версия полная.
 - **В UI приложения** (бейдж в настройках) показывается полная версия
-  `5.1.0.1`.
+  `4.8.14.54`.
 
 ```bash
 git add CMakeLists.txt
-git commit -m "Release 5.1.0.1 (Android versionCode 2130)"
+git commit -m "Release 4.8.14.54 (Android versionCode 2131)"
 GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_gh_2pizza -p 443 -o IdentitiesOnly=yes" \
   git push git@ssh.github.com:frkn-dev/dopamine.git dev
 ```
