@@ -274,10 +274,16 @@ bool WireguardUtilsMacos::updatePeer(const InterfaceConfig& config) {
   }
 
   // Exclude the server address, except for multihop exit servers.
+  // Skip empty addresses: configs without an IPv6 endpoint would otherwise
+  // produce a garbage exclusion route (invalid IPAddress, "/999999" in logs)
   if ((config.m_hopType != InterfaceConfig::MultiHopExit) &&
       (m_rtmonitor != nullptr)) {
-    m_rtmonitor->addExclusionRoute(IPAddress(config.m_serverIpv4AddrIn));
-    m_rtmonitor->addExclusionRoute(IPAddress(config.m_serverIpv6AddrIn));
+    if (!config.m_serverIpv4AddrIn.isEmpty()) {
+      m_rtmonitor->addExclusionRoute(IPAddress(config.m_serverIpv4AddrIn));
+    }
+    if (!config.m_serverIpv6AddrIn.isEmpty()) {
+      m_rtmonitor->addExclusionRoute(IPAddress(config.m_serverIpv6AddrIn));
+    }
   }
 
   int err = uapiErrno(uapiCommand(message));
@@ -294,8 +300,12 @@ bool WireguardUtilsMacos::deletePeer(const InterfaceConfig& config) {
   // Clear exclustion routes for this peer.
   if ((config.m_hopType != InterfaceConfig::MultiHopExit) &&
       (m_rtmonitor != nullptr)) {
-    m_rtmonitor->deleteExclusionRoute(IPAddress(config.m_serverIpv4AddrIn));
-    m_rtmonitor->deleteExclusionRoute(IPAddress(config.m_serverIpv6AddrIn));
+    if (!config.m_serverIpv4AddrIn.isEmpty()) {
+      m_rtmonitor->deleteExclusionRoute(IPAddress(config.m_serverIpv4AddrIn));
+    }
+    if (!config.m_serverIpv6AddrIn.isEmpty()) {
+      m_rtmonitor->deleteExclusionRoute(IPAddress(config.m_serverIpv6AddrIn));
+    }
   }
 
   QString message;

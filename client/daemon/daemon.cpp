@@ -487,11 +487,17 @@ bool Daemon::parseConfig(const QJsonObject& obj, InterfaceConfig& config) {
 bool Daemon::deactivate(bool emitSignals) {
   Q_ASSERT(wgutils() != nullptr);
 
+  // stop the handshake polling first — otherwise it keeps firing against the
+  // dying interface and spams uapi errors on the way down
+  m_handshakeTimer.stop();
+
   // Deactivate the main interface.
   if (!m_connections.isEmpty()) {
     const ConnectionState& state = m_connections.first();
     if (!run(Down, state.m_config)) {
-      return false;
+      // do NOT bail out here: skipping the cleanup below orphans the
+      // wireguard-go process and leaks the utun interface
+      logger.warning() << "Down script failed, tearing the tunnel down anyway";
     }
   }
 
