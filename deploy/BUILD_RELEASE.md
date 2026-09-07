@@ -56,10 +56,14 @@ PKG нотаризуются автоматически. Ошибка notary `Er
 
 ## 3. iOS → TestFlight (на маке, ~20–30 мин)
 
-После бампа версии или удаления файлов из проекта **обязателен реконфигур**:
+После бампа версии или удаления файлов из проекта **обязателен реконфигур**.
+Если `xcode-select` указывает на старый Xcode (например 16.x), а SDK нужен от
+Xcode 26 — задай `DEVELOPER_DIR`, иначе Swift-часть (WireGuardKit) не соберётся
+с ошибкой «this SDK is not supported by the compiler»:
 
 ```bash
 cd ~/c/f/dopamine
+export DEVELOPER_DIR=/Applications/Xcode-26.1.1.app/Contents/Developer
 cmake -S . -B build-ios-upload -GXcode \
   -DCMAKE_TOOLCHAIN_FILE=/Users/2pizza/c/6.10.1/6.10.1/6.10.1/ios/lib/cmake/Qt6/qt.toolchain.cmake \
   -DQT_HOST_PATH=/Users/2pizza/c/6.10.1/6.10.1/macos \
@@ -74,10 +78,12 @@ xcodebuild -project build-ios-upload/Dopamine.xcodeproj -scheme Dopamine \
 xcodebuild -exportArchive -archivePath build-ios-upload/Dopamine.xcarchive \
   -exportOptionsPlist build-ios-upload/exportOptionsUpload.plist \
   -exportPath build-ios-upload/export \
-  -authenticationKeyPath AuthKey_9Y92B3WCJF.p8 \
+  -authenticationKeyPath "$PWD/AuthKey_9Y92B3WCJF.p8" \
   -authenticationKeyID 9Y92B3WCJF \
   -authenticationKeyIssuerID d3135078-58fb-4834-8f6e-b729e970ba87
 ```
+
+`-authenticationKeyPath` требует **абсолютный** путь (поэтому `$PWD/`).
 
 После загрузки билд 10–30 минут в «обработке» у Apple, потом появится в
 App Store Connect → TestFlight.
