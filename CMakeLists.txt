@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25.0 FATAL_ERROR)
 
 set(PROJECT Dopamine)
-set(DOPAMINE_VERSION 5.0.60)
+set(DOPAMINE_VERSION 5.1.0.1)
 
 project(${PROJECT} VERSION ${DOPAMINE_VERSION}
         DESCRIPTION "Dopamine by FRKN"
@@ -32,7 +32,7 @@ else()
 endif()
 # versionCode must keep growing monotonically (Google Play / APK update
 # requirement) — it does NOT follow the marketing version reset to 1.0.x
-set(APP_ANDROID_VERSION_CODE 2129)
+set(APP_ANDROID_VERSION_CODE 2130)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(MZ_PLATFORM_NAME "linux")
@@ -80,7 +80,16 @@ if(WIN32 AND NOT IOS AND NOT ANDROID AND NOT MACOS_NE)
     set(CPACK_WIX_VERSION 4)
     set(CPACK_PACKAGE_NAME "Dopamine")
     set(CPACK_PACKAGE_VENDOR "FRKN")
-    set(CPACK_PACKAGE_VERSION ${DOPAMINE_VERSION})
+    # MSI ProductVersion is strictly major.minor.build and Windows Installer
+    # ignores a 4th component in upgrade comparisons — so for 4-part marketing
+    # versions (5.1.0.1) map the tweak into the build field (-> 5.1.1) to keep
+    # MSI upgrades working; 3-part versions stay untouched
+    if("${CMAKE_PROJECT_VERSION_TWEAK}" STREQUAL "")
+        set(DOPAMINE_MSI_VERSION ${APP_MAJOR_VERSION})
+    else()
+        set(DOPAMINE_MSI_VERSION ${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}.${DOPAMINE_VERSION_RC_TWEAK})
+    endif()
+    set(CPACK_PACKAGE_VERSION ${DOPAMINE_MSI_VERSION})
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FRKN VPN client")
     set(AMNEZIA_LICENSE_TXT "${CMAKE_BINARY_DIR}/LICENSE.txt")
     configure_file("${CMAKE_SOURCE_DIR}/LICENSE" "${AMNEZIA_LICENSE_TXT}" COPYONLY)
