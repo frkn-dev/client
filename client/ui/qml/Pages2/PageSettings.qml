@@ -131,7 +131,9 @@ PageType {
 
         property string title: qsTr("Connection")
         readonly property string leftImagePath: "qrc:/images/controls/radio.svg"
-        property bool isVisible: true
+        // the page is empty on iOS: LAN routing and KillSwitch are desktop-only,
+        // app split tunneling is Windows/Android — hide the entry there
+        property bool isVisible: GC.isDesktop() || Qt.platform.os === "android"
         readonly property var clickedHandler: function() {
             PageController.goToPage(PageEnum.PageSettingsConnection)
         }
