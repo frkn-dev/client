@@ -6,19 +6,22 @@
 #include <QRegularExpression>
 
 #include <chrono>
+#include <cstring>
 
 #include <openssl/core_names.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-#if defined(Q_OS_UNIX)
-
+#if defined(Q_OS_WIN)
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
 #include <cerrno>
-#include <cstring>
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <unistd.h>
+#endif
 
 namespace
 {
@@ -32,6 +35,39 @@ constexpr size_t kMac1Offset = 116; // type..timestamp
 constexpr quint32 kTypeInitiation = 1;
 constexpr quint32 kTypeResponse = 2;
 constexpr quint32 kTypeCookieReply = 3;
+
+#if defined(Q_OS_WIN)
+using SocketHandle = SOCKET;
+constexpr SocketHandle kInvalidSocket = INVALID_SOCKET;
+
+void closeSocket(SocketHandle sock)
+{
+    closesocket(sock);
+}
+
+// Winsock needs a one-time init; static local init is thread-safe
+bool initSockets()
+{
+    static const bool initialized = [] {
+        WSADATA data;
+        return WSAStartup(MAKEWORD(2, 2), &data) == 0;
+    }();
+    return initialized;
+}
+#else
+using SocketHandle = int;
+constexpr SocketHandle kInvalidSocket = -1;
+
+void closeSocket(SocketHandle sock)
+{
+    ::close(sock);
+}
+
+bool initSockets()
+{
+    return true;
+}
+#endif
 
 struct JunkParams
 {
@@ -523,6 +559,11 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
     // MAC2 stays zero (no cookie)
 
     // resolve
+    if (!initSockets()) {
+        qWarning() << "[HEALTH] wg probe: winsock init failed";
+        freeKeys();
+        return -1;
+    }
     struct addrinfo hints = { 0 };
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_DGRAM;
@@ -534,20 +575,20 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
         return -1;
     }
 
-    int sock = -1;
-    for (struct addrinfo *ai = addresses; ai && sock < 0; ai = ai->ai_next) {
+    SocketHandle sock = kInvalidSocket;
+    for (struct addrinfo *ai = addresses; ai && sock == kInvalidSocket; ai = ai->ai_next) {
         if (ai->ai_family != AF_INET && ai->ai_family != AF_INET6) {
             continue;
         }
-        const int candidate = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
-        if (candidate >= 0 && connect(candidate, ai->ai_addr, ai->ai_addrlen) == 0) {
+        const SocketHandle candidate = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+        if (candidate != kInvalidSocket && connect(candidate, ai->ai_addr, static_cast<int>(ai->ai_addrlen)) == 0) {
             sock = candidate;
-        } else if (candidate >= 0) {
-            close(candidate);
+        } else if (candidate != kInvalidSocket) {
+            closeSocket(candidate);
         }
     }
     freeaddrinfo(addresses);
-    if (sock < 0) {
+    if (sock == kInvalidSocket) {
         qWarning() << "[HEALTH] wg probe: socket failed for" << host;
         freeKeys();
         return -1;
@@ -583,7 +624,7 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
 
     auto sendAll = [&]() {
         for (const QByteArray &d : datagrams) {
-            send(sock, d.constData(), d.size(), 0);
+            send(sock, d.constData(), static_cast<int>(d.size()), 0);
         }
     };
 
@@ -607,13 +648,21 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
             break;
         }
         const auto waitUs = std::chrono::duration_cast<std::chrono::microseconds>(limit - now).count();
+#if defined(Q_OS_WIN)
+        // SO_RCVTIMEO on Windows takes a DWORD in milliseconds; a recv timeout
+        // surfaces as WSAETIMEDOUT — handled by the generic n <= 0 path below
+        const DWORD timeoutDword = static_cast<DWORD>((std::max)(waitUs / 1000, INT64_C(1)));
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char *>(&timeoutDword),
+                   sizeof(timeoutDword));
+#else
         struct timeval tv;
         tv.tv_sec = static_cast<long>(waitUs / 1000000);
         tv.tv_usec = static_cast<long>(waitUs % 1000000);
         setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+#endif
 
         uint8_t buf[2048];
-        const ssize_t n = recv(sock, buf, sizeof(buf), 0);
+        const int n = static_cast<int>(recv(sock, reinterpret_cast<char *>(buf), sizeof(buf), 0));
         if (n <= 0) {
             continue;
         }
@@ -622,7 +671,7 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
                                      .count();
 
         // response: S2 prefix + 92 bytes; cookie reply: S3 prefix + 64 bytes (also proves liveness)
-        if (n == static_cast<ssize_t>(junk.s3 + kCookieReplySize)) {
+        if (n == static_cast<int>(junk.s3 + kCookieReplySize)) {
             const uint8_t *cookie = buf + junk.s3;
             const quint32 type = getLe32(cookie);
             const bool plausible = junk.h3.set ? (type >= junk.h3.start && type <= junk.h3.end) : type == kTypeCookieReply;
@@ -631,7 +680,7 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
                 break;
             }
         }
-        if (n != static_cast<ssize_t>(junk.s2 + kResponseSize)) {
+        if (n != static_cast<int>(junk.s2 + kResponseSize)) {
             continue;
         }
         const uint8_t *resp = buf + junk.s2;
@@ -647,20 +696,7 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
         }
     }
 
-    close(sock);
+    closeSocket(sock);
     freeKeys();
     return rttMs;
 }
-
-#else // !Q_OS_UNIX — probe not supported (only called on Android anyway)
-
-int wgProbeHandshakeRTT(const QString &host, quint16 port,
-                        const QString &clientPrivKeyB64, const QString &serverPubKeyB64,
-                        const QString &pskB64, const QJsonObject &junkParams, int timeoutMs)
-{
-    Q_UNUSED(host) Q_UNUSED(port) Q_UNUSED(clientPrivKeyB64) Q_UNUSED(serverPubKeyB64) Q_UNUSED(pskB64)
-            Q_UNUSED(junkParams) Q_UNUSED(timeoutMs)
-    return -1;
-}
-
-#endif

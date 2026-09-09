@@ -27,7 +27,6 @@ extern "C" char *LibXrayPing(const char *datDir, const char *configPath, int tim
 #include <QJniEnvironment>
 #include <QJniObject>
 
-#include "core/wgHandshakeProbe.h"
 #include "platforms/android/android_utils.h"
 
 // same Go API as LibXrayPing on Apple platforms, via the Java binding packaged
@@ -55,6 +54,11 @@ static QString libXrayPingAndroid(const QString &configPath, int timeoutSec, con
     }
     return reply.toString();
 }
+#endif
+
+// OpenSSL Noise_IK probe where libwg-go is unavailable (Android, Windows)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WIN)
+#include "core/wgHandshakeProbe.h"
 #endif
 
 HealthCheckController::HealthCheckController(const QSharedPointer<ServersModel> &serversModel, QObject *parent)
@@ -192,9 +196,9 @@ void HealthCheckController::startProbe(bool force)
         }
     }
 
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID) || defined(Q_OS_WIN)
     // collect awg/wireguard targets: blocking handshake probe on worker threads
-    // (libwg-go on Apple platforms, core/wgHandshakeProbe on Android)
+    // (libwg-go on Apple platforms, core/wgHandshakeProbe on Android/Windows)
     for (int i = 0; i < count; ++i) {
         const QString protocol = m_serversModel->data(i, ServersModel::Roles::ServiceProtocolRole).toString();
         if (protocol != QStringLiteral("awg") && protocol != QStringLiteral("wireguard")) {
@@ -311,7 +315,9 @@ void HealthCheckController::startProbe(bool force)
             m_wgQueue.append(target);
         }
     }
+#endif
 
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
     // collect hysteria2 targets: a bare QUIC version-negotiation probe is unreliable
     // (live servers may ignore it), so H2 gets a full-path probe via LibXrayPing —
     // real handshake + auth + HTTP request through the server
@@ -557,7 +563,7 @@ void HealthCheckController::finishSocket(QTcpSocket *socket, int latencyMs)
 
 void HealthCheckController::startNextWg()
 {
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID) || defined(Q_OS_WIN)
     // few parallel WG probes: racing handshakes with the same key get dropped
     while (m_wgWatchers.size() < kWgMaxParallel && !m_wgQueue.isEmpty()) {
         const WgTarget target = m_wgQueue.takeFirst();
@@ -570,7 +576,7 @@ void HealthCheckController::startNextWg()
         });
 
         watcher->setFuture(QtConcurrent::run([target]() -> int {
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WIN)
             const QJsonObject junk = QJsonDocument::fromJson(target.junkParamsJson.toUtf8()).object();
             return wgProbeHandshakeRTT(target.host, target.port, target.clientPrivKey, target.serverPubKey,
                                        target.psk, junk, kWgTimeoutMs);

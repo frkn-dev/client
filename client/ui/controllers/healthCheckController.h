@@ -15,9 +15,9 @@
 // Server health probe (see frkn-docs/server-healthcheck-research.md):
 // TCP connect + RTT for TCP-based servers (VLESS). WG/AWG servers are
 // probed with a real handshake on worker threads — via WgProbeRTT (libwg-go)
-// on Apple platforms, via core/wgHandshakeProbe (OpenSSL Noise_IK) on Android.
-// Hysteria2 gets a full-path probe via libxray (LibXrayPing on Apple,
-// JNI LibXray.ping on Android).
+// on Apple platforms, via core/wgHandshakeProbe (OpenSSL Noise_IK) on Android
+// and Windows. Hysteria2 gets a full-path probe via libxray (LibXrayPing on
+// Apple, JNI LibXray.ping on Android); not available on Windows.
 class HealthCheckController : public QObject
 {
     Q_OBJECT
