@@ -32,6 +32,7 @@ constexpr size_t kInitiationSize = 148;
 constexpr size_t kResponseSize = 92;
 constexpr size_t kCookieReplySize = 64;
 constexpr size_t kMac1Offset = 116; // type..timestamp
+constexpr size_t kHeaderNonceLen = 12; // header protection nonce = junk prefix head
 constexpr quint32 kTypeInitiation = 1;
 constexpr quint32 kTypeResponse = 2;
 constexpr quint32 kTypeCookieReply = 3;
@@ -82,6 +83,10 @@ struct JunkParams
     int s1 = 0, s2 = 0, s3 = 0;
     Range h1, h2, h3;
     QStringList iSlots; // raw I1..I5 specs, one wire packet per non-empty slot
+    // AWG 3.1 header protection: handshake messages are XORed with a ChaCha20
+    // keystream under this key, nonce = first 12 bytes of the junk prefix
+    bool headerProtection = false;
+    uint8_t headerProtectionKey[kKeyLen] = { 0 };
 };
 
 void putLe32(uint8_t *dst, quint32 v)
@@ -251,6 +256,27 @@ bool aeadOpen(const uint8_t key[kKeyLen], const uint8_t *cipher, size_t cipherLe
     return ok;
 }
 
+// AWG 3.1 header protection (noise-protocol.go HeaderProtectionCipher): XORs data
+// with the ChaCha20 keystream — IETF ChaCha20, 96-bit nonce, block counter 0,
+// unauthenticated; EVP_chacha20 IV = 4-byte LE counter || 12-byte nonce.
+// Symmetric: the same call protects outbound and unprotects inbound messages.
+bool chacha20Apply(const uint8_t key[kKeyLen], const uint8_t nonce[kHeaderNonceLen], uint8_t *data, size_t len)
+{
+    bool ok = false;
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if (ctx) {
+        uint8_t iv[16] = { 0 };
+        memcpy(iv + 4, nonce, kHeaderNonceLen);
+        int outLen = 0, finalLen = 0;
+        ok = EVP_EncryptInit_ex(ctx, EVP_chacha20(), nullptr, key, iv) == 1
+                && EVP_EncryptUpdate(ctx, data, &outLen, data, static_cast<int>(len)) == 1
+                && EVP_EncryptFinal_ex(ctx, data + outLen, &finalLen) == 1
+                && outLen + finalLen == static_cast<int>(len);
+    }
+    EVP_CIPHER_CTX_free(ctx);
+    return ok;
+}
+
 EVP_PKEY *x25519FromPrivate(const uint8_t priv[kKeyLen])
 {
     return EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, nullptr, priv, kKeyLen);
@@ -352,6 +378,12 @@ JunkParams parseJunkParams(const QJsonObject &json)
     }
     if (p.jc < 0 || p.jmin < 0 || p.jmax < p.jmin || p.jmax > 1200) {
         p.jc = 0; // nonsense values -> no junk
+    }
+    const QByteArray hpKey =
+            QByteArray::fromBase64(json.value(QStringLiteral("HeaderProtectionKey")).toString().toUtf8());
+    if (hpKey.size() == static_cast<int>(kKeyLen)) {
+        memcpy(p.headerProtectionKey, hpKey.constData(), kKeyLen);
+        p.headerProtection = true;
     }
     return p;
 }
@@ -619,6 +651,13 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
         initPacket.resize(junk.s1 + static_cast<int>(kInitiationSize));
         randomBytes(reinterpret_cast<uint8_t *>(initPacket.data()), junk.s1);
         memcpy(initPacket.data() + junk.s1, msg, kInitiationSize);
+        // header protection: MAC1 above was computed over the plaintext; the whole
+        // message is XORed on the wire, nonce = head of the S1 junk prefix
+        // (skipped when the prefix is shorter than the nonce)
+        if (junk.headerProtection && junk.s1 >= static_cast<int>(kHeaderNonceLen)) {
+            chacha20Apply(junk.headerProtectionKey, reinterpret_cast<uint8_t *>(initPacket.data()),
+                          reinterpret_cast<uint8_t *>(initPacket.data()) + junk.s1, kInitiationSize);
+        }
         datagrams.append(initPacket);
     }
 
@@ -670,9 +709,20 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
         const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start)
                                      .count();
 
-        // response: S2 prefix + 92 bytes; cookie reply: S3 prefix + 64 bytes (also proves liveness)
-        if (n == static_cast<int>(junk.s3 + kCookieReplySize)) {
+        // response: S2 prefix + 92 bytes; cookie reply: S3 prefix + 64 bytes (also
+        // proves liveness). Trailing garbage after the message is allowed, so the
+        // size checks are ">="; with header protection the message is XOR-decoded
+        // first (nonce = head of the junk prefix), type/sender read from plaintext
+        if (n >= static_cast<int>(junk.s3 + kCookieReplySize)) {
+            uint8_t decoded[kCookieReplySize];
             const uint8_t *cookie = buf + junk.s3;
+            if (junk.headerProtection && junk.s3 >= static_cast<int>(kHeaderNonceLen)) {
+                memcpy(decoded, cookie, kCookieReplySize);
+                if (!chacha20Apply(junk.headerProtectionKey, buf, decoded, kCookieReplySize)) {
+                    continue;
+                }
+                cookie = decoded;
+            }
             const quint32 type = getLe32(cookie);
             const bool plausible = junk.h3.set ? (type >= junk.h3.start && type <= junk.h3.end) : type == kTypeCookieReply;
             if (plausible && getLe32(cookie + 4) == sender) {
@@ -680,10 +730,18 @@ int wgProbeHandshakeRTT(const QString &host, quint16 port,
                 break;
             }
         }
-        if (n != static_cast<int>(junk.s2 + kResponseSize)) {
+        if (n < static_cast<int>(junk.s2 + kResponseSize)) {
             continue;
         }
+        uint8_t decoded[kResponseSize];
         const uint8_t *resp = buf + junk.s2;
+        if (junk.headerProtection && junk.s2 >= static_cast<int>(kHeaderNonceLen)) {
+            memcpy(decoded, resp, kResponseSize);
+            if (!chacha20Apply(junk.headerProtectionKey, buf, decoded, kResponseSize)) {
+                continue;
+            }
+            resp = decoded;
+        }
         const quint32 type = getLe32(resp);
         const bool plausible = junk.h2.set ? (type >= junk.h2.start && type <= junk.h2.end) : type == kTypeResponse;
         if (!plausible || getLe32(resp + 8) != sender) {

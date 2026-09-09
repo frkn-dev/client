@@ -235,30 +235,29 @@ void HealthCheckController::startProbe(bool force)
         // the short wg-quick names already (Jc, Jmin, ..., H1..H4, I1..I5)
         QJsonObject junk;
         for (const char *key : { "Jc", "Jmin", "Jmax", "S1", "S2", "S3", "S4", "H1", "H2", "H3", "H4",
-                                 "I1", "I2", "I3", "I4", "I5" }) {
+                                 "I1", "I2", "I3", "I4", "I5", "HeaderProtectionKey" }) {
             const QString value = lastConfig.value(QString::fromLatin1(key)).toString();
             if (!value.isEmpty()) {
                 junk.insert(QString::fromLatin1(key), value);
             }
         }
 
-        // fall back to junk params embedded in the wg-quick INI (some configs
+        // fill gaps from junk params embedded in the wg-quick INI (some configs
         // carry them only there / last_config fields may be null)
-        if (junk.isEmpty()) {
-            static const QSet<QString> junkKeys = { "Jc", "Jmin", "Jmax", "S1", "S2", "S3", "S4",
-                                                    "H1", "H2", "H3", "H4", "I1", "I2", "I3", "I4", "I5" };
-            const QString ini = containerObject.value(containerName).toObject().value(QStringLiteral("config")).toString();
-            for (const QString &line : ini.split(QLatin1Char('\n'))) {
-                const auto parts = line.split(QLatin1Char('='), Qt::SkipEmptyParts);
-                if (parts.size() != 2) {
-                    continue;
-                }
-                const QString key = parts[0].trimmed();
-                if (junkKeys.contains(key)) {
-                    const QString value = parts[1].trimmed();
-                    if (!value.isEmpty()) {
-                        junk.insert(key, value);
-                    }
+        static const QSet<QString> junkKeys = { "Jc", "Jmin", "Jmax", "S1", "S2", "S3", "S4",
+                                                "H1", "H2", "H3", "H4", "I1", "I2", "I3", "I4", "I5",
+                                                "HeaderProtectionKey" };
+        const QString ini = containerObject.value(containerName).toObject().value(QStringLiteral("config")).toString();
+        for (const QString &line : ini.split(QLatin1Char('\n'))) {
+            const auto parts = line.split(QLatin1Char('='), Qt::SkipEmptyParts);
+            if (parts.size() != 2) {
+                continue;
+            }
+            const QString key = parts[0].trimmed();
+            if (junkKeys.contains(key) && !junk.contains(key)) {
+                const QString value = parts[1].trimmed();
+                if (!value.isEmpty()) {
+                    junk.insert(key, value);
                 }
             }
         }
