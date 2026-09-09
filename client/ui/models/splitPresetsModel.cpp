@@ -5,6 +5,7 @@
 #include <QJsonObject>
 
 #include "core/api/apiDefs.h"
+#include "core/builtinSplitPresets.h"
 #include "core/controllers/gatewayController.h"
 
 SplitPresetsModel::SplitPresetsModel(std::shared_ptr<Settings> settings, const QSharedPointer<ServersModel> &serversModel,
@@ -14,6 +15,7 @@ SplitPresetsModel::SplitPresetsModel(std::shared_ptr<Settings> settings, const Q
     const QStringList enabled = m_settings->splitPresetsEnabled();
     m_enabledPresets = QSet<QString>(enabled.begin(), enabled.end());
     loadFromCache();
+    appendBuiltinPresets();
 }
 
 int SplitPresetsModel::rowCount(const QModelIndex &parent) const
@@ -117,6 +119,7 @@ void SplitPresetsModel::fetchPresets()
                 m_presets.append(preset);
             }
         }
+        appendBuiltinPresets();
         m_version = newVersion;
         endResetModel();
 
@@ -176,10 +179,44 @@ void SplitPresetsModel::loadFromCache()
     }
 }
 
+void SplitPresetsModel::appendBuiltinPresets()
+{
+    for (const auto &value : BuiltinSplitPresets::presets()) {
+        const QJsonObject presetObj = value.toObject();
+        Preset preset;
+        preset.id = presetObj.value("id").toString();
+        // an API preset with the same id wins
+        bool duplicate = false;
+        for (const auto &existing : m_presets) {
+            if (existing.id == preset.id) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (duplicate) {
+            continue;
+        }
+        preset.name = presetObj.value("name").toString();
+        const QJsonArray domains = presetObj.value("domains").toArray();
+        for (const auto &domain : domains) {
+            preset.domains.append(domain.toString());
+        }
+        if (!preset.id.isEmpty() && !preset.domains.isEmpty()) {
+            m_builtinIds.insert(preset.id);
+            m_presets.append(preset);
+        }
+    }
+}
+
 void SplitPresetsModel::saveToCache() const
 {
     QJsonArray presetsArray;
     for (const auto &preset : m_presets) {
+        // the cache mirrors the API catalog (and its version) — builtin presets
+        // are merged in code and must not be persisted there
+        if (m_builtinIds.contains(preset.id)) {
+            continue;
+        }
         QJsonObject presetObj;
         presetObj.insert("id", preset.id);
         presetObj.insert("name", preset.name);

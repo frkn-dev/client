@@ -4299,6 +4299,16 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../core/builtinSplitPresets.cpp" line="98"/>
+        <source>RU services (direct)</source>
+        <translation>RU-сервіси — повз VPN</translation>
+    </message>
+    <message>
+        <location filename="../core/builtinSplitPresets.cpp" line="104"/>
+        <source>Blocked in RU (via VPN)</source>
+        <translation>Заблоковані в РФ — через VPN</translation>
+    </message>
+    <message>
         <location filename="../core/errorstrings.cpp" line="76"/>
         <source>The server did not respond in time. It may be unreachable from your network — try another server or protocol.</source>
         <translation>Сервер не відповів вчасно. Можливо, він недоступний з вашої мережі — спробуйте інший сервер або протокол.</translation>

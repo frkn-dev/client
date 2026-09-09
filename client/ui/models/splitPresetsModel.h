@@ -60,12 +60,14 @@ private:
     };
 
     void loadFromCache();
+    void appendBuiltinPresets();
     void saveToCache() const;
 
     std::shared_ptr<Settings> m_settings;
     QSharedPointer<ServersModel> m_serversModel;
 
     QList<Preset> m_presets;
+    QSet<QString> m_builtinIds; // merged from code, never written to the API cache
     QSet<QString> m_enabledPresets;
     QString m_version;
 };

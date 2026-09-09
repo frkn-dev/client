@@ -31,6 +31,7 @@
     #include "platforms/ios/ios_controller.h"
 #endif
 
+#include "core/builtinSplitPresets.h"
 #include "core/networkUtilities.h"
 #include "vpnconnection.h"
 
@@ -411,7 +412,13 @@ void VpnConnection::appendSplitTunnelingConfig()
         const QStringList enabledPresets = m_settings->splitPresetsEnabled();
         if (!enabledPresets.isEmpty()) {
             QJsonArray presetDomains;
-            const QJsonArray presets = QJsonDocument::fromJson(m_settings->splitPresetsCache().toUtf8()).array();
+            // enabled presets are resolved by id against the API catalog cache
+            // plus the hardcoded presets (same JSON shape, see builtinSplitPresets)
+            QJsonArray presets = QJsonDocument::fromJson(m_settings->splitPresetsCache().toUtf8()).array();
+            const QJsonArray builtinPresets = BuiltinSplitPresets::presets();
+            for (const auto &value : builtinPresets) {
+                presets.append(value);
+            }
             for (const auto &value : presets) {
                 const QJsonObject preset = value.toObject();
                 if (!enabledPresets.contains(preset.value("id").toString())) {

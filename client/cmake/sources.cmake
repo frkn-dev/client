@@ -27,6 +27,7 @@ set(HEADERS ${HEADERS}
     ${CLIENT_ROOT_DIR}/core/api/apiUtils.h
     ${CLIENT_ROOT_DIR}/core/osSignalHandler.h
     ${CLIENT_ROOT_DIR}/core/wgHandshakeProbe.h
+    ${CLIENT_ROOT_DIR}/core/builtinSplitPresets.h
 )
 
 # Mozilla headres
@@ -76,6 +77,7 @@ set(SOURCES ${SOURCES}
     ${CLIENT_ROOT_DIR}/core/api/apiUtils.cpp
     ${CLIENT_ROOT_DIR}/core/osSignalHandler.cpp
     ${CLIENT_ROOT_DIR}/core/wgHandshakeProbe.cpp
+    ${CLIENT_ROOT_DIR}/core/builtinSplitPresets.cpp
 )
 
 # Mozilla sources
