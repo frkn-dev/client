@@ -1,8 +1,5 @@
 #include "apiSettingsController.h"
 
-#include <QEventLoop>
-#include <QTimer>
-
 #include "core/api/apiUtils.h"
 #include "core/controllers/gatewayController.h"
 #include "core/api/apiDefs.h"
@@ -98,12 +95,6 @@ bool ApiSettingsController::getAccountInfo(bool reload, bool forceRefresh)
     }
     m_accountInfoInFlight.insert(processedIndex);
 
-    if (reload) {
-        QEventLoop wait;
-        QTimer::singleShot(1000, &wait, &QEventLoop::quit);
-        wait.exec(QEventLoop::ExcludeUserInputEvents);
-    }
-
     auto rootAuthData = serverConfig.value(configKey::authData).toObject();
 
     qDebug().noquote() << "[ACCOUNT INFO] serverIndex:" << processedIndex
@@ -132,9 +123,9 @@ bool ApiSettingsController::getAccountInfo(bool reload, bool forceRefresh)
     }
 
     bool isTestPurchase = apiConfig.value(apiDefs::key::isTestPurchase).toBool(false);
-    GatewayController gatewayController(m_settings->getGatewayEndpoint(isTestPurchase), m_settings->isDevGatewayEnv(isTestPurchase),
-                                        requestTimeoutMsecs, m_settings->isStrictKillSwitchEnabled(), nullptr,
-                                        m_settings->getGatewayEndpointFallback(isTestPurchase));
+    auto gatewayController = QSharedPointer<GatewayController>::create(
+            m_settings->getGatewayEndpoint(isTestPurchase), m_settings->isDevGatewayEnv(isTestPurchase), requestTimeoutMsecs,
+            m_settings->isStrictKillSwitchEnabled(), nullptr, m_settings->getGatewayEndpointFallback(isTestPurchase));
 
     QJsonObject apiPayload;
     apiPayload[configKey::userCountryCode] = apiConfig.value(configKey::userCountryCode).toString();
@@ -143,25 +134,33 @@ bool ApiSettingsController::getAccountInfo(bool reload, bool forceRefresh)
     apiPayload[apiDefs::key::cliVersion] = QString(APP_VERSION);
     apiPayload[apiDefs::key::appLanguage] = m_settings->getAppLanguage().name().split("_").first();
 
-    QByteArray responseBody;
-
-    ErrorCode errorCode = gatewayController.post(QString("%1v1/account_info"), apiPayload, responseBody);
-    if (errorCode != ErrorCode::NoError) {
+    // async: the UI thread must not block on the gateway round-trip; the result
+    // is applied from the continuation (cache/inFlight bookkeeping lives there)
+    auto future = gatewayController->postAsync(QString("%1v1/account_info"), apiPayload);
+    future.then(this, [this, gatewayController, processedIndex, serverConfig, reload](QPair<ErrorCode, QByteArray> result) {
+        const auto [errorCode, responseBody] = result;
         m_accountInfoInFlight.remove(processedIndex);
-        emit errorOccurred(errorCode);
-        return false;
-    }
+        if (errorCode != ErrorCode::NoError) {
+            emit errorOccurred(errorCode);
+            return;
+        }
+        // the user may have switched to another server while the request was in
+        // flight — applying the stale response would poison the wrong server card
+        if (m_serversModel->getProcessedServerIndex() != processedIndex) {
+            qDebug() << "[ACCOUNT INFO] dropping stale response for serverIndex:" << processedIndex;
+            return;
+        }
 
-    QJsonObject accountInfo = QJsonDocument::fromJson(responseBody).object();
-    m_accountInfoInFlight.remove(processedIndex);
-    m_accountInfoCache[processedIndex] = accountInfo;
-    m_accountInfoCacheTime[processedIndex] = QDateTime::currentDateTime();
-    m_apiAccountInfoModel->updateModel(accountInfo, serverConfig);
+        QJsonObject accountInfo = QJsonDocument::fromJson(responseBody).object();
+        m_accountInfoCache[processedIndex] = accountInfo;
+        m_accountInfoCacheTime[processedIndex] = QDateTime::currentDateTime();
+        m_apiAccountInfoModel->updateModel(accountInfo, serverConfig);
 
-    if (reload) {
-        updateApiCountryModel();
-        updateApiDevicesModel();
-    }
+        if (reload) {
+            updateApiCountryModel();
+            updateApiDevicesModel();
+        }
+    });
 
     return true;
 }

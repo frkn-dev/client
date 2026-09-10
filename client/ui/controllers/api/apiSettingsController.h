@@ -18,6 +18,9 @@ public:
     ~ApiSettingsController();
 
 public slots:
+    // false only when the request cannot even be started (no auth data); true means
+    // local/cached data was applied or the async fetch was launched — the fresh
+    // account info arrives via the account info model updates
     bool getAccountInfo(bool reload, bool forceRefresh = false);
     void updateApiCountryModel();
     void updateApiDevicesModel();

@@ -1275,11 +1275,19 @@ bool ApiConfigsController::importServiceFromGateway()
     }
 }
 
-bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const QString &newCountryCode, const QString &newCountryName,
-                                                    bool reloadServiceConfig, bool silent)
+void ApiConfigsController::prepareGatewayConfigUpdate(const int serverIndex, const QString &newCountryCode,
+                                                      const QString &newCountryName, bool reloadServiceConfig, bool silent,
+                                                      GatewayConfigUpdate &update)
 {
+    update.serverIndex = serverIndex;
+    update.newCountryName = newCountryName;
+    update.reloadServiceConfig = reloadServiceConfig;
+    update.silent = silent;
+
     auto serverConfig = m_serversModel->getServerConfig(serverIndex);
     auto apiConfig = serverConfig.value(configKey::apiConfig).toObject();
+    update.serverConfig = serverConfig;
+    update.apiConfig = apiConfig;
 
     qDebug().noquote() << "[UPDATE GATEWAY] serverIndex:" << serverIndex
                        << "configVersion:" << serverConfig.value("config_version").toInt()
@@ -1300,6 +1308,7 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
     if (!authData.contains(apiDefs::key::apiKey) && authData.contains(apiDefs::key::id)) {
         authData[apiDefs::key::apiKey] = authData.value(apiDefs::key::id);
     }
+    update.authData = authData;
 
     GatewayRequestData gatewayRequestData { QSysInfo::productType(),
                                             QString(APP_VERSION),
@@ -1310,10 +1319,10 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
                                             apiConfig.value(configKey::serviceType).toString(),
                                             apiConfig.value(configKey::serviceProtocol).toString(),
                                             authData };
+    update.serviceProtocol = gatewayRequestData.serviceProtocol;
 
-    ProtocolData protocolData;
     if (!isShared) {
-        protocolData = generateProtocolData(gatewayRequestData.serviceProtocol);
+        update.protocolData = generateProtocolData(gatewayRequestData.serviceProtocol);
     }
 
     // Re-use the previously generated WireGuard key pair on every reconnect so that
@@ -1349,8 +1358,8 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
             }
 
             if (!savedClientPrivKey.isEmpty() && !savedClientPubKey.isEmpty()) {
-                protocolData.wireGuardClientPrivKey = savedClientPrivKey;
-                protocolData.wireGuardClientPubKey = savedClientPubKey;
+                update.protocolData.wireGuardClientPrivKey = savedClientPrivKey;
+                update.protocolData.wireGuardClientPubKey = savedClientPubKey;
                 qDebug() << "[API IMPORT] reusing existing AWG client key for connect event, serverIndex:" << serverIndex;
             } else {
                 qDebug() << "[API IMPORT] no saved AWG client key to reuse, generating new one, serverIndex:" << serverIndex;
@@ -1375,20 +1384,30 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
         apiPayload.insert(QStringLiteral("node_id"), nodeId);
     }
     if (!isShared) {
-        appendProtocolDataToApiPayload(gatewayRequestData.serviceProtocol, protocolData, apiPayload);
+        appendProtocolDataToApiPayload(gatewayRequestData.serviceProtocol, update.protocolData, apiPayload);
     }
 
     if (isConnectEvent) {
         apiPayload.insert(configKey::isConnectEvent, true);
     }
 
-    bool isTestPurchase = apiConfig.value(apiDefs::key::isTestPurchase).toBool(false);
-    QByteArray responseBody;
-    ErrorCode errorCode = executeRequest(QString("%1v1/config"), apiPayload, responseBody, isTestPurchase);
+    update.isTestPurchase = apiConfig.value(apiDefs::key::isTestPurchase).toBool(false);
+    update.apiPayload = apiPayload;
+}
+
+bool ApiConfigsController::finishGatewayConfigUpdate(const GatewayConfigUpdate &update, ErrorCode errorCode,
+                                                     const QByteArray &responseBody)
+{
+    const auto serverConfig = update.serverConfig;
+    const auto apiConfig = update.apiConfig;
+    const auto serverIndex = update.serverIndex;
+    const auto newCountryName = update.newCountryName;
+    const auto reloadServiceConfig = update.reloadServiceConfig;
+    const auto silent = update.silent;
 
     QJsonObject newServerConfig;
     if (errorCode == ErrorCode::NoError) {
-        errorCode = fillServerConfig(gatewayRequestData.serviceProtocol, protocolData, responseBody, newServerConfig);
+        errorCode = fillServerConfig(update.serviceProtocol, update.protocolData, responseBody, newServerConfig);
         if (errorCode != ErrorCode::NoError) {
             if (!silent) {
                 emit errorOccurred(errorCode);
@@ -1410,8 +1429,8 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
         newApiConfig.insert(apiDefs::key::vpnKey, apiConfig.value(apiDefs::key::vpnKey));
 
         newServerConfig.insert(configKey::apiConfig, newApiConfig);
-        newServerConfig.insert(configKey::authData, gatewayRequestData.authData);
-        newApiConfig.insert(configKey::authData, gatewayRequestData.authData);
+        newServerConfig.insert(configKey::authData, update.authData);
+        newApiConfig.insert(configKey::authData, update.authData);
         newServerConfig.insert(configKey::apiConfig, newApiConfig);
         newServerConfig.insert(config_key::crc, serverConfig.value(config_key::crc));
 
@@ -1460,6 +1479,30 @@ bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const
         }
         return false;
     }
+}
+
+bool ApiConfigsController::updateServiceFromGateway(const int serverIndex, const QString &newCountryCode, const QString &newCountryName,
+                                                    bool reloadServiceConfig, bool silent)
+{
+    GatewayConfigUpdate update;
+    prepareGatewayConfigUpdate(serverIndex, newCountryCode, newCountryName, reloadServiceConfig, silent, update);
+
+    QByteArray responseBody;
+    ErrorCode errorCode = executeRequest(QString("%1v1/config"), update.apiPayload, responseBody, update.isTestPurchase);
+    return finishGatewayConfigUpdate(update, errorCode, responseBody);
+}
+
+void ApiConfigsController::updateServiceFromGatewayAsync(const int serverIndex, const QString &newCountryCode,
+                                                         const QString &newCountryName, bool reloadServiceConfig, bool silent,
+                                                         const std::function<void(bool)> &callback)
+{
+    GatewayConfigUpdate update;
+    prepareGatewayConfigUpdate(serverIndex, newCountryCode, newCountryName, reloadServiceConfig, silent, update);
+
+    executeRequestAsync(QString("%1v1/config"), update.apiPayload, update.isTestPurchase,
+                        [this, update, callback](ErrorCode errorCode, const QByteArray &responseBody) {
+                            callback(finishGatewayConfigUpdate(update, errorCode, responseBody));
+                        });
 }
 
 bool ApiConfigsController::importSharedConnection(const QString &shareToken)
@@ -1734,10 +1777,9 @@ void ApiConfigsController::processNextSubscriptionRefresh()
         return;
     }
     const int serverIndex = m_pendingSubscriptionRefresh.takeFirst();
-    // updateServiceFromGateway is synchronous but spins its own event loop, so the UI
-    // stays responsive; servers are refreshed one-by-one, silent failures keep the local config
-    updateServiceFromGateway(serverIndex, "", "", false, true);
-    QTimer::singleShot(0, this, [this]() { processNextSubscriptionRefresh(); });
+    // one server at a time: the next refresh starts from the previous one's
+    // callback; silent failures keep the local config
+    updateServiceFromGatewayAsync(serverIndex, "", "", false, true, [this](bool) { processNextSubscriptionRefresh(); });
 }
 
 bool ApiConfigsController::updateServiceFromTelegram(const int serverIndex)
@@ -2161,13 +2203,18 @@ QString ApiConfigsController::getCurrentServerClientIp()
     return lastConfig.value(config_key::client_ip).toString();
 }
 
-bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionId)
+void ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionId)
 {
     if (QThread::currentThread() != this->thread()) {
         QMetaObject::invokeMethod(this, [this, subscriptionId]() { fetchSubscriptionConfigs(subscriptionId); }, Qt::QueuedConnection);
-        return true;
+        return;
     }
 
+    fetchSubscriptionConfigsAsync(subscriptionId, [this](bool success) { emit fetchSubscriptionConfigsFinished(success); });
+}
+
+void ApiConfigsController::fetchSubscriptionConfigsAsync(const QString &subscriptionId, const std::function<void(bool)> &callback)
+{
     qDebug() << "[SUBSCRIPTION] fetching configs for" << subscriptionId;
     m_subscriptionConfigs = QJsonArray();
     emit subscriptionConfigsChanged();
@@ -2181,51 +2228,77 @@ bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionI
     servicesPayload[apiDefs::key::appLanguage] = m_settings->getAppLanguage().name().split("_").first();
     servicesPayload[configKey::authData] = authData;
 
-    GatewayController gatewayController(m_settings->getGatewayEndpoint(), false, apiDefs::requestTimeoutMsecs, false, nullptr,
-                                        m_settings->getGatewayEndpointFallback());
-    QByteArray servicesResponse;
-    ErrorCode errorCode = gatewayController.post(QString("%1v1/services"), servicesPayload, servicesResponse);
-    if (errorCode != ErrorCode::NoError) {
-        qWarning() << "[SUBSCRIPTION] failed to fetch services:" << static_cast<int>(errorCode);
-        emit errorOccurred(errorCode);
-        return false;
-    }
+    auto gatewayController = QSharedPointer<GatewayController>::create(m_settings->getGatewayEndpoint(), false,
+                                                                       apiDefs::requestTimeoutMsecs, false, nullptr,
+                                                                       m_settings->getGatewayEndpointFallback());
+    auto servicesFuture = gatewayController->postAsync(QString("%1v1/services"), servicesPayload);
+    servicesFuture.then(this, [this, gatewayController, authData, callback](QPair<ErrorCode, QByteArray> servicesResult) {
+        const auto [errorCode, servicesResponse] = servicesResult;
+        if (errorCode != ErrorCode::NoError) {
+            qWarning() << "[SUBSCRIPTION] failed to fetch services:" << static_cast<int>(errorCode);
+            emit errorOccurred(errorCode);
+            callback(false);
+            return;
+        }
 
-    QJsonObject servicesData = QJsonDocument::fromJson(servicesResponse).object();
-    qDebug().noquote() << "[SUBSCRIPTION] /v1/services response:" << QJsonDocument(servicesData).toJson(QJsonDocument::Compact);
+        QJsonObject servicesData = QJsonDocument::fromJson(servicesResponse).object();
+        qDebug().noquote() << "[SUBSCRIPTION] /v1/services response:" << QJsonDocument(servicesData).toJson(QJsonDocument::Compact);
 
-    QJsonArray services = servicesData.value(configKey::services).toArray();
-    if (services.isEmpty()) {
-        qWarning() << "[SUBSCRIPTION] no services found";
-        emit errorOccurred(ErrorCode::ApiConfigEmptyError);
-        return false;
-    }
+        QJsonArray services = servicesData.value(configKey::services).toArray();
+        if (services.isEmpty()) {
+            qWarning() << "[SUBSCRIPTION] no services found";
+            emit errorOccurred(ErrorCode::ApiConfigEmptyError);
+            callback(false);
+            return;
+        }
 
-    bool anySuccess = false;
-    QString userCountryCode = servicesData.value(configKey::userCountryCode).toString();
+        const QString userCountryCode = servicesData.value(configKey::userCountryCode).toString();
 
-    for (const auto &service : services) {
-        QJsonObject serviceObject = service.toObject();
-        QString serviceType = serviceObject.value(configKey::serviceType).toString();
-        QString serviceProtocol = serviceObject.value(configKey::serviceProtocol).toString();
+        // flatten (service, connection) pairs first: the /v1/config calls below run
+        // one at a time, each starting from the previous one's callback
+        struct ConfigWorkItem
+        {
+            QJsonObject serviceObject;
+            QJsonObject connectionObject;
+        };
+        auto workItems = QSharedPointer<QList<ConfigWorkItem>>::create();
+        for (const auto &service : services) {
+            QJsonObject serviceObject = service.toObject();
 
-        auto connections = serviceObject.value("connections").toArray();
-        if (connections.isEmpty()) {
-            auto availableCountries = serviceObject.value(configKey::availableCountries).toArray();
-            for (const auto &country : availableCountries) {
-                connections.append(country.toObject());
+            auto connections = serviceObject.value("connections").toArray();
+            if (connections.isEmpty()) {
+                auto availableCountries = serviceObject.value(configKey::availableCountries).toArray();
+                for (const auto &country : availableCountries) {
+                    connections.append(country.toObject());
+                }
+            }
+            if (connections.isEmpty()) {
+                connections.append(QJsonObject {
+                    { configKey::countryCode, userCountryCode },
+                    { "connection_uuid", "" },
+                    { "connection_label", "" }
+                });
+            }
+            for (const auto &connection : connections) {
+                workItems->append({ serviceObject, connection.toObject() });
             }
         }
-        if (connections.isEmpty()) {
-            connections.append(QJsonObject {
-                { configKey::countryCode, userCountryCode },
-                { "connection_uuid", "" },
-                { "connection_label", "" }
-            });
-        }
 
-        for (const auto &connection : connections) {
-            QJsonObject connectionObject = connection.toObject();
+        auto anySuccess = QSharedPointer<bool>::create(false);
+        auto processNext = QSharedPointer<std::function<void()>>::create();
+        *processNext = [this, processNext, workItems, anySuccess, authData, userCountryCode, callback]() {
+            if (workItems->isEmpty()) {
+                finalizeSubscriptionConfigs();
+                qDebug() << "[SUBSCRIPTION] fetch done, success:" << *anySuccess << "configs count:" << m_subscriptionConfigs.size();
+                callback(*anySuccess);
+                return;
+            }
+
+            const auto item = workItems->takeFirst();
+            const QJsonObject serviceObject = item.serviceObject;
+            const QJsonObject connectionObject = item.connectionObject;
+            QString serviceType = serviceObject.value(configKey::serviceType).toString();
+            QString serviceProtocol = serviceObject.value(configKey::serviceProtocol).toString();
             QString serverCountryCode = connectionObject.value(configKey::countryCode).toString();
             QString connectionUuid = connectionObject.value("connection_uuid").toString();
             QString connectionLabel = connectionObject.value("connection_label").toString();
@@ -2261,19 +2334,16 @@ bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionI
             }
             appendProtocolDataToApiPayload(serviceProtocol, protocolData, apiPayload);
 
-            QByteArray responseBody;
-            errorCode = executeRequest(QString("%1v1/config"), apiPayload, responseBody);
-            if (errorCode != ErrorCode::NoError) {
-                qWarning() << "[SUBSCRIPTION] failed to fetch config for" << serviceProtocol << serverCountryCode << ":" << static_cast<int>(errorCode);
-                continue;
-            }
-
-            QJsonObject serverConfig;
-            errorCode = fillServerConfig(serviceProtocol, protocolData, responseBody, serverConfig);
-            if (errorCode != ErrorCode::NoError) {
-                qWarning() << "[SUBSCRIPTION] failed to fill config for" << serviceProtocol << serverCountryCode << ":" << static_cast<int>(errorCode);
-                continue;
-            }
+            executeRequestAsync(QString("%1v1/config"), apiPayload, false,
+                                [this, processNext, anySuccess, authData, serviceObject, connectionObject, serviceType,
+                                 serviceProtocol, serverCountryCode, connectionUuid, connectionLabel, nodeId,
+                                 protocolData](ErrorCode errorCode, const QByteArray &responseBody) {
+                if (errorCode == ErrorCode::NoError) {
+                    QJsonObject serverConfig;
+                    errorCode = fillServerConfig(serviceProtocol, protocolData, responseBody, serverConfig);
+                    if (errorCode != ErrorCode::NoError) {
+                        qWarning() << "[SUBSCRIPTION] failed to fill config for" << serviceProtocol << serverCountryCode << ":" << static_cast<int>(errorCode);
+                    } else {
 
             // fillServerConfig may have lost auth_data when the decrypted config didn't include it;
             // restore it from the request payload before saving.
@@ -2308,7 +2378,8 @@ bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionI
 
             QString hostName = serverConfig.value(config_key::hostName).toString();
             QString protocolName = apiConfig.value(configKey::serviceProtocol).toString(serviceProtocol).toUpper();
-            QString displayLabel = connectionLabel.remove(QChar(0x200D)).replace("<200d>", "");
+            QString displayLabel = connectionLabel;
+            displayLabel.remove(QChar(0x200D)).replace("<200d>", "");
 
             // connection_label comes as "<name> · <protocol details>" (e.g. "Suomi · AmneziaWG",
             // "Czech Republic Fast · VLESS TCP Reality"): keep only the name in the title and
@@ -2341,11 +2412,21 @@ bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionI
             displayInfo["connectionLabel"] = displayLabel;
             serverConfig["displayInfo"] = displayInfo;
 
-            m_subscriptionConfigs.append(serverConfig);
-            anySuccess = true;
-        }
-    }
+                        m_subscriptionConfigs.append(serverConfig);
+                        *anySuccess = true;
+                    }
+                } else {
+                    qWarning() << "[SUBSCRIPTION] failed to fetch config for" << serviceProtocol << serverCountryCode << ":" << static_cast<int>(errorCode);
+                }
+                (*processNext)();
+            });
+        };
+        (*processNext)();
+    });
+}
 
+void ApiConfigsController::finalizeSubscriptionConfigs()
+{
     // Add display index for duplicate labels within same country and protocol
     QMap<QString, int> labelCounts;
     for (const auto &config : m_subscriptionConfigs) {
@@ -2421,8 +2502,6 @@ bool ApiConfigsController::fetchSubscriptionConfigs(const QString &subscriptionI
     }
 
     emit subscriptionConfigsChanged();
-    qDebug() << "[SUBSCRIPTION] fetch done, success:" << anySuccess << "configs count:" << m_subscriptionConfigs.size();
-    return anySuccess;
 }
 
 QVariantList ApiConfigsController::getSubscriptionConfigs() const
@@ -2434,13 +2513,14 @@ QVariantList ApiConfigsController::getSubscriptionConfigs() const
     return list;
 }
 
-bool ApiConfigsController::reloadSubscriptionConfigs()
+void ApiConfigsController::reloadSubscriptionConfigs()
 {
     const QString subscriptionId = resolveSubscriptionId();
 
     if (subscriptionId.isEmpty()) {
         qWarning() << "[SUBSCRIPTION] reload: no subscription id found";
-        return false;
+        emit reloadSubscriptionConfigsFinished(false);
+        return;
     }
 
     // Remember the currently selected connection so the user doesn't end up with
@@ -2456,49 +2536,55 @@ bool ApiConfigsController::reloadSubscriptionConfigs()
         prevNodeId = prevApiConfig.value(QStringLiteral("node_id")).toString();
     }
 
-    if (!fetchSubscriptionConfigs(subscriptionId)) {
-        return false;
-    }
-
-    // remove previously imported subscription servers (they carry connection_uuid)
-    for (int i = m_serversModel->getServersCount() - 1; i >= 0; --i) {
-        const QJsonObject serverConfig = m_serversModel->getServerConfig(i);
-        const QJsonObject apiConfig = serverConfig.value(configKey::apiConfig).toObject();
-        if (!apiConfig.value("connection_uuid").toString().isEmpty()) {
-            m_serversModel->removeServer(i);
+    // the local reinstall runs from the async fetch callback, the result is
+    // reported via reloadSubscriptionConfigsFinished
+    fetchSubscriptionConfigsAsync(subscriptionId, [this, prevConnectionUuid, prevNodeId](bool fetched) {
+        if (!fetched) {
+            emit reloadSubscriptionConfigsFinished(false);
+            return;
         }
-    }
 
-    bool anyInstalled = false;
-    for (int i = 0; i < m_subscriptionConfigs.size(); ++i) {
-        if (installSubscriptionConfig(i)) {
-            anyInstalled = true;
-        }
-    }
-    if (!anyInstalled) {
-        return false;
-    }
-
-    // Restore the selection: the same connection if it still exists, otherwise
-    // the first server in the list.
-    int newDefaultIndex = -1;
-    if (!prevConnectionUuid.isEmpty()) {
-        for (int i = 0; i < m_serversModel->getServersCount(); ++i) {
-            const QJsonObject apiConfig = m_serversModel->getServerConfig(i).value(configKey::apiConfig).toObject();
-            if (apiConfig.value(QStringLiteral("connection_uuid")).toString() == prevConnectionUuid
-                && apiConfig.value(QStringLiteral("node_id")).toString() == prevNodeId) {
-                newDefaultIndex = i;
-                break;
+        // remove previously imported subscription servers (they carry connection_uuid)
+        for (int i = m_serversModel->getServersCount() - 1; i >= 0; --i) {
+            const QJsonObject serverConfig = m_serversModel->getServerConfig(i);
+            const QJsonObject apiConfig = serverConfig.value(configKey::apiConfig).toObject();
+            if (!apiConfig.value("connection_uuid").toString().isEmpty()) {
+                m_serversModel->removeServer(i);
             }
         }
-    }
-    if (newDefaultIndex < 0 && m_serversModel->getServersCount() > 0) {
-        newDefaultIndex = 0;
-    }
-    if (newDefaultIndex >= 0) {
-        m_serversModel->setDefaultServerIndex(newDefaultIndex);
-    }
-    return true;
+
+        bool anyInstalled = false;
+        for (int i = 0; i < m_subscriptionConfigs.size(); ++i) {
+            if (installSubscriptionConfig(i)) {
+                anyInstalled = true;
+            }
+        }
+        if (!anyInstalled) {
+            emit reloadSubscriptionConfigsFinished(false);
+            return;
+        }
+
+        // Restore the selection: the same connection if it still exists, otherwise
+        // the first server in the list.
+        int newDefaultIndex = -1;
+        if (!prevConnectionUuid.isEmpty()) {
+            for (int i = 0; i < m_serversModel->getServersCount(); ++i) {
+                const QJsonObject apiConfig = m_serversModel->getServerConfig(i).value(configKey::apiConfig).toObject();
+                if (apiConfig.value(QStringLiteral("connection_uuid")).toString() == prevConnectionUuid
+                    && apiConfig.value(QStringLiteral("node_id")).toString() == prevNodeId) {
+                    newDefaultIndex = i;
+                    break;
+                }
+            }
+        }
+        if (newDefaultIndex < 0 && m_serversModel->getServersCount() > 0) {
+            newDefaultIndex = 0;
+        }
+        if (newDefaultIndex >= 0) {
+            m_serversModel->setDefaultServerIndex(newDefaultIndex);
+        }
+        emit reloadSubscriptionConfigsFinished(true);
+    });
 }
 
 bool ApiConfigsController::installSubscriptionConfig(int index)
@@ -2616,4 +2702,19 @@ ErrorCode ApiConfigsController::executeRequest(const QString &endpoint, const QJ
                                         apiDefs::requestTimeoutMsecs, m_settings->isStrictKillSwitchEnabled(), nullptr,
                                         m_settings->getGatewayEndpointFallback(isTestPurchase));
     return gatewayController.post(endpoint, apiPayload, responseBody);
+}
+
+void ApiConfigsController::executeRequestAsync(const QString &endpoint, const QJsonObject &apiPayload, bool isTestPurchase,
+                                               const std::function<void(ErrorCode, const QByteArray &)> &callback)
+{
+    qDebug().noquote() << "[AGW EXECUTE ASYNC] endpoint:" << endpoint.arg(m_settings->getGatewayEndpoint(isTestPurchase))
+                       << "payload keys:" << apiPayload.keys();
+    auto gatewayController = QSharedPointer<GatewayController>::create(
+            m_settings->getGatewayEndpoint(isTestPurchase), m_settings->isDevGatewayEnv(isTestPurchase),
+            apiDefs::requestTimeoutMsecs, m_settings->isStrictKillSwitchEnabled(), nullptr,
+            m_settings->getGatewayEndpointFallback(isTestPurchase));
+    auto future = gatewayController->postAsync(endpoint, apiPayload);
+    future.then(this, [gatewayController, callback](QPair<ErrorCode, QByteArray> result) {
+        callback(result.first, result.second);
+    });
 }

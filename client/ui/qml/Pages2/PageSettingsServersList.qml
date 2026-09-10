@@ -18,6 +18,15 @@ import "../Components"
 PageType {
     id: root
 
+    Connections {
+        target: ApiConfigsController
+
+        // reloadSubscriptionConfigs is async — the busy indicator hides when it reports
+        function onReloadSubscriptionConfigsFinished(success) {
+            PageController.showBusyIndicator(false)
+        }
+    }
+
     RowLayout {
         id: header
 
@@ -54,8 +63,7 @@ PageType {
 
             onClicked: {
                 PageController.showBusyIndicator(true)
-                let result = ApiConfigsController.reloadSubscriptionConfigs()
-                PageController.showBusyIndicator(false)
+                ApiConfigsController.reloadSubscriptionConfigs()
             }
         }
 

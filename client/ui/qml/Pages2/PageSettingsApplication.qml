@@ -14,6 +14,10 @@ import "../Components"
 PageType {
     id: root
 
+    // set when the reload below was started from this page — the completion signal
+    // is global, only the initiator shows the result notification
+    property bool subscriptionReloadStartedHere: false
+
     BackButtonType {
         id: backButton
 
@@ -25,6 +29,25 @@ PageType {
         onActiveFocusChanged: {
             if(backButton.enabled && backButton.activeFocus) {
                 listView.positionViewAtBeginning()
+            }
+        }
+    }
+
+    Connections {
+        target: ApiConfigsController
+
+        // reloadSubscriptionConfigs is async — the result notification arrives here
+        function onReloadSubscriptionConfigsFinished(success) {
+            if (!root.subscriptionReloadStartedHere) {
+                return
+            }
+            root.subscriptionReloadStartedHere = false
+            PageController.showBusyIndicator(false)
+            if (success) {
+                PageController.showNotificationMessage(qsTr("Servers reloaded"))
+                PageController.goToPageHome()
+            } else {
+                PageController.showNotificationMessage(qsTr("Failed to reload servers"))
             }
         }
     }
@@ -250,14 +273,8 @@ PageType {
                             return
                         }
                         PageController.showBusyIndicator(true)
-                        let result = ApiConfigsController.reloadSubscriptionConfigs()
-                        PageController.showBusyIndicator(false)
-                        if (result) {
-                            PageController.showNotificationMessage(qsTr("Servers reloaded"))
-                            PageController.goToPageHome()
-                        } else {
-                            PageController.showNotificationMessage(qsTr("Failed to reload servers"))
-                        }
+                        root.subscriptionReloadStartedHere = true
+                        ApiConfigsController.reloadSubscriptionConfigs()
                     }
                     var noButtonFunction = function() {
                     }

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QJsonArray>
 
+#include <functional>
+
 #include "ui/models/api/apiServicesModel.h"
 #include "ui/models/servers_model.h"
 
@@ -85,9 +87,9 @@ public slots:
     Q_INVOKABLE QString getCurrentServerDns();
     Q_INVOKABLE QString getCurrentServerClientIp();
 
-    Q_INVOKABLE bool fetchSubscriptionConfigs(const QString &subscriptionId);
+    Q_INVOKABLE void fetchSubscriptionConfigs(const QString &subscriptionId);
     Q_INVOKABLE bool installSubscriptionConfig(int index);
-    Q_INVOKABLE bool reloadSubscriptionConfigs();
+    Q_INVOKABLE void reloadSubscriptionConfigs();
 
     // FRKN connection sharing (frkn://conn/<share_token>): the recipient imports a single
     // shared connection via importSharedConnection; the owner creates/lists/revokes share
@@ -114,6 +116,10 @@ signals:
     void subscriptionPlansChanged();
     void selectedPlanIndexChanged();
 
+    // completion of the async fetch/reload flows above
+    void fetchSubscriptionConfigsFinished(bool success);
+    void reloadSubscriptionConfigsFinished(bool success);
+
     void installServerFromApiFinished(const QString &message);
     void changeApiCountryFinished(const QString &message);
     void reloadServerFromApiFinished(const QString &message);
@@ -133,6 +139,10 @@ private:
     QString getVpnKey();
 
     ErrorCode executeRequest(const QString &endpoint, const QJsonObject &apiPayload, QByteArray &responseBody, bool isTestPurchase = false);
+    // async counterpart of executeRequest (postAsync + QSharedPointer controller,
+    // same pattern as SplitPresetsModel::fetchPresets); the callback runs on this thread
+    void executeRequestAsync(const QString &endpoint, const QJsonObject &apiPayload, bool isTestPurchase,
+                             const std::function<void(ErrorCode, const QByteArray &)> &callback);
     ErrorCode importServiceFromBilling(const QByteArray &responseBody, const bool isTestPurchase);
 
     bool importServiceForCountry(const QString &serverCountryCode, const ProtocolData &protocolData);
@@ -141,6 +151,35 @@ private:
     QString resolveSubscriptionId() const;
 
     void processNextSubscriptionRefresh();
+
+    // async /v1/config refresh of one server; shares all payload/response logic
+    // with the synchronous updateServiceFromGateway via the struct below
+    void updateServiceFromGatewayAsync(const int serverIndex, const QString &newCountryCode, const QString &newCountryName,
+                                       bool reloadServiceConfig, bool silent, const std::function<void(bool)> &callback);
+
+    struct GatewayConfigUpdate
+    {
+        int serverIndex = -1;
+        QString newCountryName;
+        bool reloadServiceConfig = false;
+        bool silent = false;
+        bool isTestPurchase = false;
+        QString serviceProtocol;
+        ProtocolData protocolData;
+        QJsonObject serverConfig; // as of request time
+        QJsonObject apiConfig;
+        QJsonObject authData;
+        QJsonObject apiPayload;
+    };
+
+    void prepareGatewayConfigUpdate(const int serverIndex, const QString &newCountryCode, const QString &newCountryName,
+                                    bool reloadServiceConfig, bool silent, GatewayConfigUpdate &update);
+    bool finishGatewayConfigUpdate(const GatewayConfigUpdate &update, ErrorCode errorCode, const QByteArray &responseBody);
+
+    void fetchSubscriptionConfigsAsync(const QString &subscriptionId, const std::function<void(bool)> &callback);
+    // duplicate-label numbering + protocol sort of m_subscriptionConfigs, emits
+    // subscriptionConfigsChanged — the local tail of the async fetch chain
+    void finalizeSubscriptionConfigs();
 
     QList<QString> m_qrCodes;
     QString m_vpnKey;

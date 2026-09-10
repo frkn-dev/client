@@ -149,13 +149,20 @@ void CoreController::initControllers()
             [this](const QString &subscriptionId) {
                 qDebug() << "[CORE] frkn subscription link detected:" << subscriptionId;
                 m_pageController->showBusyIndicator(true);
-                bool ok = m_apiConfigsController->fetchSubscriptionConfigs(subscriptionId);
-                m_pageController->showBusyIndicator(false);
-                qDebug() << "[CORE] fetch subscription configs result:" << ok;
-                if (ok) {
-                    emit m_pageController->goToPage(PageLoader::PageEnum::PageSetupWizardSubscriptionProtocols);
-                    qDebug() << "[CORE] navigated to subscription protocols page";
-                }
+                // the fetch is async now: navigate when it reports completion
+                // (one-shot connection — reloadSubscriptionConfigs has its own signal)
+                auto connection = QSharedPointer<QMetaObject::Connection>::create();
+                *connection = connect(m_apiConfigsController.get(), &ApiConfigsController::fetchSubscriptionConfigsFinished, this,
+                                      [this, connection](bool success) {
+                                          disconnect(*connection);
+                                          m_pageController->showBusyIndicator(false);
+                                          qDebug() << "[CORE] fetch subscription configs result:" << success;
+                                          if (success) {
+                                              emit m_pageController->goToPage(PageLoader::PageEnum::PageSetupWizardSubscriptionProtocols);
+                                              qDebug() << "[CORE] navigated to subscription protocols page";
+                                          }
+                                      });
+                m_apiConfigsController->fetchSubscriptionConfigs(subscriptionId);
             });
 
     connect(m_importController.get(), &ImportController::frknShareLinkDetected, this,
