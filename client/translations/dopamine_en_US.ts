@@ -172,47 +172,47 @@
     <message>
         <location filename="../ui/controllers/connectionController.h" line="171"/>
         <location filename="../ui/controllers/connectionController.cpp" line="216"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="703"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="746"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="825"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="851"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="892"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="956"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="981"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="988"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="711"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="754"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="833"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="859"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="900"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="964"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="989"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="996"/>
         <source>Connect</source>
         <translation>Connect</translation>
     </message>
     <message>
         <location filename="../ui/controllers/connectionController.cpp" line="429"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="910"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="918"/>
         <source>Connecting...</source>
         <translation>Connecting...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="915"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="923"/>
         <source>Connected</source>
         <translation>Connected</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="945"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="953"/>
         <source>Reconnecting...</source>
         <translation>Reconnecting...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="971"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="979"/>
         <source>Disconnecting...</source>
         <translation>Disconnecting...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="577"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="585"/>
         <source>Searching
 for the best server...</source>
         <translation>Searching
 for the best server...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="976"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="984"/>
         <source>Preparing...</source>
         <translation>Preparing...</translation>
     </message>
@@ -1314,7 +1314,7 @@ Already installed containers were found on the server. All installed containers 
         <translation>Connection</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="143"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="145"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
@@ -1327,12 +1327,12 @@ Already installed containers were found on the server. All installed containers 
         <translation type="vanished">Backup</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="154"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="156"/>
         <source>About FRKN Dopamine</source>
         <translation>About FRKN Dopamine</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="165"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="167"/>
         <source>Dev console</source>
         <translation>Dev console</translation>
     </message>
@@ -4156,13 +4156,13 @@ Already installed containers were found on the server. All installed containers 
     <name>QObject</name>
     <message>
         <location filename="../core/builtinSplitPresets.cpp" line="98"/>
-        <source>RU services (direct)</source>
-        <translation>RU services (direct)</translation>
+        <source>RU services — bypass VPN</source>
+        <translation>RU services — bypass VPN</translation>
     </message>
     <message>
         <location filename="../core/builtinSplitPresets.cpp" line="104"/>
-        <source>Blocked in RU (via VPN)</source>
-        <translation>Blocked in RU (via VPN)</translation>
+        <source>Blocked in RU — keep in VPN</source>
+        <translation>Blocked in RU — keep in VPN</translation>
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="76"/>
@@ -5284,7 +5284,7 @@ For more detailed information, you can
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="540"/>
+        <location filename="../vpnconnection.cpp" line="547"/>
         <source>Mbps</source>
         <translation>Mbps</translation>
     </message>

@@ -93,15 +93,25 @@ QJsonArray BuiltinSplitPresets::presets()
 {
     QJsonArray result;
 
+    // own additions on top of the upstream subnet list: big RU services the
+    // upstream list misses. Stored as domains (resolved at connect) so they
+    // survive IP changes
+    const QStringList ruDirectExtraDomains = { "ozon.ru",  "www.ozon.ru", "m.ozon.ru",
+                                               "avito.ru", "www.avito.ru", "m.avito.ru" };
+
     QJsonObject ruDirect;
     ruDirect.insert("id", QStringLiteral("builtin-ru-direct"));
-    ruDirect.insert("name", QObject::tr("RU services (direct)"));
-    ruDirect.insert("domains", subnetsJson(kRuDirectSubnets, sizeof(kRuDirectSubnets) / sizeof(kRuDirectSubnets[0])));
+    ruDirect.insert("name", QObject::tr("RU services — bypass VPN"));
+    QJsonArray ruDirectDomains = subnetsJson(kRuDirectSubnets, sizeof(kRuDirectSubnets) / sizeof(kRuDirectSubnets[0]));
+    for (const QString &domain : ruDirectExtraDomains) {
+        ruDirectDomains.append(domain);
+    }
+    ruDirect.insert("domains", ruDirectDomains);
     result.append(ruDirect);
 
     QJsonObject ruVpn;
     ruVpn.insert("id", QStringLiteral("builtin-ru-vpn"));
-    ruVpn.insert("name", QObject::tr("Blocked in RU (via VPN)"));
+    ruVpn.insert("name", QObject::tr("Blocked in RU — keep in VPN"));
     ruVpn.insert("domains", subnetsJson(kRuVpnSubnets, sizeof(kRuVpnSubnets) / sizeof(kRuVpnSubnets[0])));
     result.append(ruVpn);
 

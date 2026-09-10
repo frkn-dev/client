@@ -181,6 +181,9 @@ void SplitPresetsModel::loadFromCache()
 
 void SplitPresetsModel::appendBuiltinPresets()
 {
+    // builtin presets go FIRST in the list: they are our own RU routing
+    // shortcuts and should be visible above the API catalog
+    QList<Preset> builtin;
     for (const auto &value : BuiltinSplitPresets::presets()) {
         const QJsonObject presetObj = value.toObject();
         Preset preset;
@@ -203,8 +206,11 @@ void SplitPresetsModel::appendBuiltinPresets()
         }
         if (!preset.id.isEmpty() && !preset.domains.isEmpty()) {
             m_builtinIds.insert(preset.id);
-            m_presets.append(preset);
+            builtin.append(preset);
         }
+    }
+    for (int i = builtin.size() - 1; i >= 0; --i) {
+        m_presets.prepend(builtin.at(i));
     }
 }
 

@@ -177,17 +177,17 @@
     </message>
     <message>
         <location filename="../ui/controllers/connectionController.cpp" line="429"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="910"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="918"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="915"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="923"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="976"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="984"/>
         <source>Preparing...</source>
         <translation>Подготовка...</translation>
     </message>
@@ -208,31 +208,31 @@
         <translation type="vanished">не удалось создать конфигурацию</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="945"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="953"/>
         <source>Reconnecting...</source>
         <translation>Переподключение...</translation>
     </message>
     <message>
         <location filename="../ui/controllers/connectionController.h" line="171"/>
         <location filename="../ui/controllers/connectionController.cpp" line="216"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="703"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="746"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="825"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="851"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="892"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="956"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="981"/>
-        <location filename="../ui/controllers/connectionController.cpp" line="988"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="711"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="754"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="833"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="859"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="900"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="964"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="989"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="996"/>
         <source>Connect</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="971"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="979"/>
         <source>Disconnecting...</source>
         <translation>Отключение...</translation>
     </message>
     <message>
-        <location filename="../ui/controllers/connectionController.cpp" line="577"/>
+        <location filename="../ui/controllers/connectionController.cpp" line="585"/>
         <source>Searching
 for the best server...</source>
         <translation>Поиск
@@ -1380,7 +1380,7 @@ Already installed containers were found on the server. All installed containers 
         <translation>Соединение</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="143"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="145"/>
         <source>Application</source>
         <translation>Приложение</translation>
     </message>
@@ -1393,12 +1393,12 @@ Already installed containers were found on the server. All installed containers 
         <translation type="vanished">Резервное копирование</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="154"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="156"/>
         <source>About FRKN Dopamine</source>
         <translation>О FRKN Dopamine</translation>
     </message>
     <message>
-        <location filename="../ui/qml/Pages2/PageSettings.qml" line="165"/>
+        <location filename="../ui/qml/Pages2/PageSettings.qml" line="167"/>
         <source>Dev console</source>
         <translation>Консоль разработчика</translation>
     </message>
@@ -4368,12 +4368,12 @@ Already installed containers were found on the server. All installed containers 
     <name>QObject</name>
     <message>
         <location filename="../core/builtinSplitPresets.cpp" line="98"/>
-        <source>RU services (direct)</source>
+        <source>RU services — bypass VPN</source>
         <translation>RU-сервисы — мимо VPN</translation>
     </message>
     <message>
         <location filename="../core/builtinSplitPresets.cpp" line="104"/>
-        <source>Blocked in RU (via VPN)</source>
+        <source>Blocked in RU — keep in VPN</source>
         <translation>Заблокированные в РФ — через VPN</translation>
     </message>
     <message>
@@ -5557,7 +5557,7 @@ This means that AmneziaWG keeps the fast performance of the original while addin
 <context>
     <name>VpnConnection</name>
     <message>
-        <location filename="../vpnconnection.cpp" line="540"/>
+        <location filename="../vpnconnection.cpp" line="547"/>
         <source>Mbps</source>
         <translation>Мбит/с</translation>
     </message>
