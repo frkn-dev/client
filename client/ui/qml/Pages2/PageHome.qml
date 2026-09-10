@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
@@ -336,6 +337,9 @@ PageType {
         property real perchY: 0
 
         source: "qrc:/images/pterodactyl.png"
+        sourceSize: Qt.size(width * Screen.devicePixelRatio, height * Screen.devicePixelRatio)
+        asynchronous: true
+        cache: true
         width: 96
         height: 96
         fillMode: Image.PreserveAspectFit

@@ -365,8 +365,12 @@ Item {
             }
         ]
 
+        // defer instantiation to the next event loop tick so the parent
+        // (PageHome) can finish its first paint without paying for the
+        // collapsed+expanded drawer components up front
         Loader {
             id: collapsedLoader
+            asynchronous: true
 
             sourceComponent: root.collapsedStateContent
 
@@ -376,6 +380,7 @@ Item {
 
         Loader {
             id: expandedLoader
+            asynchronous: true
 
             sourceComponent: root.expandedStateContent
 

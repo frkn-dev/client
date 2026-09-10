@@ -61,5 +61,7 @@ QtObject {
         readonly property color translucentOnyxBlack: Qt.rgba(28/255, 29/255, 33/255, 0.13)
     }
 
-    property QtObject color: regularColorPalette
+    // initial palette picked from settings so the first paint uses the right colors
+    // (no white flash). Toggling dark/light at runtime in settings auto-updates consumers.
+    property QtObject color: SettingsController.frknDarkMode() ? darkColorPalette : regularColorPalette
 }

@@ -857,6 +857,7 @@ bool ApiConfigsController::fillAvailableServices()
     }
 
     QEventLoop waitProducts;
+    QTimer::singleShot(10000, &waitProducts, &QEventLoop::quit); // 10s hard cap
     QList<QVariantMap> fetchedProducts;
 
     IosController::Instance()->fetchProducts(productIds,

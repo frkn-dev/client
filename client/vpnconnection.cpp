@@ -280,7 +280,9 @@ void VpnConnection::connectToVpn(int serverIndex, const ServerCredentials &crede
 #elif defined Q_OS_IOS || defined(MACOS_NE)
     Proto proto = ContainerProps::defaultProtocol(container);
     IosController::Instance()->connectVpn(proto, m_vpnConfiguration);
-    connect(&m_checkTimer, &QTimer::timeout, IosController::Instance(), &IosController::checkStatus);
+    // UniqueConnection avoids stacking another duplicate subscription on every retry
+    connect(&m_checkTimer, &QTimer::timeout, IosController::Instance(), &IosController::checkStatus,
+            Qt::UniqueConnection);
     return;
 #endif
 

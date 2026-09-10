@@ -51,13 +51,10 @@ Window  {
 
     color: DopamineStyle.color.midnightBlack
 
-    Component.onCompleted: {
-        if (SettingsController.frknDarkMode()) {
-            DopamineStyle.color = DopamineStyle.darkColorPalette
-        } else {
-            DopamineStyle.color = DopamineStyle.regularColorPalette
-        }
-    }
+    // palette is picked from settings in DopamineStyle itself (initial binding),
+    // so no post-construction swap is needed — previously this reassigned the
+    // `color` property on the singleton, invalidating every binding app-wide
+    // and producing a white flash on the first frame.
 
     onClosing: function(close) {
         close.accepted = false
