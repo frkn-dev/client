@@ -101,7 +101,7 @@ QJsonArray BuiltinSplitPresets::presets()
 
     QJsonObject ruDirect;
     ruDirect.insert("id", QStringLiteral("builtin-ru-direct"));
-    ruDirect.insert("name", QObject::tr("RU services — bypass VPN"));
+    ruDirect.insert("name", QObject::tr("RU services"));
     QJsonArray ruDirectDomains = subnetsJson(kRuDirectSubnets, sizeof(kRuDirectSubnets) / sizeof(kRuDirectSubnets[0]));
     for (const QString &domain : ruDirectExtraDomains) {
         ruDirectDomains.append(domain);
@@ -111,7 +111,7 @@ QJsonArray BuiltinSplitPresets::presets()
 
     QJsonObject ruVpn;
     ruVpn.insert("id", QStringLiteral("builtin-ru-vpn"));
-    ruVpn.insert("name", QObject::tr("Blocked in RU — keep in VPN"));
+    ruVpn.insert("name", QObject::tr("Blocked in RU"));
     ruVpn.insert("domains", subnetsJson(kRuVpnSubnets, sizeof(kRuVpnSubnets) / sizeof(kRuVpnSubnets[0])));
     result.append(ruVpn);
 

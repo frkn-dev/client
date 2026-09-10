@@ -4155,14 +4155,14 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/builtinSplitPresets.cpp" line="98"/>
-        <source>RU services — bypass VPN</source>
-        <translation>RU services — bypass VPN</translation>
+        <location filename="../core/builtinSplitPresets.cpp" line="104"/>
+        <source>RU services</source>
+        <translation>RU services</translation>
     </message>
     <message>
-        <location filename="../core/builtinSplitPresets.cpp" line="104"/>
-        <source>Blocked in RU — keep in VPN</source>
-        <translation>Blocked in RU — keep in VPN</translation>
+        <location filename="../core/builtinSplitPresets.cpp" line="114"/>
+        <source>Blocked in RU</source>
+        <translation>Blocked in RU</translation>
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="76"/>

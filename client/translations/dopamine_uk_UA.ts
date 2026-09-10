@@ -4299,14 +4299,14 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/builtinSplitPresets.cpp" line="98"/>
-        <source>RU services — bypass VPN</source>
-        <translation>RU-сервіси — повз VPN</translation>
+        <location filename="../core/builtinSplitPresets.cpp" line="104"/>
+        <source>RU services</source>
+        <translation>RU-сервіси</translation>
     </message>
     <message>
-        <location filename="../core/builtinSplitPresets.cpp" line="104"/>
-        <source>Blocked in RU — keep in VPN</source>
-        <translation>Заблоковані в РФ — через VPN</translation>
+        <location filename="../core/builtinSplitPresets.cpp" line="114"/>
+        <source>Blocked in RU</source>
+        <translation>Заблоковані в РФ</translation>
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="76"/>
